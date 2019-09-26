@@ -199,5 +199,8 @@ export {
     BeatmapStatus,
     ProfileMode,
     Mode,
-    HitCounts
+    HitCounts,
+    IBeatmapStats,
+    IBeatmapStars,
+    IBeatmapObjects
 }
