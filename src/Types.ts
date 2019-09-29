@@ -1,4 +1,7 @@
 import { IAPI } from './API';
+import Mods from './pp/Mods';
+import { ICalcStats } from './pp/Stats';
+import Util from './Util';
 
 enum BeatmapStatus {
     Graveyard = -2,
@@ -29,19 +32,18 @@ interface IHits {
     100: number,
     50: number,
     miss: number,
-    katu: number,
-    geki: number
+    katu?: number,
+    geki?: number
 }
 
 class HitCounts implements IHits {
-    hits: IHits;
     300: number;
     100: number;
     50: number;
     miss: number;
     katu: number;
-    geki: number;
-    mode: number;
+    geki?: number;
+    mode?: number;
     constructor(hits: IHits, mode: number) {
         this[300] = hits[300];
         this[100] = hits[100];
@@ -53,7 +55,20 @@ class HitCounts implements IHits {
     }
 
     accuracy() {
-        //
+        // 
+    }
+
+    totalHits() {
+        switch(this.mode) {
+            case 1:
+                return 0;
+            case 2:
+                return 0;
+            case 3: 
+                return 0;
+            default:
+                return this[300] + this[100] + this[50] + this.miss;
+        }
     }
 }
 
@@ -112,9 +127,10 @@ class TopScore {
     beatmapId: number;
     combo: number;
     counts: HitCounts;
-    mods: number;
+    mods: Mods;
     rank: String;
     pp: number;
+    mode: number;
     constructor(data: any, mode: number, api: IAPI) {
         this.api = api;
         this.beatmapId = Number(data.beatmap_id);
@@ -127,9 +143,23 @@ class TopScore {
             katu: Number(data.countkatu),
             geki: Number(data.countgeki)
         }, mode);
-        this.mods = Number(data.enabled_mods);
+        this.mods = new Mods(Number(data.enabled_mods));
         this.rank = data.rank;
         this.pp = Number(data.pp);
+        this.mode = mode;
+    }
+
+    accuracy() {
+        switch(this.mode) {
+            case 1:
+                return (this.counts[300] * 2 + this.counts[100])/((this.counts[300] + this.counts[100] + this.counts[50] + this.counts.miss) * 2);
+            case 2:
+                return (this.counts[50] + this.counts[100] + this.counts[300])/(this.counts[50] + this.counts[100] + this.counts[300] + this.counts.miss + this.counts.katu);
+            case 3:
+                return ((this.counts[300] + this.counts.geki) * 6 + this.counts.katu * 4 + this.counts[100] * 2 + this.counts[50])/((this.counts[300] + this.counts[100] + this.counts.geki + this.counts.katu + this.counts[50] + this.counts.miss) * 6);
+            default:
+                return (this.counts[300] * 6 + this.counts[100] * 2 + this.counts[50])/((this.counts[300] + this.counts[100] + this.counts[50] + this.counts.miss) * 6);
+        }
     }
 }
 
@@ -146,7 +176,7 @@ class APIBeatmap {
         id: number;
     };
     status: string;
-    stats: IBeatmapStats;
+    stats: ICalcStats;
     diff: IBeatmapStars;
     objects: IBeatmapObjects;
     title: string;
@@ -167,12 +197,12 @@ class APIBeatmap {
             id: Number(data.creator_id)
         };
         this.status = BeatmapStatus[Number(data.approved)];
-        this.stats = {
+        this.stats = Util.getStats({
             cs: Number(data.diff_size),
             od: Number(data.diff_overall),
             ar: Number(data.diff_approach),
             hp: Number(data.diff_drain)
-        };
+        }, Number(data.mode));
         this.diff = {
             stars: Number(data.difficultyrating),
             aim: Number(data.diff_aim),
@@ -200,6 +230,7 @@ export {
     ProfileMode,
     Mode,
     HitCounts,
+    IHits,
     IBeatmapStats,
     IBeatmapStars,
     IBeatmapObjects

@@ -21,7 +21,7 @@ class OsuStats implements ICalcStats {
         this.hp = base.hp;
     }
 
-    modify(mods: Mods): void {
+    modify(mods: Mods) {
         let speedMul = 1;
         if(mods.has("DoubleTime"))
             speedMul *= 1.5;

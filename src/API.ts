@@ -2,6 +2,7 @@ import Bot from './Bot';
 import * as axios from 'axios';
 import qs from 'querystring';
 import { User, TopScore, APIBeatmap } from './Types';
+import Mods from './pp/Mods';
 
 interface IAPI {
     token?: String,
@@ -45,7 +46,7 @@ class BanchoAPI implements IAPI {
         }
     }
 
-    async getBeatmap(id: Number | String, mode: Number = 0, mods: Number = 0) {
+    async getBeatmap(id: number | string, mode: number = 0, mods: number = 0) {
         let opts: any = {
             k: this.token,
             a: 1,
@@ -60,7 +61,10 @@ class BanchoAPI implements IAPI {
         let { data } = await this.api.get(`/get_beatmaps?${qs.stringify(opts)}`);
         if(!data[0])
             throw "Beatmap not found";
-        return new APIBeatmap(data[0], this);
+        let beatmap = new APIBeatmap(data[0], this);
+        if(mods)
+            beatmap.stats.modify(new Mods(mods));
+        return beatmap
     }
 }
 

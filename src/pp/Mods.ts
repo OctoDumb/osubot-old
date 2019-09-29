@@ -116,7 +116,7 @@ export default class Mods {
                 r.push(1 << i);
         }
         return r;
-    }
+	}
 
     fromString(string: string): number[] {
         let offset = 0;
@@ -139,12 +139,21 @@ export default class Mods {
         if(this.sum() & ModsBitwise.Nightcore)
             tempMods -= ModsBitwise.DoubleTime;
         if(this.sum() & ModsBitwise.Perfect)
-            tempMods -= ModsBitwise.SuddenDeath;
-        return this.parse(tempMods).map(mod => ModsAcronyms[mod]).join("");
-    }
+			tempMods -= ModsBitwise.SuddenDeath;
+        return this.parse(tempMods).map(mod => ModsAcronyms[ModsBitwise[mod]]).join("");
+	}
+	
+	diff() {
+		let m = 0;
+		for(let mod of this.mods) {
+			if(mod & ModsBitwise.DifficultyChanging)
+				m += mod;
+		}
+		return m;
+	}
 
     sum(): number {
-        return this.mods.reduce((a,b) => a+b);
+        return this.mods.length == 0 ? 0 : this.mods.reduce((a,b) => a+b);
 	}
 
     has(mod: Mod): Boolean {

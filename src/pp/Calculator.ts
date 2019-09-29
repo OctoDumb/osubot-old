@@ -13,6 +13,6 @@ export default interface IPPCaltulator {
     map: APIBeatmap,
     mods: Mods,
     stats: ICalcStats,
-    init(map: APIBeatmap, mods: number): void,
+    init(map: APIBeatmap, mods: Mods): void,
     calculate(score: TopScore): IPP
 }
