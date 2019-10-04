@@ -41,9 +41,9 @@ class HitCounts implements IHits {
     100: number;
     50: number;
     miss: number;
-    katu: number;
+    katu?: number;
     geki?: number;
-    mode?: number;
+    mode: number;
     constructor(hits: IHits, mode: number) {
         this[300] = hits[300];
         this[100] = hits[100];
@@ -69,6 +69,13 @@ class HitCounts implements IHits {
             default:
                 return this[300] + this[100] + this[50] + this.miss;
         }
+    }
+
+    toString() {
+        switch(this.mode) {
+
+        }
+        return '';
     }
 }
 
@@ -218,6 +225,47 @@ class APIBeatmap {
         this.version = data.version;
         this.combo = Number(data.max_combo);
         this.mode = Number(data.mode);
+    }
+}
+
+class RecentScore {
+    api: IAPI;
+    beatmapId: number;
+    score: number;
+    combo: number;
+    counts: HitCounts;
+    mods: Mods;
+    rank: string;
+    mode: number;
+    constructor(data: any, mode: number, api: IAPI) {
+        this.api = api;
+        this.beatmapId = Number(data.beatmap_id);
+        this.score = Number(data.score);
+        this.combo = Number(data.maxcombo);
+        this.counts = new HitCounts({
+            300: Number(data.count300),
+            100: Number(data.count100),
+            50: Number(data.count50),
+            katu: Number(data.countkatu),
+            geki: Number(data.countgeki),
+            miss: Number(data.countmiss)
+        }, mode);
+        this.mods = new Mods(Number(data.enabled_mods));
+        this.rank = data.rank;
+        this.mode = mode;
+    }
+
+    accuracy() {
+        switch(this.mode) {
+            case 1:
+                return (this.counts[300] * 2 + this.counts[100])/((this.counts[300] + this.counts[100] + this.counts[50] + this.counts.miss) * 2);
+            case 2:
+                return (this.counts[50] + this.counts[100] + this.counts[300])/(this.counts[50] + this.counts[100] + this.counts[300] + this.counts.miss + this.counts.katu);
+            case 3:
+                return ((this.counts[300] + this.counts.geki) * 6 + this.counts.katu * 4 + this.counts[100] * 2 + this.counts[50])/((this.counts[300] + this.counts[100] + this.counts.geki + this.counts.katu + this.counts[50] + this.counts.miss) * 6);
+            default:
+                return (this.counts[300] * 6 + this.counts[100] * 2 + this.counts[50])/((this.counts[300] + this.counts[100] + this.counts[50] + this.counts.miss) * 6);
+        }
     }
 }
 
