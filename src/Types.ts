@@ -273,6 +273,7 @@ export {
     User,
     TopScore,
     APIBeatmap,
+    RecentScore,
 
     BeatmapStatus,
     ProfileMode,

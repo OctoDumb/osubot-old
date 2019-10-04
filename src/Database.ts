@@ -75,19 +75,19 @@ class DatabaseCovers {
         this.db = db;
     }
 
-    async addCover(id: Number): Promise<String> {
+    async addCover(id: Number): Promise<string> {
         let { data: cover } = await axios.get(`https://assets.ppy.sh/beatmaps/${id}/covers/cover.jpg?1`, {
             responseType: "arraybuffer"
         });
 
         let photo = await this.db.vk.upload.messagePhoto({
-            source: new Buffer(cover, 'binary')
+            source: Buffer.from(cover)
         });
 
         return photo.toString();
     }
 
-    async getCover(id: Number): Promise<String> {
+    async getCover(id: Number): Promise<string> {
         let cover = await this.db.get(`SELECT * FROM covers WHERE id = ?`, [id]);
         if(!cover)
             cover = await this.addCover(id);

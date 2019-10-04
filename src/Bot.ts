@@ -19,7 +19,8 @@ interface IBotConfig {
 
 interface ITemplates {
     UserTemplate: typeof Templates.UserTemplate,
-    TopScoreTemplate: typeof Templates.TopScoreTemplate
+    TopScoreTemplate: typeof Templates.TopScoreTemplate,
+    RecentScoreTemplate: typeof Templates.RecentScoreTemplate
 }
 
 export default class Bot {

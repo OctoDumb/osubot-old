@@ -1,7 +1,7 @@
 import Bot from './Bot';
 import * as axios from 'axios';
 import qs from 'querystring';
-import { User, TopScore, APIBeatmap } from './Types';
+import { User, TopScore, APIBeatmap, RecentScore } from './Types';
 import Mods from './pp/Mods';
 
 interface IAPI {
@@ -46,6 +46,18 @@ class BanchoAPI implements IAPI {
         }
     }
 
+    async getUserRecent(nickname: String, mode: number = 0): Promise<RecentScore> {
+        try {
+            let { data } = await this.api.get(`/get_user_recent?${qs.stringify({u: nickname, m: mode, k: this.token, limit: 1})}`);
+            if(data[0])
+                return new RecentScore(data[0], mode, this);
+            else
+                throw "No recent scores";
+        } catch(e) {
+            throw e;
+        }
+    }
+
     async getBeatmap(id: number | string, mode: number = 0, mods: number = 0) {
         let opts: any = {
             k: this.token,
@@ -64,7 +76,7 @@ class BanchoAPI implements IAPI {
         let beatmap = new APIBeatmap(data[0], this);
         if(mods)
             beatmap.stats.modify(new Mods(mods));
-        return beatmap
+        return beatmap;
     }
 }
 
