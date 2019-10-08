@@ -2,7 +2,7 @@ import sqlite from 'sqlite3';
 import { VK, MessageContext } from 'vk-io';
 import axios from 'axios';
 import util from './Util';
-import { User } from './Types';
+import { APIUser } from './Types';
 
 interface IDatabaseUser {
     id: Number,
@@ -62,7 +62,7 @@ class DatabaseServer {
         }
     }
 
-    async updateInfo(user: User): Promise<void> {
+    async updateInfo(user: APIUser): Promise<void> {
         let dbUser = await this.db.get(`SELECT * FROM ${this.table} WHERE uid = ? LIMIT 1`, [user.id]);
         if(dbUser)
             await this.db.run(`UPDATE ${this.table} SET pp = ?, rank = ?, acc = ? WHERE uid = ?`, [user.pp, user.rank.total, user.accuracy, user.id]);

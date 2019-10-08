@@ -98,10 +98,10 @@ interface IBeatmapObjects {
     spinners: number;
 }
 
-class User {
+interface APIUser {
     api: IAPI;
     id: number;
-    nickname: String;
+    nickname: string;
     playcount: number;
     playtime: number;
     pp: number;
@@ -109,65 +109,21 @@ class User {
         total: number,
         country: number
     };
-    country: String;
+    country: string;
     accuracy: number;
     level: number;
-    constructor(data: any, api: IAPI) {
-        this.api = api;
-        this.id = Number(data.user_id);
-        this.nickname = data.username;
-        this.playcount = Number(data.playcount);
-        this.playtime = Number(data.playtime);
-        this.pp = Number(data.pp_raw);
-        this.rank = {
-            total: Number(data.pp_rank),
-            country: Number(data.pp_country_rank)
-        };
-        this.country = data.country;
-        this.accuracy = Number(data.accuracy);
-        this.level = Number(data.level);
-    }
 }
 
-class TopScore {
+interface APITopScore {
     api: IAPI;
     beatmapId: number;
     combo: number;
     counts: HitCounts;
     mods: Mods;
-    rank: String;
+    rank: string;
     pp: number;
     mode: number;
-    constructor(data: any, mode: number, api: IAPI) {
-        this.api = api;
-        this.beatmapId = Number(data.beatmap_id);
-        this.combo = Number(data.maxcombo);
-        this.counts = new HitCounts({
-            300: Number(data.count300),
-            100: Number(data.count100),
-            50: Number(data.count50),
-            miss: Number(data.countmiss),
-            katu: Number(data.countkatu),
-            geki: Number(data.countgeki)
-        }, mode);
-        this.mods = new Mods(Number(data.enabled_mods));
-        this.rank = data.rank;
-        this.pp = Number(data.pp);
-        this.mode = mode;
-    }
-
-    accuracy() {
-        switch(this.mode) {
-            case 1:
-                return (this.counts[300] * 2 + this.counts[100])/((this.counts[300] + this.counts[100] + this.counts[50] + this.counts.miss) * 2);
-            case 2:
-                return (this.counts[50] + this.counts[100] + this.counts[300])/(this.counts[50] + this.counts[100] + this.counts[300] + this.counts.miss + this.counts.katu);
-            case 3:
-                return ((this.counts[300] + this.counts.geki) * 6 + this.counts.katu * 4 + this.counts[100] * 2 + this.counts[50])/((this.counts[300] + this.counts[100] + this.counts.geki + this.counts.katu + this.counts[50] + this.counts.miss) * 6);
-            default:
-                return (this.counts[300] * 6 + this.counts[100] * 2 + this.counts[50])/((this.counts[300] + this.counts[100] + this.counts[50] + this.counts.miss) * 6);
-        }
-    }
+    accuracy(): number;
 }
 
 class APIBeatmap {
@@ -228,7 +184,7 @@ class APIBeatmap {
     }
 }
 
-class RecentScore {
+interface APIRecentScore {
     api: IAPI;
     beatmapId: number;
     score: number;
@@ -237,43 +193,14 @@ class RecentScore {
     mods: Mods;
     rank: string;
     mode: number;
-    constructor(data: any, mode: number, api: IAPI) {
-        this.api = api;
-        this.beatmapId = Number(data.beatmap_id);
-        this.score = Number(data.score);
-        this.combo = Number(data.maxcombo);
-        this.counts = new HitCounts({
-            300: Number(data.count300),
-            100: Number(data.count100),
-            50: Number(data.count50),
-            katu: Number(data.countkatu),
-            geki: Number(data.countgeki),
-            miss: Number(data.countmiss)
-        }, mode);
-        this.mods = new Mods(Number(data.enabled_mods));
-        this.rank = data.rank;
-        this.mode = mode;
-    }
-
-    accuracy() {
-        switch(this.mode) {
-            case 1:
-                return (this.counts[300] * 2 + this.counts[100])/((this.counts[300] + this.counts[100] + this.counts[50] + this.counts.miss) * 2);
-            case 2:
-                return (this.counts[50] + this.counts[100] + this.counts[300])/(this.counts[50] + this.counts[100] + this.counts[300] + this.counts.miss + this.counts.katu);
-            case 3:
-                return ((this.counts[300] + this.counts.geki) * 6 + this.counts.katu * 4 + this.counts[100] * 2 + this.counts[50])/((this.counts[300] + this.counts[100] + this.counts.geki + this.counts.katu + this.counts[50] + this.counts.miss) * 6);
-            default:
-                return (this.counts[300] * 6 + this.counts[100] * 2 + this.counts[50])/((this.counts[300] + this.counts[100] + this.counts[50] + this.counts.miss) * 6);
-        }
-    }
+    accuracy(): number;
 }
 
 export {
-    User,
-    TopScore,
+    APIUser,
+    APITopScore,
     APIBeatmap,
-    RecentScore,
+    APIRecentScore,
 
     BeatmapStatus,
     ProfileMode,

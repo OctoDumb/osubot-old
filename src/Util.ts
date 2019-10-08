@@ -1,4 +1,4 @@
-import { IBeatmapStats } from "./Types";
+import { IBeatmapStats, HitCounts } from "./Types";
 import { ICalcStats, OsuStats, TaikoStats, CatchStats, ManiaStats } from "./pp/Stats";
 
 export default {
@@ -26,7 +26,25 @@ export default {
                 return new OsuStats(stats);
         }
     },
+    fixNumberLength(num: number): string {
+        if(num > 9)
+            return String(num);
+        else
+            return '0' + String(num);
+    },
     formatBeatmapLength(length: number): string {
-        return `${Math.floor(length / 60)}:${length % 60}`;
+        return `${this.fixNumberLength(Math.floor(length / 60))}:${this.fixNumberLength(length % 60)}`;
+    },
+    accuracy(counts: HitCounts): number {
+        switch(counts.mode) {
+            case 1:
+                return (counts[300] * 2 + counts[100])/((counts[300] + counts[100] + counts[50] + counts.miss) * 2);
+            case 2:
+                return (counts[50] + counts[100] + counts[300])/(counts[50] + counts[100] + counts[300] + counts.miss + counts.katu);
+            case 3:
+                return ((counts[300] + counts.geki) * 6 + counts.katu * 4 + counts[100] * 2 + counts[50])/((counts[300] + counts[100] + counts.geki + counts.katu + counts[50] + counts.miss) * 6);
+            default:
+                return (counts[300] * 6 + counts[100] * 2 + counts[50])/((counts[300] + counts[100] + counts[50] + counts.miss) * 6);
+        }
     }
 };

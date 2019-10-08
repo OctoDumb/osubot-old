@@ -1,4 +1,4 @@
-import { TopScore, APIBeatmap } from '../Types';
+import { APITopScore, APIBeatmap, APIRecentScore } from '../Types';
 import { ICalcStats } from './Stats';
 import Mods from './Mods';
 
@@ -14,5 +14,5 @@ export default interface IPPCaltulator {
     mods: Mods,
     stats: ICalcStats,
     init(map: APIBeatmap, mods: Mods): void,
-    calculate(score: TopScore): IPP
+    calculate(score: APITopScore | APIRecentScore): IPP
 }

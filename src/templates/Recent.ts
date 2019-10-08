@@ -1,10 +1,10 @@
-import { RecentScore, APIBeatmap } from '../Types';
+import { APIRecentScore, APIBeatmap } from '../Types';
 import Util from '../Util';
 
 export default class RecentScoreTemplate {
-    score: RecentScore;
+    score: APIRecentScore;
     beatmap: APIBeatmap;
-    constructor(score: RecentScore, beatmap: APIBeatmap) {
+    constructor(score: APIRecentScore, beatmap: APIBeatmap) {
         this.score = score;
         this.beatmap = beatmap;
     }

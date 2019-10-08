@@ -1,12 +1,12 @@
 import Util from '../Util';
-import { User } from '../Types';
+import { APIUser } from '../Types';
 import { Module } from '../Module';
 
 export default class UserTemplate {
-    user: User;
+    user: APIUser;
     module: Module;
     mode: number;
-    constructor(user: User, module: Module, mode: number) {
+    constructor(user: APIUser, module: Module, mode: number) {
         this.user = user;
         this.module = module;
         this.mode = mode;

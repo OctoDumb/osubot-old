@@ -1,6 +1,6 @@
 import ICalc from '../Calculator';
 import Mods from '../Mods';
-import { TopScore, APIBeatmap, HitCounts, IHits } from '../../Types';
+import { APITopScore, APIRecentScore, APIBeatmap, HitCounts, IHits } from '../../Types';
 import { ICalcStats } from '../Stats';
 import Util from '../../Util';
 
@@ -32,7 +32,7 @@ class BanchoPP implements ICalc {
         this.stats = map.stats;
     }
 
-    calculate(score: TopScore) {
+    calculate(score: APITopScore | APIRecentScore) {
         if(this.mods.has("Relax") || this.mods.has("Relax2") || this.mods.has("Autoplay"))
             return {pp: 0, fc: 0, ss: 0};
         

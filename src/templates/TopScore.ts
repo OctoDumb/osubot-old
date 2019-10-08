@@ -1,11 +1,11 @@
-import { TopScore, APIBeatmap } from "../Types";
+import { APITopScore, APIBeatmap } from "../Types";
 import Util from "../Util";
 
 export default class TopScoreTemplate {
-    score: TopScore;
+    score: APITopScore;
     beatmap: APIBeatmap;
     place: Number;
-    constructor(score: TopScore, beatmap: APIBeatmap, place: Number) {
+    constructor(score: APITopScore, beatmap: APIBeatmap, place: Number) {
         this.score = score;
         this.beatmap = beatmap;
         this.place = place;
