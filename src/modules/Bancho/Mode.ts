@@ -4,9 +4,9 @@ import { Module } from '../../Module';
 export default class BanchoMode extends Command {
     constructor(module: Module) {
         super(["m", "mode"], module, async (ctx, self, args) => {
-            if(!args[0])
+            if(!args.string[0])
                 return ctx.reply("Не указан режим!");
-            let m = parseInt(args[0]);
+            let m = parseInt(args.string[0]);
             if(isNaN(m) || m > 3 || m < 0)
                 return ctx.reply("Некорректный режим!");
             await self.module.bot.database.servers.bancho.setMode(ctx.senderId, m);

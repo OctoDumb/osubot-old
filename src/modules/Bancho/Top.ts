@@ -11,7 +11,7 @@ export default class BanchoTop extends Command {
             if(ctx.hasForwards)
                 dbUser = await self.module.bot.database.servers.bancho.getUser(ctx.forwards[0].senderId);
             if(args[0])
-                dbUser.nickname = args.join(" ");
+                dbUser.nickname = args.string.join(" ");
             if(!dbUser.nickname)
                 return ctx.reply("Не указан ник!");
             try {

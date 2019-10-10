@@ -5,6 +5,7 @@ import Bancho from './modules/Bancho';
 import { Command } from './Command';
 import { APICollection } from './API';
 import * as Templates from './templates';
+import Maps from './Maps';
 
 interface IBotConfig {
     vk: {
@@ -30,6 +31,7 @@ export default class Bot {
     database: Database;
     api: APICollection;
     templates: ITemplates;
+    maps: Maps;
     constructor(config: IBotConfig) {
         this.config = config;
 
@@ -45,8 +47,6 @@ export default class Bot {
 
         this.database = new Database(this.vk);
 
-        this.initDB();
-
         this.vk.updates.on("message", (ctx) => {
             if(ctx.isOutbox)
                 return;
@@ -61,6 +61,8 @@ export default class Bot {
         this.api = new APICollection(this);
 
         this.templates = Templates;
+
+        this.maps = new Maps(this);
     }
 
     registerModule(module: Module | Module[]) {
@@ -68,21 +70,6 @@ export default class Bot {
             this.modules.push(...module);
         else
             this.modules.push(module);
-    }
-
-    initDB() {
-        let requests = [
-            // Servers
-            this.database.run("CREATE TABLE IF NOT EXISTS bancho (id INTEGER, uid INTEGER, mode INTEGER, pp REAL DEFAULT 0, rank INTEGER DEFAULT 999999, acc REAL DEFAULT 100)"),
-            this.database.run("CREATE TABLE IF NOT EXISTS gatari (id INTEGER, uid INTEGER, mode INTEGER, pp REAL DEFAULT 0, rank INTEGER DEFAULT 999999, acc REAL DEFAULT 100)"),
-            this.database.run("CREATE TABLE IF NOT EXISTS ripple (id INTEGER, uid INTEGER, mode INTEGER, pp REAL DEFAULT 0, rank INTEGER DEFAULT 999999, acc REAL DEFAULT 100)"),
-            this.database.run("CREATE TABLE IF NOT EXISTS akatsuki (id INTEGER, uid INTEGER, mode INTEGER, pp REAL DEFAULT 0, rank INTEGER DEFAULT 999999, acc REAL DEFAULT 100)"),
-            // Cover
-            this.database.run("CREATE TABLE IF NOT EXISTS covers (id INTEGER attachment TEXT)"),
-            // Errors
-            this.database.run("CREATE TABLE IF NOT EXISTS errors (code TEXT, info TEXT, error TEXT)")
-        ];
-        Promise.all(requests);
     }
 
     async start() {

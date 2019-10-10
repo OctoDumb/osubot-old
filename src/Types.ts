@@ -3,6 +3,14 @@ import Mods from './pp/Mods';
 import { ICalcStats } from './pp/Stats';
 import Util from './Util';
 
+interface ICommandArgs {
+    string: string[];
+    mods: string;
+    combo: number;
+    acc: number;
+    miss: number;
+}
+
 enum BeatmapStatus {
     Graveyard = -2,
     WIP = -1,
@@ -126,6 +134,17 @@ interface APITopScore {
     accuracy(): number;
 }
 
+interface APIScore {
+    api: IAPI;
+    beatmapId: number;
+    score: number;
+    combo: number;
+    counts: HitCounts;
+    mods: Mods;
+    mode: number;
+    accuracy(): number;
+}
+
 class APIBeatmap {
     api: IAPI;
     artist: string;
@@ -199,6 +218,7 @@ interface APIRecentScore {
 export {
     APIUser,
     APITopScore,
+    APIScore,
     APIBeatmap,
     APIRecentScore,
 
@@ -209,5 +229,7 @@ export {
     IHits,
     IBeatmapStats,
     IBeatmapStars,
-    IBeatmapObjects
+    IBeatmapObjects,
+
+    ICommandArgs
 }

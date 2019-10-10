@@ -1,11 +1,11 @@
 import IAPI from './base';
 import * as axios from 'axios';
 import qs from 'querystring';
-import { APIUser, APITopScore, APIBeatmap, APIRecentScore, HitCounts } from '../Types';
+import { APIUser, APITopScore, APIBeatmap, APIRecentScore, HitCounts, APIScore } from '../Types';
 import Mods from '../pp/Mods';
 import Util from '../Util';
 
-class BanchoUser {
+class BanchoUser implements APIUser{
     api: IAPI;
     id: number;
     nickname: string;
@@ -36,7 +36,7 @@ class BanchoUser {
     }
 }
 
-class BanchoTopScore {
+class BanchoTopScore implements APITopScore {
     api: IAPI;
     beatmapId: number;
     combo: number;
@@ -68,7 +68,7 @@ class BanchoTopScore {
     }
 }
 
-class BanchoRecentScore {
+class BanchoRecentScore implements APIRecentScore{
     api: IAPI;
     beatmapId: number;
     score: number;
@@ -93,6 +93,37 @@ class BanchoRecentScore {
         this.mods = new Mods(Number(data.enabled_mods));
         this.rank = data.rank;
         this.mode = mode;
+    }
+
+    accuracy() {
+        return Util.accuracy(this.counts);
+    }
+}
+
+class BanchoScore implements APIScore{
+    api: IAPI;
+    beatmapId: number;
+    score: number;
+    combo: number;
+    counts: HitCounts;
+    mods: Mods;
+    mode: number;
+    rank: string;
+    constructor(data: any, mode: number, id: number, api: IAPI) {
+        this.api = api;
+        this.beatmapId = id;
+        this.score = Number(data.score);
+        this.combo = Number(data.combo);
+        this.counts = new HitCounts({
+            300: Number(data.count300),
+            100: Number(data.count100),
+            50: Number(data.count50),
+            katu: Number(data.countkatu),
+            geki: Number(data.countgeki),
+            miss: Number(data.countmiss)
+        }, mode);
+        this.mods = new Mods(Number(data.enabled_mods));
+        this.rank = data.rank;
     }
 
     accuracy() {
@@ -146,6 +177,25 @@ export default class BanchoAPI implements IAPI {
                 throw "No recent scores";
         } catch(e) {
             throw e;
+        }
+    }
+
+    async getScore(nickname: String, beatmapId: number, mode: number = 0, mods: number): Promise<APIScore> {
+        let opts = {
+            k: this.token,
+            u: nickname,
+            b: beatmapId,
+            m: mode
+        };
+        try {
+            let { data } = await this.api.get(`/get_scores?${qs.stringify(opts)}`);
+            if(mods)
+                data = data.filter(p => p.enabled_mods == mods);
+            if(!data[0])
+                throw "No scores found";
+            return new BanchoScore(data[0], mode, beatmapId, this);
+        } catch(e) {
+            throw e || "Unknown API error";
         }
     }
 

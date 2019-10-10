@@ -1,4 +1,4 @@
-import { IBeatmapStats, HitCounts } from "./Types";
+import { IBeatmapStats, HitCounts, ICommandArgs } from "./Types";
 import { ICalcStats, OsuStats, TaikoStats, CatchStats, ManiaStats } from "./pp/Stats";
 
 export default {
@@ -46,5 +46,43 @@ export default {
             default:
                 return (counts[300] * 6 + counts[100] * 2 + counts[50])/((counts[300] + counts[100] + counts[50] + counts.miss) * 6);
         }
+    },
+    parseArgs(args: string[]): ICommandArgs {
+        let iArg: ICommandArgs = {
+            string: [],
+            mods: "",
+            combo: 0,
+            miss: 0,
+            acc: 0
+        };
+
+        args.forEach((arg, i) => {
+            if(arg.startsWith("+")) {
+                iArg.mods = arg.slice(1);
+                args.splice(i, 1);
+                return;
+            }
+
+            if(arg.endsWith("x")) {
+                iArg.combo = Number(arg.slice(0, -1));
+                args.splice(i, 1);
+                return;
+            }
+
+            if(arg.endsWith("m")) {
+                iArg.miss = Number(arg.slice(0, -1));
+                args.splice(i, 1);
+                return;
+            }
+
+            if(arg.endsWith("%")) {
+                iArg.acc = Number(arg.slice(0, -1));
+                args.splice(i, 1);
+            }
+        });
+
+        iArg.string = args;
+
+        return iArg;
     }
 };
