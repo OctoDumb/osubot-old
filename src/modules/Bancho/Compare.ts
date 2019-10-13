@@ -24,13 +24,19 @@ export default class BanchoCompare extends Command {
                 try {
                     switch(dbUser.mode || 0) {
                         case 0: {
+                            ctx.reply(new self.module.bot.templates.CompareTemplate(score, map).use(), {
+                                attachment: cover
+                            });
+                        }
 
+                        default: {
+                            // Nothing yet..
                         }
                     }
                 } catch(e) {
                     //
                 }
-            } catch(err) {
+            } catch(e) {
                 //
             }
         });

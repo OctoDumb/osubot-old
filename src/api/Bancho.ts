@@ -5,7 +5,7 @@ import { APIUser, APITopScore, APIBeatmap, APIRecentScore, HitCounts, APIScore }
 import Mods from '../pp/Mods';
 import Util from '../Util';
 
-class BanchoUser implements APIUser{
+class BanchoUser implements APIUser {
     api: IAPI;
     id: number;
     nickname: string;
@@ -68,7 +68,7 @@ class BanchoTopScore implements APITopScore {
     }
 }
 
-class BanchoRecentScore implements APIRecentScore{
+class BanchoRecentScore implements APIRecentScore {
     api: IAPI;
     beatmapId: number;
     score: number;
@@ -100,7 +100,7 @@ class BanchoRecentScore implements APIRecentScore{
     }
 }
 
-class BanchoScore implements APIScore{
+class BanchoScore implements APIScore {
     api: IAPI;
     beatmapId: number;
     score: number;
@@ -113,7 +113,7 @@ class BanchoScore implements APIScore{
         this.api = api;
         this.beatmapId = id;
         this.score = Number(data.score);
-        this.combo = Number(data.combo);
+        this.combo = Number(data.maxcombo);
         this.counts = new HitCounts({
             300: Number(data.count300),
             100: Number(data.count100),

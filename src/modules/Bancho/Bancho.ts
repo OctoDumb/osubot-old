@@ -1,11 +1,12 @@
 import { Module } from "../../Module";
 
+import Bot from "../../Bot";
 import BanchoUser from "./User";
 import BanchoNick from "./Nick";
 import BanchoMode from "./Mode";
 import BanchoTop from "./Top";
-import Bot from "../../Bot";
 import BanchoRecent from "./Recent";
+import BanchoCompare from "./Compare";
 
 export default class Bancho extends Module {
     constructor(bot: Bot) {
@@ -18,7 +19,8 @@ export default class Bancho extends Module {
             new BanchoNick(this),
             new BanchoMode(this),
             new BanchoTop(this),
-            new BanchoRecent(this)
+            new BanchoRecent(this),
+            new BanchoCompare(this)
         ]);
     }
 }

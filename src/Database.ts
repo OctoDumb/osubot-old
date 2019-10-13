@@ -19,7 +19,6 @@ class DatabaseServer {
     constructor(table: String, db: Database) {
         this.table = table;
         this.db = db;
-        this.db.run(`CREATE TABLE IF NOT EXISTS ${this.table} (id INTEGER, uid INTEGER, mode INTEGER, pp REAL DEFAULT 0, rank INTEGER DEFAULT 999999, acc REAL DEFAULT 100)`);
     }
 
     async getUser(id: Number): Promise<IDatabaseUser | null> {
@@ -74,7 +73,6 @@ class DatabaseCovers {
     db: Database;
     constructor(db: Database) {
         this.db = db;
-        this.db.run("CREATE TABLE IF NOT EXISTS covers (id INTEGER attachment TEXT)")
     }
 
     async addCover(id: Number): Promise<string> {
@@ -109,7 +107,6 @@ class DatabaseErrors {
     db: Database;
     constructor(db: Database) {
         this.db = db;
-        this.db.run("CREATE TABLE IF NOT EXISTS errors (code TEXT, info TEXT, error TEXT)");
     }
 
     async addError(prefix: String, ctx: MessageContext, error: String): Promise<String> {

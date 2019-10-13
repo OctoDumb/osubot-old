@@ -12,7 +12,7 @@ export default class UserTemplate {
         this.mode = mode;
     }
 
-    use(): String {
+    use(): string {
         return `[Server: ${this.module.name}]
 Player ${this.user.nickname} (${Util.profileModes[this.mode]})
 Rank: #${this.user.rank.total} (${this.user.country} #${this.user.rank.country})

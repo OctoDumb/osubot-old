@@ -79,11 +79,14 @@ class HitCounts implements IHits {
         }
     }
 
-    toString() {
+    toString(): string {
         switch(this.mode) {
+            case 0:
+                return `${this[300]}/${this[100]}/${this[50]}/${this.miss}`;
 
+            default:
+                return '';
         }
-        return '';
     }
 }
 

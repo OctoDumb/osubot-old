@@ -21,6 +21,7 @@ export default class BanchoRecent extends Command {
                 ctx.reply(`[Server: ${self.module.name}]\n${new self.module.bot.templates.RecentScoreTemplate(recent, map).use()}`, {
                     attachment: cover
                 });
+                self.module.bot.maps.setMap(ctx.peerId, map);
             } catch(e) {
                 ctx.reply(`Ошибка лул`);
             }

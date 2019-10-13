@@ -11,7 +11,7 @@ export default class TopScoreTemplate {
         this.place = place;
     }
 
-    use(): String {
+    use(): string {
         if(this.beatmap.mode != 0) return '';
         return `#${this.place}
 ${this.beatmap.title} [${this.beatmap.version}] ${this.score.mods.toString().length == 0 ? '' : '+' + this.score.mods}
