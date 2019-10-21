@@ -2,10 +2,9 @@ import { isBuffer } from "util";
 import leb from "leb";
 import int64 from "int64-buffer";
 import { HitCounts } from "./Types";
+import Mods from "./pp/Mods";
 
-export default class Replay {
-    raw_data: Buffer;
-    offset: number;
+class Replay {
     mode: number;
     version: number;
     beatmapHash: string;
@@ -15,31 +14,44 @@ export default class Replay {
     score: number;
     combo: number;
     perfect: number;
-    mods: number;
+    mods: Mods;
+    constructor() {
+        //
+    }
+}
+
+class ReplayParser {
+    raw_data: Buffer;
+    offset: number;
     constructor(replay: string | Buffer) {
         this.raw_data = isBuffer(replay) ? replay : Buffer.from(replay);
         this.offset = 0x00;
+    }
 
-        this.mode = this.byte();
-        this.version = this.int();
-        this.beatmapHash = this.string();
-        this.player = this.string();
-        this.replayHash = this.string();
+    getReplay(): Replay {
+        let replay = new Replay();
+        replay.mode = this.byte();
+        replay.version = this.int();
+        replay.beatmapHash = this.string();
+        replay.player = this.string();
+        replay.replayHash = this.string();
 
-        this.counts = new HitCounts({
+        replay.counts = new HitCounts({
             300: this.short(),
             100: this.short(),
             50: this.short(),
             geki: this.short(),
             katu: this.short(),
             miss: this.short()
-        }, this.mode);
+        }, replay.mode);
 
-        this.score = this.int();
-        this.combo = this.short();
-        this.perfect = this.byte();
+        replay.score = this.int();
+        replay.combo = this.short();
+        replay.perfect = this.byte();
 
-        this.mods = this.int();
+        replay.mods = new Mods(this.int());
+
+        return replay;
     }
 
     byte() {
@@ -74,4 +86,9 @@ export default class Replay {
             return "";
         }
     }
+}
+
+export {
+    Replay,
+    ReplayParser
 }
