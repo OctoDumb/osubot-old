@@ -16,7 +16,7 @@ export default class BanchoUser extends Command {
                 return ctx.reply("Не указан ник!");
             try {
                 let user = await self.module.bot.api.bancho.getUser(dbUser.nickname, dbUser.mode || 0);
-                ctx.reply(new self.module.bot.templates.UserTemplate(user, self.module, dbUser.mode || 0).use());
+                ctx.reply(self.module.bot.templates.User(user, self.module, dbUser.mode || 0));
             } catch(err) {
                 ctx.reply("Ошибка");
             }

@@ -18,7 +18,7 @@ export default class BanchoTop extends Command {
                 let user = await self.module.bot.api.bancho.getUser(dbUser.nickname);
                 let top = await self.module.bot.api.bancho.getUserTop(dbUser.nickname, dbUser.mode || 0, 3);
                 let maps = await Promise.all(top.map(s => self.module.bot.api.bancho.getBeatmap(s.beatmapId, dbUser.mode || 0, s.mods.diff())));
-                ctx.reply(`[Server: ${self.module.name}]\nТоп скоры игрока ${user.nickname} [${Util.profileModes[dbUser.mode || 0]}]:\n${maps.map((map, i) => new self.module.bot.templates.TopScoreTemplate(top[i], map, i+1).use()).join("\n")}`);
+                ctx.reply(`[Server: ${self.module.name}]\nТоп скоры игрока ${user.nickname} [${Util.profileModes[dbUser.mode || 0]}]:\n${maps.map((map, i) => self.module.bot.templates.TopScore(top[i], map, i+1)).join("\n")}`);
             } catch(err) {
                 console.log(err);
             }

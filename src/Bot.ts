@@ -1,11 +1,13 @@
-import { VK } from 'vk-io';
+import { VK, MessageContext, DocumentAttachment } from 'vk-io';
 import { Module } from './Module';
 import Database from './Database';
 import Bancho from './modules/Bancho';
 import { Command } from './Command';
 import { APICollection } from './API';
-import * as Templates from './templates';
+import { Templates, ITemplates } from './templates';
 import Maps from './Maps';
+import { ReplayParser } from './Replay';
+import * as axios from 'axios';
 
 interface IBotConfig {
     vk: {
@@ -16,13 +18,6 @@ interface IBotConfig {
         bancho: string,
         ripple: string
     }
-}
-
-interface ITemplates {
-    UserTemplate: typeof Templates.UserTemplate,
-    TopScoreTemplate: typeof Templates.TopScoreTemplate,
-    RecentScoreTemplate: typeof Templates.RecentScoreTemplate,
-    CompareTemplate: typeof Templates.CompareTemplate
 }
 
 export default class Bot {
@@ -50,22 +45,33 @@ export default class Bot {
 
         this.initDB();
 
-        this.vk.updates.on("message", (ctx) => {
-            if(ctx.isOutbox)
-                return;
-            for(let module of this.modules) {
-                let check: Command = module.checkContext(ctx);
-                if(check) {
-                    check.process(ctx);
-                }
-            }
-        });
-
         this.api = new APICollection(this);
 
         this.templates = Templates;
 
         this.maps = new Maps(this);
+
+        this.vk.updates.on("message", async (ctx) => {
+            if(ctx.isOutbox || ctx.isFromGroup || ctx.isEvent)
+                return;
+            let replayDoc = this.checkReplay(ctx);
+            if(replayDoc) {
+                let { data: file } = await axios.default.get(replayDoc.url, {
+                    responseType: "arraybuffer"
+                });
+                let parser = new ReplayParser(file);
+                let replay = parser.getReplay();
+                let map = await this.api.bancho.getBeatmap(replay.beatmapHash, replay.mode, replay.mods.diff());
+                ctx.reply(this.templates.Replay(replay, map));
+            } else {
+                for(let module of this.modules) {
+                    let check: Command = module.checkContext(ctx);
+                    if(check) {
+                        check.process(ctx);
+                    }
+                }
+            }
+        });
     }
 
     registerModule(module: Module | Module[]) {
@@ -92,5 +98,11 @@ export default class Bot {
     async stop() {
         await this.vk.updates.stop();
         console.log('Stopped');
+    }
+
+    checkReplay(ctx: MessageContext): DocumentAttachment {
+        if(!ctx.hasAttachments("doc"))
+            return null;
+        return ctx.getAttachments("doc").filter(doc => doc.extension == "osr")[0];
     }
 }

@@ -24,7 +24,7 @@ export default class BanchoCompare extends Command {
                 try {
                     switch(dbUser.mode || 0) {
                         case 0: {
-                            ctx.reply(new self.module.bot.templates.CompareTemplate(score, map).use(), {
+                            ctx.reply(self.module.bot.templates.Compare(score, map), {
                                 attachment: cover
                             });
                         }
