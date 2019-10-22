@@ -1,4 +1,5 @@
 import { IBeatmapStats } from '../Types';
+import Util from '../Util';
 import Mods from './Mods';
 
 interface ICalcStats {
@@ -6,7 +7,8 @@ interface ICalcStats {
     cs: number,
     od: number,
     hp: number,
-    modify(mods: Mods): void
+    modify(mods: Mods): void,
+    toString?(): string
 }
 
 class OsuStats implements ICalcStats {
@@ -67,6 +69,10 @@ class OsuStats implements ICalcStats {
 
         // Modify HP
         this.hp = Math.min(this.hp * multiplier, 10);
+    }
+
+    toString(): string {
+        return `AR:${Util.round(this.ar, 2)} CS:${Util.round(this.cs, 2)} OD:${Util.round(this.od, 2)} HP:${Util.round(this.hp, 2)}`;
     }
 }
 
