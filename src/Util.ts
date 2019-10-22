@@ -84,5 +84,55 @@ export default {
         iArg.string = args;
 
         return iArg;
+    },
+    getHitsFromAcc: {
+        osu: function(acc: number, miss: number, obj: number) {
+            let hits = {
+                300: -1,
+                100: 0,
+                50: 0,
+                miss: miss
+            };
+            let n300 = hits[300];
+            if(n300 < 0)
+                n300 = Math.max(0, obj - hits[100] - hits[50] - hits.miss);
+        
+            let hitcount = n300 + hits[100] + hits[50] + hits.miss;
+        
+            if(hitcount > obj)
+                n300 -= Math.min(n300, hitcount - obj);
+        
+            hitcount = n300 + hits[100] + hits[50] + hits.miss;
+        
+            if (hitcount > obj)
+                hits[100] -= Math.min(hits[100], hitcount - obj);
+        
+            hitcount = n300 + hits[100] + hits[50] + hits.miss;
+        
+            if (hitcount > obj)
+                hits[50] -= Math.min(hits[50], hitcount - obj);
+        
+            hitcount = n300 + hits[100] + hits[50] + hits.miss;
+        
+            hits[300] = obj - hits[100] - hits[50] - hits.miss;
+        
+            let max300 = obj - hits.miss;
+        
+            hits[100] = Math.round(
+                -3 * ((acc * 0.01 - 1) * obj + hits.miss) * 0.5
+            );
+        
+            if(hits[100] > max300) {
+                hits[100] = 0;
+                hits[50] = Math.round(
+                    -6 * ((acc * 0.01 - 1) * obj + hits.miss) * 0.5
+                );
+                hits[50] = Math.min(max300, hits[50]);
+            }
+        
+            hits[300] = obj - hits[100] - hits[50] - hits.miss;
+        
+            return hits;
+        }
     }
 };
