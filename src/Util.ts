@@ -1,4 +1,4 @@
-import { IBeatmapStats, HitCounts, ICommandArgs } from "./Types";
+import { IBeatmapStats, HitCounts, ICommandArgs, IHits } from "./Types";
 import { ICalcStats, OsuStats, TaikoStats, CatchStats, ManiaStats } from "./pp/Stats";
 
 export default {
@@ -86,7 +86,7 @@ export default {
         return iArg;
     },
     getHitsFromAcc: {
-        osu: function(acc: number, miss: number, obj: number) {
+        osu: function(acc: number, miss: number, obj: number): IHits {
             let hits = {
                 300: -1,
                 100: 0,
