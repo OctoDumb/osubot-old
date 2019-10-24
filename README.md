@@ -16,7 +16,21 @@ cd osubot
 npm install
 ```
 
-3. Build & run
+3. Create a config `config.json`
+```json
+{
+    "vk": {
+        "token": "Your group's token",
+        "id": "Your group's ID"
+    },
+    "tokens": {
+        "bancho": "Bancho token",
+        "ripple": "Ripple token"
+    }
+}
+```
+
+4. Build & run
 
 ```
 npm run-script prepare
