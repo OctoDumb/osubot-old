@@ -66,10 +66,10 @@ class HitCounts implements IHits {
         // 
     }
 
-    totalHits() {
+    totalHits(): number {
         switch(this.mode) {
             case 1:
-                return 0;
+                return this[300] + this[100] + this[50] + this.miss;
             case 2:
                 return 0;
             case 3: 
@@ -146,6 +146,7 @@ interface APIScore {
     mods: Mods;
     mode: number;
     accuracy(): number;
+    rank: string;
 }
 
 class APIBeatmap {
