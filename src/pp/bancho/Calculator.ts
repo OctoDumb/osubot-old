@@ -1,4 +1,4 @@
-import ICalc from '../Calculator';
+import { IPPCalculator as ICalc } from '../Calculator';
 import Mods from '../Mods';
 import { APITopScore, APIRecentScore, APIBeatmap, HitCounts, APIScore } from '../../Types';
 import { ICalcStats } from '../Stats';
@@ -16,24 +16,29 @@ class BanchoPP implements ICalc {
     speedMultiplier: number = 1;
     stats: ICalcStats;
     constructor(map: APIBeatmap, mods: Mods) {
-        this.init(map, mods);
-    }
-
-    init(map: APIBeatmap, mods: Mods): void {
         this.map = map;
         this.mods = mods;
         this.stats = map.stats;
     }
 
-    calculate(score: APITopScore | APIRecentScore | APIScore) {
+    calculate(score: APITopScore | APIRecentScore | APIScore): IPP {
         if(this.mods.has("Relax") || this.mods.has("Relax2") || this.mods.has("Autoplay"))
             return {pp: 0, fc: 0, ss: 0};
         
-        return this.stdPP(score).value
+        return this.PP(score).value
     }
 
-    stdPP(score: APITopScore | APIRecentScore | APIScore): BanchoStd {
-        return new BanchoStd(this.map, score);
+    PP(score: APITopScore | APIRecentScore | APIScore) {
+        switch(score.mode) {
+            case 1:
+                return new BanchoTaiko(this.map, score);
+            case 2:
+                return new BanchoStd(this.map, score);
+            case 3:
+                return new BanchoStd(this.map, score);
+            default:
+                return new BanchoStd(this.map, score);
+        }
     }
 }
 
@@ -171,10 +176,11 @@ class BanchoStd {
     }
 
     accValue(acc: number, miss: number, obj: number): number {
-        let hits = Util.getHitsFromAcc.osu(acc, miss, obj);
+        let hits = Util.getHitsFromAcc.osu(acc * 100, miss, obj);
+        let totalHits = hits[300] + hits[100] + hits[50] + hits.miss;
         let betterAccPerc = 0;
         if(this.map.objects.circles > 0)
-            betterAccPerc = Math.min(((hits[300] - ((hits[300] + hits[100] + hits[50] + hits.miss) - this.map.objects.circles)) * 6 + hits[100] * 2 + hits[50]) / (this.map.objects.circles * 6), 1);
+            betterAccPerc = Math.min(((hits[300] - (totalHits - this.map.objects.circles)) * 6 + hits[100] * 2 + hits[50]) / (this.map.objects.circles * 6), 1);
 
         let accValue = Math.pow(1.52163, this.map.stats.od) * Math.pow(betterAccPerc, 24) * 2.83;
 
@@ -184,6 +190,87 @@ class BanchoStd {
             accValue *= 1.08;
         if(this.mods.has("Flashlight"))
             accValue *= 1.02;
+
+        return accValue;
+    }
+}
+
+class BanchoTaiko {
+    map: APIBeatmap;
+    mods: Mods;
+    value: IPP;
+    constructor(map: APIBeatmap, score: APITopScore | APIRecentScore | APIScore) {
+        this.map = map;
+        this.mods = score.mods;
+
+        let multiplier = 1.1;
+        if(this.mods.has("NoFail"))
+            multiplier *= 0.9;
+
+        if(this.mods.has("Hidden"))
+            multiplier *= 1.1;
+
+        let totalHits = score.counts.totalHits()
+
+        let str1 = this.strainValue(this.map.diff.stars, totalHits, score.accuracy(), score.counts.miss, map.combo);
+        let acc1 = this.accValue(score.accuracy(), totalHits);
+
+        let pp = Math.pow(
+            Math.pow(str1, 1.1) +
+            Math.pow(acc1, 1.1),
+            1.0 / 1.1
+        ) * multiplier;
+
+        let str2 = this.strainValue(this.map.diff.stars, map.combo, score.accuracy(), 0, map.combo);
+        let acc2 = this.accValue(score.accuracy(), totalHits);
+
+        let fc = Math.pow(
+            Math.pow(str2, 1.1) +
+            Math.pow(acc2, 1.1),
+            1.0 / 1.1
+        ) * multiplier;
+
+        let str3 = this.strainValue(this.map.diff.stars, map.combo, 1, 0, map.combo);
+        let acc3 = this.accValue(score.accuracy(), totalHits);
+
+        let ss = Math.pow(
+            Math.pow(str3, 1.1) +
+            Math.pow(acc3, 1.1),
+            1.0 / 1.1
+        ) * multiplier;
+
+        this.value = {
+            pp,
+            fc,
+            ss
+        };
+    }
+
+    strainValue(strain: number, hits: number, acc: number, miss: number, combo: number): number {
+        let strainValue = Math.pow(5 * Math.max(1, strain / 0.0075) - 4, 2) / 1e5;
+
+        let lengthBonus = 1 + 0.1 * Math.min(1, hits / 1500);
+        strainValue *= lengthBonus;
+
+        strainValue *= Math.pow(0.985, miss);
+
+        strainValue *= Math.min(Math.pow((hits - miss), 0.5) / Math.pow(combo, 0.5), 1);
+
+        if(this.mods.has("Hidden"))
+            strainValue *= 1.025;
+
+        if(this.mods.has("Flashlight"))
+            strainValue *= 1.05 * lengthBonus;
+
+        strainValue *= acc;
+        
+        return strainValue;
+    }
+
+    accValue(acc: number, hits: number): number {
+        let accValue = Math.pow(150 / this.map.stats.hitWindow(), 1.1) * Math.pow(acc, 15) * 22;
+
+        accValue *= Math.min(1.15, Math.pow(hits / 1500, 0.3));
 
         return accValue;
     }

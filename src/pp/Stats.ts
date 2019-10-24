@@ -9,6 +9,7 @@ interface ICalcStats {
     hp: number,
     modify(mods: Mods): void,
     toString?(): string
+    hitWindow?(): number
 }
 
 class OsuStats implements ICalcStats {
@@ -74,6 +75,10 @@ class OsuStats implements ICalcStats {
     toString(): string {
         return `AR:${Util.round(this.ar, 2)} CS:${Util.round(this.cs, 2)} OD:${Util.round(this.od, 2)} HP:${Util.round(this.hp, 2)}`;
     }
+
+    hitWindow(): number {
+        return 80 - Math.ceil(6 * this.od);
+    }
 }
 
 class TaikoStats implements ICalcStats {
@@ -94,6 +99,10 @@ class TaikoStats implements ICalcStats {
         if(mods.has("HardRock"))
             this.od *= 1.4;
         this.od = Math.max(0, Math.min(10, this.od));
+    }
+
+    hitWindow(): number {
+        return Math.floor(50 + (20 - 50) * this.od / 10) - 0.5;
     }
 }
 

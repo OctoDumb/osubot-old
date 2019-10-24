@@ -1,6 +1,7 @@
 import { Command } from "../../Command";
 import { Module } from "../../Module";
 import Mods from "../../pp/Mods";
+import Calculator from '../../pp/bancho';
 
 export default class BanchoCompare extends Command {
     constructor(module: Module) {
@@ -21,10 +22,12 @@ export default class BanchoCompare extends Command {
                 let score = await self.module.bot.api.bancho.getScore(dbUser.nickname, chat.map.id.map, dbUser.mode || 0, args.mods.length == 0 ? undefined : new Mods(args.mods).sum());
                 let map = await self.module.bot.api.bancho.getBeatmap(chat.map.id.map, dbUser.mode || 0, args.mods.length == 0 ? undefined : new Mods(args.mods).sum());
                 let cover = await self.module.bot.database.covers.getCover(map.id.set);
+                let calc = new Calculator(map, score.mods);
+                let pp = calc.calculate(score);
                 try {
                     switch(dbUser.mode || 0) {
                         case 0: {
-                            ctx.reply(self.module.bot.templates.Compare(score, map), {
+                            ctx.reply(self.module.bot.templates.Compare(score, map, pp), {
                                 attachment: cover
                             });
                         }

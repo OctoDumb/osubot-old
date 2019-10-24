@@ -3,7 +3,7 @@ import Util from "../Util";
 
 export default function(score: APITopScore, beatmap: APIBeatmap, place: Number) {
     if(beatmap.mode != 0) return '';
-        return `#${place}
+    return `#${place}
 ${beatmap.title} [${beatmap.version}] ${score.mods.toString().length == 0 ? '' : '+' + score.mods}
 ${beatmap.stats} ${Util.round(beatmap.diff.stars, 2)}✩
 Ранк: ${score.rank} ⯈ x${score.combo}/${beatmap.combo} ⯈ Длина: ${Util.formatBeatmapLength(beatmap.length)}
