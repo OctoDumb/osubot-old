@@ -8,11 +8,16 @@ import { Templates, ITemplates } from './templates';
 import Maps from './Maps';
 import { ReplayParser } from './Replay';
 import * as axios from 'axios';
+import News from './News';
+import Admin from './modules/Admin';
+import Main from './modules/Main';
+import BanchoPP from './pp/bancho';
 
 interface IBotConfig {
     vk: {
         token: string,
-        id: number
+        id: number,
+        owner: number
     },
     tokens: {
         bancho: string,
@@ -28,6 +33,7 @@ export default class Bot {
     api: APICollection;
     templates: ITemplates;
     maps: Maps;
+    news: News;
     constructor(config: IBotConfig) {
         this.config = config;
 
@@ -38,7 +44,9 @@ export default class Bot {
         this.modules = [];
 
         this.registerModule([
-            new Bancho(this)
+            new Bancho(this),
+            new Admin(this),
+            new Main(this)
         ]);
 
         this.database = new Database(this.vk);
@@ -61,8 +69,10 @@ export default class Bot {
                 });
                 let parser = new ReplayParser(file);
                 let replay = parser.getReplay();
-                let map = await this.api.bancho.getBeatmap(replay.beatmapHash, replay.mode, replay.mods.diff());
-                ctx.reply(this.templates.Replay(replay, map));
+                let mapId = (await this.api.bancho.getBeatmap(replay.beatmapHash)).id.map;
+                let map = await this.api.bancho.getBeatmap(mapId, replay.mode, replay.mods.diff());
+                let calc = new BanchoPP(map, replay.mods);
+                ctx.reply(this.templates.Replay(replay, map, calc));
             } else {
                 for(let module of this.modules) {
                     let check: Command = module.checkContext(ctx);
@@ -72,6 +82,8 @@ export default class Bot {
                 }
             }
         });
+
+        this.news = new News(this);
     }
 
     registerModule(module: Module | Module[]) {
