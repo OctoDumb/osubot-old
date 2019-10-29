@@ -3,6 +3,7 @@ import leb from "leb";
 import int64 from "int64-buffer";
 import { HitCounts } from "./Types";
 import Mods from "./pp/Mods";
+import Util from "./Util";
 
 class Replay {
     mode: number;
@@ -17,6 +18,10 @@ class Replay {
     mods: Mods;
     constructor() {
         //
+    }
+
+    accuracy() {
+        return Util.accuracy(this.counts);
     }
 }
 
