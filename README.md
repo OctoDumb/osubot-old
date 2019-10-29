@@ -21,7 +21,8 @@ npm install
 {
     "vk": {
         "token": "Your group's token",
-        "id": "Your group's ID"
+        "id": 435325354, // Your group's ID
+        "owner": 5435325 // Your ID
     },
     "tokens": {
         "bancho": "Bancho token",
