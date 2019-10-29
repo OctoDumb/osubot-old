@@ -8,15 +8,16 @@ export default class BanchoTop extends Command {
         super(["t", "top"], module, async (ctx, self, args) => {
             let dbUser = await self.module.bot.database.servers.bancho.getUser(ctx.senderId);
             if(ctx.hasReplyMessage)
-                dbUser = await self.module.bot.database.servers.bancho.getUser(ctx.replyMessage.senderId);
+                dbUser.nickname = (await self.module.bot.database.servers.bancho.getUser(ctx.replyMessage.senderId)).nickname;
             if(ctx.hasForwards)
-                dbUser = await self.module.bot.database.servers.bancho.getUser(ctx.forwards[0].senderId);
+                dbUser.nickname = (await self.module.bot.database.servers.bancho.getUser(ctx.forwards[0].senderId)).nickname;
             if(args.string[0])
                 dbUser.nickname = args.string.join(" ");
             if(!dbUser.nickname)
                 return ctx.reply("Не указан ник!");
             try {
                 let user = await self.module.bot.api.bancho.getUser(dbUser.nickname);
+                self.module.bot.database.servers.bancho.updateInfo(user);
                 let top = await self.module.bot.api.bancho.getUserTop(dbUser.nickname, dbUser.mode || 0, 3);
                 let maps = await Promise.all(top.map(s => self.module.bot.api.bancho.getBeatmap(s.beatmapId, dbUser.mode || 0, s.mods.diff())));
                 let str = maps.map((map, i) => {

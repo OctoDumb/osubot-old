@@ -8,9 +8,9 @@ export default class BanchoCompare extends Command {
         super(["c", "compare"], module, async (ctx, self, args) => {
             let dbUser = await self.module.bot.database.servers.bancho.getUser(ctx.senderId);
             if(ctx.hasReplyMessage)
-                dbUser = await self.module.bot.database.servers.bancho.getUser(ctx.replyMessage.senderId);
+                dbUser.nickname = (await self.module.bot.database.servers.bancho.getUser(ctx.replyMessage.senderId)).nickname;
             if(ctx.hasForwards)
-                dbUser = await self.module.bot.database.servers.bancho.getUser(ctx.forwards[0].senderId);
+                dbUser.nickname = (await self.module.bot.database.servers.bancho.getUser(ctx.forwards[0].senderId)).nickname;
             if(args.string[0])
                 dbUser.nickname = args.string.join(" ");
             if(!dbUser.nickname)
