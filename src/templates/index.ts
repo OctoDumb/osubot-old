@@ -6,14 +6,14 @@ import ReplayT from './Replay';
 import { Replay } from '../Replay';
 import { APIUser, APITopScore, APIBeatmap, APIRecentScore, APIScore } from '../Types';
 import { Module } from '../Module';
-import { IPP } from '../pp/Calculator';
+import { IPPCalculator as ICalc } from '../pp/Calculator';
 
 interface ITemplates {
     User: (user: APIUser, module: Module, mode: number) => string;
-    TopScore: (score: APITopScore, beatmap: APIBeatmap, place: number) => string;
-    RecentScore: (score: APIRecentScore, beatmap: APIBeatmap, pp: IPP) => string;
-    Compare: (score: APIScore, beatmap: APIBeatmap, pp: IPP) => string;
-    Replay: (replay: Replay, map: APIBeatmap) => string;
+    TopScore: (score: APITopScore, beatmap: APIBeatmap, place: number, calc: ICalc) => string;
+    RecentScore: (score: APIRecentScore, beatmap: APIBeatmap, calc: ICalc) => string;
+    Compare: (score: APIScore, beatmap: APIBeatmap, calc: ICalc) => string;
+    Replay: (replay: Replay, map: APIBeatmap, calc: ICalc) => string;
 }
 
 var Templates: ITemplates = {
