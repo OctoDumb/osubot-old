@@ -64,7 +64,7 @@ class HitCounts implements IHits {
     }
 
     accuracy() {
-        // 
+        Util.accuracy(this);
     }
 
     totalHits(): number {
