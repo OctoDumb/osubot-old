@@ -127,6 +127,10 @@ class DatabaseErrors {
         let error = this.db.get(`SELECT * FROM errors WHERE code = ?`, [code]);
         return error;
     }
+
+    clear() {
+        this.db.run("DELETE FROM errors");
+    }
 }
 
 interface IServersList {
@@ -165,7 +169,7 @@ export default class Database {
                 if(err)
                     reject(err);
                 else
-                    resolve(row);
+                    resolve(row || {});
             });
         });
     }
