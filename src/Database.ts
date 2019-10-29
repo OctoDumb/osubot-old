@@ -6,6 +6,7 @@ import { APIUser } from './Types';
 
 interface IDatabaseUser {
     id: number,
+    uid: number,
     nickname: string,
     mode: number,
     pp: number,
@@ -42,7 +43,7 @@ class DatabaseServer {
     async setNickname(id: number, uid: number, nickname: String): Promise<void> {
         try {
             let user: IDatabaseUser = await this.getUser(id);
-            if(!user)
+            if(!user.id)
                 await this.db.run(`INSERT INTO ${this.table} (id, uid, nickname, mode) VALUES (?, ?, ?, 0)`, [id, uid, nickname]);
             else
                 await this.db.run(`UPDATE ${this.table} SET nickname = ?, uid = ? WHERE id = ?`, [nickname, uid, id]);
@@ -83,6 +84,8 @@ class DatabaseCovers {
         let photo = await this.db.vk.upload.messagePhoto({
             source: Buffer.from(cover)
         });
+
+        await this.db.run("INSERT INTO covers (id, attachment) VALUES (?, ?)", [id, photo.toString()]);
 
         return photo.toString();
     }
