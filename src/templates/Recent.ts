@@ -2,7 +2,7 @@ import { APIRecentScore, APIBeatmap } from '../Types';
 import Util from '../Util';
 import { IPPCalculator as ICalc } from '../pp/Calculator';
 
-export default function(score: APIRecentScore, beatmap: APIBeatmap, calc: ICalc) {
+export default function(score: APIRecentScore, beatmap: APIBeatmap, calc: ICalc, link: string) {
     let pp = calc.calculate(score);
     return `${beatmap.artist} - ${beatmap.title} [${beatmap.version}] by ${beatmap.creator.nickname}
 ${Util.formatBeatmapLength(beatmap.length / calc.speedMultiplier)} | ${beatmap.stats} ${Math.round(beatmap.bpm * calc.speedMultiplier)}BPM | ${Util.round(beatmap.diff.stars, 2)}✩ ${score.mods}
@@ -13,5 +13,5 @@ PP: ${pp.pp.toFixed(2)}${pp.ss == pp.pp ? '' : pp.fc == pp.pp ? ` ⯈ SS: ${pp.s
 Хиткаунты: ${score.counts.toString()}
 Ранк: ${score.rank}
 
-Карта: https://osu.ppy.sh/b/${beatmap.id.map}`;
+Карта: ${link}/b/${beatmap.id.map}`;
 }

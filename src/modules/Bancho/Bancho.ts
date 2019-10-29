@@ -10,10 +10,13 @@ import BanchoCompare from "./Compare";
 import BanchoChat from "./Chat";
 
 export default class Bancho extends Module {
+    link: string;
     constructor(bot: Bot) {
         super("b", bot);
 
         this.name = "Bancho";
+
+        this.link = "https://osu.ppy.sh";
         
         this.registerCommand([
             new BanchoUser(this),

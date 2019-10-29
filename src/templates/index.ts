@@ -8,9 +8,9 @@ import { APIUser, APITopScore, APIBeatmap, APIRecentScore, APIScore } from '../T
 import { IPPCalculator as ICalc } from '../pp/Calculator';
 
 interface ITemplates {
-    User: (user: APIUser, mode: number) => string;
-    TopScore: (score: APITopScore, beatmap: APIBeatmap, place: number, calc: ICalc) => string;
-    RecentScore: (score: APIRecentScore, beatmap: APIBeatmap, calc: ICalc) => string;
+    User: (user: APIUser, mode: number, link: string) => string;
+    TopScore: (score: APITopScore, beatmap: APIBeatmap, place: number, calc: ICalc, link: string) => string;
+    RecentScore: (score: APIRecentScore, beatmap: APIBeatmap, calc: ICalc, link: string) => string;
     Compare: (score: APIScore, beatmap: APIBeatmap, calc: ICalc) => string;
     Replay: (replay: Replay, map: APIBeatmap, calc: ICalc) => string;
 }

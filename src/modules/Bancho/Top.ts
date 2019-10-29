@@ -22,7 +22,7 @@ export default class BanchoTop extends Command {
                 let maps = await Promise.all(top.map(s => self.module.bot.api.bancho.getBeatmap(s.beatmapId, dbUser.mode || 0, s.mods.diff())));
                 let str = maps.map((map, i) => {
                     let calc = new BanchoPP(map, top[i].mods);
-                    return self.module.bot.templates.TopScore(top[i], map, i+1, calc);
+                    return self.module.bot.templates.TopScore(top[i], map, i+1, calc, self.module.link);
                 }).join("\n");
                 ctx.reply(`[Server: ${self.module.name}]\nТоп скоры игрока ${user.nickname} [${Util.profileModes[dbUser.mode || 0]}]:\n${str}`);
             } catch(err) {

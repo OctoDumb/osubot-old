@@ -19,7 +19,7 @@ export default class BanchoRecent extends Command {
                 let map = await self.module.bot.api.bancho.getBeatmap(recent.beatmapId, recent.mode, recent.mods.diff());
                 let cover = await self.module.bot.database.covers.getCover(map.id.set);
                 let calc = new Calculator(map, recent.mods);
-                ctx.reply(`[Server: ${self.module.name}]\n${self.module.bot.templates.RecentScore(recent, map, calc)}`, {
+                ctx.reply(`[Server: ${self.module.name}]\n${self.module.bot.templates.RecentScore(recent, map, calc, self.module.link)}`, {
                     attachment: cover
                 });
                 self.module.bot.maps.setMap(ctx.peerId, map);

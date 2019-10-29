@@ -17,7 +17,7 @@ export default class BanchoUser extends Command {
             try {
                 let user = await self.module.bot.api.bancho.getUser(dbUser.nickname, dbUser.mode || 0);
                 self.module.bot.database.servers.bancho.updateInfo(user);
-                ctx.reply(`[Server:${self.module.name}]\n${self.module.bot.templates.User(user, dbUser.mode || 0)}`);
+                ctx.reply(`[Server:${self.module.name}]\n${self.module.bot.templates.User(user, dbUser.mode || 0, self.module.link)}`);
             } catch(err) {
                 ctx.reply("Ошибка");
             }

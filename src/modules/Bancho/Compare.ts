@@ -23,23 +23,11 @@ export default class BanchoCompare extends Command {
                 let map = await self.module.bot.api.bancho.getBeatmap(chat.map.id.map, dbUser.mode || 0, args.mods.length == 0 ? undefined : new Mods(args.mods).sum());
                 let cover = await self.module.bot.database.covers.getCover(map.id.set);
                 let calc = new Calculator(map, score.mods);
-                try {
-                    switch(dbUser.mode || 0) {
-                        case 0: {
-                            ctx.reply(self.module.bot.templates.Compare(score, map, calc), {
-                                attachment: cover
-                            });
-                        }
-
-                        default: {
-                            // Nothing yet..
-                        }
-                    }
-                } catch(e) {
-                    //
-                }
+                ctx.reply(`[Server: ${self.module.name}]\n${self.module.bot.templates.Compare(score, map, calc)}`, {
+                    attachment: cover
+                });
             } catch(e) {
-                //
+                console.log(e);
             }
         });
     }

@@ -11,6 +11,7 @@ interface ICommandsModule {
 
 export class Module implements ICommandsModule {
     name: String;
+    link?: string;
     prefix: String | String[];
     commands: Command[];
     bot: Bot;
