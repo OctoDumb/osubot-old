@@ -5,12 +5,12 @@ import util from './Util';
 import { APIUser } from './Types';
 
 interface IDatabaseUser {
-    id: Number,
-    nickname: String,
+    id: number,
+    nickname: string,
     mode: number,
-    pp: Number,
-    rank: Number,
-    acc: Number
+    pp: number,
+    rank: number,
+    acc: number
 }
 
 class DatabaseServer {
