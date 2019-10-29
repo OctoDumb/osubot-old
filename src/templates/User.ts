@@ -1,10 +1,8 @@
 import Util from '../Util';
 import { APIUser } from '../Types';
-import { Module } from '../Module';
 
-export default function(user: APIUser, module: Module, mode: number) {
-    return `[Server: ${module.name}]
-Player ${user.nickname} (${Util.profileModes[mode]})
+export default function(user: APIUser, mode: number) {
+    return `Player ${user.nickname} (${Util.profileModes[mode]})
 Rank: #${user.rank.total} (${user.country} #${user.rank.country})
 Playcount: ${user.playcount} (Lv${Math.floor(user.level)})
 PP: ${Math.round(user.pp)}
