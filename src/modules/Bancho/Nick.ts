@@ -9,7 +9,7 @@ export default class BanchoNick extends Command {
                 return ctx.reply("Не указан ник!");
             try {
                 let user = await self.module.bot.api.bancho.getUser(args.string.join(" "));
-                await self.module.bot.database.servers.bancho.setNickname(ctx.senderId, user.id, args.string.join(" "));
+                await self.module.bot.database.servers.bancho.setNickname(ctx.senderId, user.id, user.nickname);
                 await self.module.bot.database.servers.bancho.updateInfo(user);
                 ctx.reply(`[Server: ${self.module.name}]\nУстановлен ник: ${args.string.join(" ")}`);
             } catch(err) {
