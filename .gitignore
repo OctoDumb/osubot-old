@@ -1,6 +1,7 @@
 /build
 /node_modules
 osu.db
+osu.db-journal
 config.json
 package-lock.json
 news_forbidden.json
