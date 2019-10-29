@@ -9,6 +9,7 @@ interface ICommandArgs {
     combo: number;
     acc: number;
     miss: number;
+    place: number;
 }
 
 enum BeatmapStatus {
@@ -73,7 +74,7 @@ class HitCounts implements IHits {
             case 2:
                 return 0;
             case 3: 
-                return 0;
+                return this.geki + this.katu + this[300] + this[100] + this[50] + this.miss;
             default:
                 return this[300] + this[100] + this[50] + this.miss;
         }
@@ -82,7 +83,11 @@ class HitCounts implements IHits {
     toString(): string {
         switch(this.mode) {
             case 0:
+            case 1:
                 return `${this[300]}/${this[100]}/${this[50]}/${this.miss}`;
+
+            case 3:
+                return `${this.geki}/${this[300]}/${this.katu}/${this[100]}/${this[50]}/${this.miss}`;
 
             default:
                 return '';
@@ -128,6 +133,7 @@ interface APIUser {
 interface APITopScore {
     api: IAPI;
     beatmapId: number;
+    score: number;
     combo: number;
     counts: HitCounts;
     mods: Mods;

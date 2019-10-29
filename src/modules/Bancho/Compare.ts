@@ -11,7 +11,7 @@ export default class BanchoCompare extends Command {
                 dbUser = await self.module.bot.database.servers.bancho.getUser(ctx.replyMessage.senderId);
             if(ctx.hasForwards)
                 dbUser = await self.module.bot.database.servers.bancho.getUser(ctx.forwards[0].senderId);
-            if(args[0])
+            if(args.string[0])
                 dbUser.nickname = args.string.join(" ");
             if(!dbUser.nickname)
                 return ctx.reply("Не указан ник!");
@@ -23,11 +23,10 @@ export default class BanchoCompare extends Command {
                 let map = await self.module.bot.api.bancho.getBeatmap(chat.map.id.map, dbUser.mode || 0, args.mods.length == 0 ? undefined : new Mods(args.mods).sum());
                 let cover = await self.module.bot.database.covers.getCover(map.id.set);
                 let calc = new Calculator(map, score.mods);
-                let pp = calc.calculate(score);
                 try {
                     switch(dbUser.mode || 0) {
                         case 0: {
-                            ctx.reply(self.module.bot.templates.Compare(score, map, pp), {
+                            ctx.reply(self.module.bot.templates.Compare(score, map, calc), {
                                 attachment: cover
                             });
                         }

@@ -101,6 +101,10 @@ class TaikoStats implements ICalcStats {
         this.od = Math.max(0, Math.min(10, this.od));
     }
 
+    toString(): string {
+        return `AR:${Util.round(this.ar, 2)} CS:${Util.round(this.cs, 2)} OD:${Util.round(this.od, 2)} HP:${Util.round(this.hp, 2)}`;
+    }
+
     hitWindow(): number {
         return Math.floor(50 + (20 - 50) * this.od / 10) - 0.5;
     }
@@ -119,7 +123,24 @@ class CatchStats implements ICalcStats {
     }
 
     modify(mods: Mods) {
-        //
+        if(mods.has("DoubleTime")) {
+            let ms = 0;
+            if(this.ar > 5)
+                ms = 200 + (11 - this.ar) * 100;
+            else
+                ms = 800 + (5 - this.ar) * 80;
+
+            if(ms < 300)
+                this.ar = 11;
+            else if(ms < 1200)
+                this.ar = Math.round((11 - (ms - 300) / 150) * 100) / 100;
+            else
+                this.ar = Math.round((5 - (ms - 1200) / 120) * 100) / 100;
+        }
+    }
+
+    toString(): string {
+        return `AR:${Util.round(this.ar, 2)} CS:${Util.round(this.cs, 2)} OD:${Util.round(this.od, 2)} HP:${Util.round(this.hp, 2)}`;
     }
 }
 
@@ -136,7 +157,18 @@ class ManiaStats implements ICalcStats {
     }
 
     modify(mods: Mods) {
-        //
+        if(mods.has("Easy")) {
+            this.od *= 0.5;
+            this.hp *= 0.5;
+        }
+    }
+
+    toString(): string {
+        return `Keys:${this.cs} OD:${this.od} HP:${this.hp}`;
+    }
+
+    hitWindow(): number {
+        return 34 + 3 * (Math.min(10, Math.max(0, 10 - this.od)));
     }
 }
 

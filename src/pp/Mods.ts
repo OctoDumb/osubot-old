@@ -105,7 +105,7 @@ type Mod = "Nomod" | "NoFail" | "Easy" | "TouchDevice" | "Hidden" | "HardRock" |
 
 export default class Mods {
     mods: number[];
-    constructor(m: number | string, string: Boolean = false) {
+    constructor(m: number | string) {
         this.mods = typeof m == "string" ? this.fromString(m) : this.parse(m);
     }
 
@@ -140,7 +140,11 @@ export default class Mods {
             tempMods -= ModsBitwise.DoubleTime;
         if(this.sum() & ModsBitwise.Perfect)
 			tempMods -= ModsBitwise.SuddenDeath;
-        return this.parse(tempMods).map(mod => ModsAcronyms[ModsBitwise[mod]]).join("");
+		let str = this.parse(tempMods).map(mod => ModsAcronyms[ModsBitwise[mod]]).join("")
+		if(str.length == 0)
+			return '';
+		else
+			return '+' + str;
 	}
 	
 	diff() {

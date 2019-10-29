@@ -10,7 +10,7 @@ export default class BanchoRecent extends Command {
                 dbUser = await self.module.bot.database.servers.bancho.getUser(ctx.replyMessage.senderId);
             if(ctx.hasForwards)
                 dbUser = await self.module.bot.database.servers.bancho.getUser(ctx.forwards[0].senderId);
-            if(args[0])
+            if(args.string[0])
                 dbUser.nickname = args.string.join(" ");
             if(!dbUser.nickname)
                 return ctx.reply("Не указан ник!");
@@ -20,8 +20,7 @@ export default class BanchoRecent extends Command {
                 let map = await self.module.bot.api.bancho.getBeatmap(recent.beatmapId, recent.mode, recent.mods.diff());
                 let cover = await self.module.bot.database.covers.getCover(map.id.set);
                 let calc = new Calculator(map, recent.mods);
-                let pp = calc.calculate(recent);
-                ctx.reply(`[Server: ${self.module.name}]\n${self.module.bot.templates.RecentScore(recent, map, pp)}`, {
+                ctx.reply(`[Server: ${self.module.name}]\n${self.module.bot.templates.RecentScore(recent, map, calc)}`, {
                     attachment: cover
                 });
                 self.module.bot.maps.setMap(ctx.peerId, map);

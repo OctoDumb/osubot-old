@@ -10,7 +10,7 @@ export default class BanchoUser extends Command {
                 dbUser = await self.module.bot.database.servers.bancho.getUser(ctx.replyMessage.senderId);
             if(ctx.hasForwards)
                 dbUser = await self.module.bot.database.servers.bancho.getUser(ctx.forwards[0].senderId);
-            if(args[0])
+            if(args.string[0])
                 dbUser.nickname = args.string.join(" ");
             if(!dbUser.nickname)
                 return ctx.reply("Не указан ник!");

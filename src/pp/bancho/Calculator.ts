@@ -3,6 +3,7 @@ import Mods from '../Mods';
 import { APITopScore, APIRecentScore, APIBeatmap, HitCounts, APIScore } from '../../Types';
 import { ICalcStats } from '../Stats';
 import Util from '../../Util';
+import { Replay } from '../../Replay';
 
 interface IPP {
     pp: number,
@@ -19,23 +20,27 @@ class BanchoPP implements ICalc {
         this.map = map;
         this.mods = mods;
         this.stats = map.stats;
+        if(mods.has("DoubleTime"))
+            this.speedMultiplier *= 1.5;
+        if(mods.has("HalfTime"))
+            this.speedMultiplier *= 0.75;
     }
 
-    calculate(score: APITopScore | APIRecentScore | APIScore): IPP {
+    calculate(score: APITopScore | APIRecentScore | APIScore | Replay): IPP {
         if(this.mods.has("Relax") || this.mods.has("Relax2") || this.mods.has("Autoplay"))
             return {pp: 0, fc: 0, ss: 0};
         
-        return this.PP(score).value
+        return this.PP(score).value;
     }
 
-    PP(score: APITopScore | APIRecentScore | APIScore) {
+    PP(score: APITopScore | APIRecentScore | APIScore | Replay) {
         switch(score.mode) {
             case 1:
                 return new BanchoTaiko(this.map, score);
             case 2:
-                return new BanchoStd(this.map, score);
+                return new BanchoCatch(this.map, score);
             case 3:
-                return new BanchoStd(this.map, score);
+                return new BanchoMania(this.map, score);
             default:
                 return new BanchoStd(this.map, score);
         }
@@ -46,7 +51,7 @@ class BanchoStd {
     map: APIBeatmap;
     mods: Mods;
     value: IPP;
-    constructor(map: APIBeatmap, score: APITopScore | APIRecentScore | APIScore) {
+    constructor(map: APIBeatmap, score: APITopScore | APIRecentScore | APIScore | Replay) {
         this.map = map;
         this.mods = score.mods;
 
@@ -199,7 +204,7 @@ class BanchoTaiko {
     map: APIBeatmap;
     mods: Mods;
     value: IPP;
-    constructor(map: APIBeatmap, score: APITopScore | APIRecentScore | APIScore) {
+    constructor(map: APIBeatmap, score: APITopScore | APIRecentScore | APIScore | Replay) {
         this.map = map;
         this.mods = score.mods;
 
@@ -273,6 +278,126 @@ class BanchoTaiko {
         accValue *= Math.min(1.15, Math.pow(hits / 1500, 0.3));
 
         return accValue;
+    }
+}
+
+class BanchoCatch {
+    map: APIBeatmap;
+    mods: Mods;
+    value: IPP;
+    constructor(map: APIBeatmap, score: APITopScore | APIRecentScore | APIScore | Replay) {
+        this.map = map;
+        this.mods = score.mods;
+
+        this.value = {
+            pp: this.totalValue(map.diff.stars, score.accuracy(), score.combo, score.counts.miss),
+            fc: this.totalValue(map.diff.stars, score.accuracy(), map.combo, 0),
+            ss: this.totalValue(map.diff.stars, 1, map.combo, 0)
+        }
+    }
+
+    totalValue(stars: number, acc: number, combo: number, miss: number) {
+        let pp = Math.pow(((5 * stars / 0.0049) - 4), 2) / 1e5;
+        let lengthBonus = 0.95 + 0.4 * Math.min(1, combo / 3e3);
+        if(combo > 3e3)
+            lengthBonus += Math.log10(combo / 3e3) * 0.5;
+
+        pp *= lengthBonus;
+        pp *= Math.pow(0.97, miss);
+        pp *= Math.min(Math.pow(combo, 0.8) / Math.pow(this.map.combo, 0.8), 1);
+
+        if(this.map.stats.ar > 9)
+            pp *= 1 + 0.1 * (this.map.stats.ar - 9)
+        else if(this.map.stats.ar < 8)
+            pp *= 1 + 0.025 * (8 - this.map.stats.ar);
+
+        if(this.mods.has("Hidden"))
+            pp *= 1.05 + 0.075 * (10 - Math.min(10, this.map.stats.ar));
+        if(this.mods.has("Flashlight"))
+            pp *= 1.35 * lengthBonus;
+
+        pp *= Math.pow(acc, 5.5);
+
+        if(this.mods.has("NoFail"))
+            pp *= 0.9;
+        if(this.mods.has("SpunOut"))
+            pp *= 0.95;
+
+        return pp;
+    }
+}
+
+class BanchoMania {
+    map: APIBeatmap;
+    mods: Mods;
+    value: IPP;
+    constructor(map: APIBeatmap, score: APITopScore | APIRecentScore | APIScore | Replay) {
+        this.map = map;
+        this.mods = score.mods;
+
+        let score_mul = 1;
+        if(this.mods.has("Easy"))
+            score_mul *= 0.5;
+        if(this.mods.has("NoFail"))
+            score_mul *= 0.5;
+        if(this.mods.has("HalfTime"))
+            score_mul *= 0.5;
+
+        let multiplier = 0.8;
+        if(this.mods.has("NoFail"))
+            multiplier *= 0.9;
+        if(this.mods.has("Easy"))
+            multiplier *= 0.5;
+
+        let str1 = this.strainValue(score_mul, map.diff.stars, score.score, score.counts.totalHits());
+        let acc1 = this.accValue(map.stats.hitWindow(), str1, score.score, score_mul);
+
+        let pp = Math.pow(
+            Math.pow(str1, 1.1) +
+            Math.pow(acc1, 1.1),
+            1.0 / 1.1
+        ) * multiplier;
+
+        let str2 = this.strainValue(score_mul, map.diff.stars, 1e6, score.counts.totalHits());
+        let acc2 = this.accValue(map.stats.hitWindow(), str1, 1e6, score_mul);
+
+        let ss = Math.pow(
+            Math.pow(str2, 1.1) +
+            Math.pow(acc2, 1.1),
+            1.0 / 1.1
+        ) * multiplier;
+
+        this.value = {
+            pp,
+            fc: pp,
+            ss
+        }
+    }
+
+    strainValue(mul: number, strain: number, score: number, hits: number) {
+        score *= mul;
+        let strainValue = Math.pow(5 * Math.max(1, strain / 0.2) - 4, 2.2) / 135;
+        strainValue *= 1 + 0.1 * Math.min(1, hits / 1500);
+
+        if(score <= 5e5)
+            strainValue = 0;
+        else if(score <= 6e5)
+            strainValue *= (score - 5e5) / 1e5 * 0.3;
+        else if(score <= 7e5)
+            strainValue *= 0.3 + (score - 6e5) / 1e5 * 0.25;
+        else if(score <= 8e5)
+            strainValue *= 0.55 + (score - 7e5) / 1e5 * 0.2;
+        else if(score <= 9e5)
+            strainValue *= 0.75 + (score - 8e5) / 1e5 * 0.15;
+        else
+            strainValue *= 0.9 + (score - 9e5) / 1e5 * 0.1;
+
+        return strainValue;
+    }
+
+    accValue(hitWindow: number, strainValue: number, score: number, mul: number) {
+        score *= mul;
+        return Math.max(0, 0.2 - ((hitWindow - 34) * 0.006667)) * strainValue * Math.pow((Math.max(0, (score - 960000)) / 4e4), 1.1);
     }
 }
 

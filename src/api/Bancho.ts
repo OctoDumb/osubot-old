@@ -39,6 +39,7 @@ class BanchoUser implements APIUser {
 class BanchoTopScore implements APITopScore {
     api: IAPI;
     beatmapId: number;
+    score: number;
     combo: number;
     counts: HitCounts;
     mods: Mods;
@@ -48,6 +49,7 @@ class BanchoTopScore implements APITopScore {
     constructor(data: any, mode: number, api: IAPI) {
         this.api = api;
         this.beatmapId = Number(data.beatmap_id);
+        this.score = Number(data.score);
         this.combo = Number(data.maxcombo);
         this.counts = new HitCounts({
             300: Number(data.count300),
