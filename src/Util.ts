@@ -33,6 +33,7 @@ export default {
             return '0' + String(num);
     },
     formatBeatmapLength(length: number): string {
+        length = Math.round(length);
         return `${this.fixNumberLength(Math.floor(length / 60))}:${this.fixNumberLength(length % 60)}`;
     },
     accuracy(counts: HitCounts): number {
@@ -53,33 +54,29 @@ export default {
             mods: "",
             combo: 0,
             miss: 0,
-            acc: 0
+            acc: 0,
+            place: 0
         };
 
-        args.forEach((arg, i) => {
+        for(let i = args.length - 1; i > 0; i++) {
+            let arg = args[i];
             if(arg.startsWith("+")) {
                 iArg.mods = arg.slice(1);
                 args.splice(i, 1);
-                return;
-            }
-
-            if(arg.endsWith("x")) {
+            } else if(arg.endsWith("x")) {
                 iArg.combo = Number(arg.slice(0, -1));
                 args.splice(i, 1);
-                return;
-            }
-
-            if(arg.endsWith("m")) {
+            } else if(arg.endsWith("m")) {
                 iArg.miss = Number(arg.slice(0, -1));
                 args.splice(i, 1);
-                return;
-            }
-
-            if(arg.endsWith("%")) {
+            } else if(arg.endsWith("%")) {
                 iArg.acc = Number(arg.slice(0, -1));
                 args.splice(i, 1);
+            } else if(arg.startsWith("\\")) {
+                iArg.place = Number(arg.slice(1));
+                args.splice(i, 1);
             }
-        });
+        }
 
         iArg.string = args;
 
@@ -134,5 +131,13 @@ export default {
         
             return hits;
         }
+    },
+    formatCombo(combo: number, full: number) {
+        if(!full)
+            return `${combo}x`;
+        return `${combo}x/${full}x`;
+    },
+    async sleep(ms: number) {
+        return new Promise(r => setTimeout(r, ms));
     }
 };
