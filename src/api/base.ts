@@ -1,5 +1,5 @@
 import * as axios from 'axios';
-import { APIUser, APITopScore, APIBeatmap, APIRecentScore } from '../Types';
+import { APIUser, APITopScore, APIBeatmap, APIRecentScore, APIScore } from '../Types';
 
 export default interface IAPI {
     token?: String,
@@ -7,6 +7,6 @@ export default interface IAPI {
     getUser(nickname: string, mode?: number): Promise<APIUser>,
     getUserTop(nickname: string, mode?: number, limit?: number): Promise<APITopScore[]>,
     getUserRecent(nickname: string, mode?: number): Promise<APIRecentScore>,
-    getScore?(nickname: string, beatmapId: number, mode?: number, mods?: number),
+    getScore?(nickname: string, beatmapId: number, mode?: number, mods?: number): Promise<APIScore>,
     getBeatmap?(id: number | string, mode?: number, mods?: number): Promise<APIBeatmap>
 }
