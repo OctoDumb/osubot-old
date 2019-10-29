@@ -58,8 +58,9 @@ export default {
             place: 0
         };
 
-        for(let i = args.length - 1; i > 0; i++) {
+        for(let i = args.length - 1; i > -1; i--) {
             let arg = args[i];
+            console.log(arg);
             if(arg.startsWith("+")) {
                 iArg.mods = arg.slice(1);
                 args.splice(i, 1);
@@ -73,6 +74,7 @@ export default {
                 iArg.acc = Number(arg.slice(0, -1));
                 args.splice(i, 1);
             } else if(arg.startsWith("\\")) {
+                console.log(arg.length);
                 iArg.place = Number(arg.slice(1));
                 args.splice(i, 1);
             }
