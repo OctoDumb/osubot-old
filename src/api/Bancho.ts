@@ -4,7 +4,7 @@ import qs from 'querystring';
 import { APIUser, APITopScore, APIBeatmap, APIRecentScore, HitCounts, APIScore } from '../Types';
 import Mods from '../pp/Mods';
 import Util from '../Util';
-import { isNull } from 'util';
+import { isNullOrUndefined } from 'util';
 
 class BanchoUser implements APIUser {
     api: IAPI;
@@ -192,7 +192,7 @@ export default class BanchoAPI implements IAPI {
         };
         try {
             let { data } = await this.api.get(`/get_scores?${qs.stringify(opts)}`);
-            if(!isNull(mods))
+            if(!isNullOrUndefined(mods))
                 data = data.filter(p => p.enabled_mods == mods);
             if(!data[0])
                 throw "No scores found";
