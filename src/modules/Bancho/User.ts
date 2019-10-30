@@ -1,6 +1,5 @@
 import { Command } from "../../Command";
 import { Module } from "../../Module";
-// import Util from '../../Util';
 
 export default class BanchoUser extends Command {
     constructor(module: Module) {
