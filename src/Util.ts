@@ -1,5 +1,7 @@
 import { IBeatmapStats, HitCounts, ICommandArgs, IHits } from "./Types";
 import { ICalcStats, OsuStats, TaikoStats, CatchStats, ManiaStats } from "./pp/Stats";
+import { MessageContext } from "vk-io";
+import Database from "./Database";
 
 export default {
     hash: function (length: number = 10): String {
@@ -134,7 +136,7 @@ export default {
             return hits;
         }
     },
-    formatCombo(combo: number, full: number) {
+    formatCombo(combo: number, full: number): string {
         if(!full)
             return `${combo}x`;
         return `${combo}x/${full}x`;
