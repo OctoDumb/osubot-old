@@ -12,6 +12,7 @@ import News from './News';
 import Admin from './modules/Admin';
 import Main from './modules/Main';
 import BanchoPP from './pp/bancho';
+import Gatari from './modules/Gatari';
 
 interface IBotConfig {
     vk: {
@@ -45,6 +46,7 @@ export default class Bot {
 
         this.registerModule([
             new Bancho(this),
+            new Gatari(this),
             new Admin(this),
             new Main(this)
         ]);
