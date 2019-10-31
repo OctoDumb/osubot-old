@@ -21,8 +21,11 @@ export default class BanchoTop extends Command {
                 if(args.place) {
                     let score = (await self.module.bot.api.bancho.getUserTop(dbUser.nickname, dbUser.mode || 0, args.place))[args.place - 1];
                     let map = await self.module.bot.api.bancho.getBeatmap(score.beatmapId, dbUser.mode || 0, score.mods.diff());
+                    let cover = await self.module.bot.database.covers.getCover(map.id.set);
                     let calc = new BanchoPP(map, score.mods);
-                    ctx.reply(`[Server: ${self.module.name}]\n${self.module.bot.templates.TopSingle(score, map, user, args.place, calc, self.module.link)}`);
+                    ctx.reply(`[Server: ${self.module.name}]\n${self.module.bot.templates.TopSingle(score, map, user, args.place, calc, self.module.link)}`, {
+                        attachment: cover
+                    });
                 } else {
                     let top = await self.module.bot.api.bancho.getUserTop(dbUser.nickname, dbUser.mode || 0, 3);
                     let maps = await Promise.all(top.map(s => self.module.bot.api.bancho.getBeatmap(s.beatmapId, dbUser.mode || 0, s.mods.diff())));
