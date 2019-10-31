@@ -28,7 +28,7 @@ export class Module implements ICommandsModule {
             this.commands.push(command);
     }
 
-    checkContext(ctx: MessageContext) {
+    checkContext(ctx: MessageContext): Command {
         if(!ctx.hasText)
             return null;
         var args = ctx.text.split(" ");
@@ -36,10 +36,17 @@ export class Module implements ICommandsModule {
             return null;
         var prefix = args.shift();
         var command = args.shift();
-        if(prefix != this.prefix || !this.findCommand(command))
+        if(!this.checkPrefix(prefix) || !this.findCommand(command))
             return null;
         else
             return this.findCommand(command);
+    }
+
+    checkPrefix(prefix: string): boolean {
+        if(Array.isArray(this.prefix))
+            return this.prefix.includes(prefix);
+        else
+            return this.prefix == prefix;
     }
 
     findCommand(command: String): Command | null {

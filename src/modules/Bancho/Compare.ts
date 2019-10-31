@@ -11,8 +11,8 @@ export default class BanchoCompare extends Command {
                 dbUser.nickname = (await self.module.bot.database.servers.bancho.getUser(ctx.replyMessage.senderId)).nickname;
             if(ctx.hasForwards)
                 dbUser.nickname = (await self.module.bot.database.servers.bancho.getUser(ctx.forwards[0].senderId)).nickname;
-            if(args.string[0])
-                dbUser.nickname = args.string.join(" ");
+            if(args.nickname[0])
+                dbUser.nickname = args.nickname.join(" ");
             if(!dbUser.nickname)
                 return ctx.reply("Не указан ник!");
             try {

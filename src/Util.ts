@@ -1,7 +1,5 @@
 import { IBeatmapStats, HitCounts, ICommandArgs, IHits } from "./Types";
 import { ICalcStats, OsuStats, TaikoStats, CatchStats, ManiaStats } from "./pp/Stats";
-import { MessageContext } from "vk-io";
-import Database from "./Database";
 
 export default {
     hash: function (length: number = 10): String {
@@ -52,7 +50,9 @@ export default {
     },
     parseArgs(args: string[]): ICommandArgs {
         let iArg: ICommandArgs = {
+            full: args,
             string: [],
+            nickname: [],
             mods: "",
             combo: 0,
             miss: 0,
@@ -62,27 +62,23 @@ export default {
 
         for(let i = args.length - 1; i > -1; i--) {
             let arg = args[i];
-            console.log(arg);
             if(arg.startsWith("+")) {
                 iArg.mods = arg.slice(1);
-                args.splice(i, 1);
             } else if(arg.endsWith("x")) {
                 iArg.combo = Number(arg.slice(0, -1));
-                args.splice(i, 1);
+                iArg.nickname.push(arg);
             } else if(arg.endsWith("m")) {
                 iArg.miss = Number(arg.slice(0, -1));
-                args.splice(i, 1);
+                iArg.nickname.push(arg);
             } else if(arg.endsWith("%")) {
                 iArg.acc = Number(arg.slice(0, -1));
-                args.splice(i, 1);
             } else if(arg.startsWith("\\")) {
-                console.log(arg.length);
                 iArg.place = Number(arg.slice(1));
-                args.splice(i, 1);
+            } else {
+                iArg.string.push(arg);
+                iArg.nickname.push(arg);
             }
         }
-
-        iArg.string = args;
 
         return iArg;
     },

@@ -4,7 +4,9 @@ import { ICalcStats } from './pp/Stats';
 import Util from './Util';
 
 interface ICommandArgs {
+    full: string[];
     string: string[];
+    nickname: string[];
     mods: string;
     combo: number;
     acc: number;
