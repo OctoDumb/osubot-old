@@ -36,7 +36,7 @@ export class Module implements ICommandsModule {
             return null;
         var prefix = args.shift();
         var command = args.shift();
-        if(!this.checkPrefix(prefix) || !this.findCommand(command))
+        if(!this.checkPrefix(prefix.toLowerCase()) || !this.findCommand(command))
             return null;
         else
             return this.findCommand(command);
