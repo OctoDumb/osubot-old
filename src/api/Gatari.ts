@@ -155,7 +155,7 @@ export default class GatariAPI implements IAPI {
         }
     }
 
-    async getUserTop(nickname: string, mode: number = 0, limit: number = 3) {
+    async getUserTop(nickname: string, mode: number = 0, limit: number = 3): Promise<APITopScore[]> {
         try {
             let user = await this.getUser(nickname);
             let { data } = await this.api.get(`/user/scores/best?${qs.stringify({id: user.id, mode: mode, p: 1, l: limit})}`);
@@ -167,7 +167,7 @@ export default class GatariAPI implements IAPI {
         }
     }
 
-    async getUserRecent(nickname: string, mode: number = 0) {
+    async getUserRecent(nickname: string, mode: number = 0): Promise<APIRecentScore> {
         try {
             let user = await this.getUser(nickname);
             let { data } = await this.api.get(`/user/scores/recent?${qs.stringify({id: user.id, mode: mode, p: 1, l: 1, f: 1})}`);
@@ -179,7 +179,7 @@ export default class GatariAPI implements IAPI {
         }
     }
 
-    async getScore(nickname: string, beatmapId: number, mode: number = 0) {
+    async getScore(nickname: string, beatmapId: number, mode: number = 0): Promise<APIScore> {
         if(mode > 1)
             throw "Mode is not supported";
         try {
