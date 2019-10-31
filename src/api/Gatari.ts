@@ -183,13 +183,13 @@ export default class GatariAPI implements IAPI {
         if(mode > 1)
             throw "Mode is not supported";
         try {
-            let { data } = await this.api.get(`/beatmap/user/score?${qs.stringify({b: beatmapId, u: nickname, mode: mode})}`);
+            let user = await this.getUser(nickname);
+            let { data } = await this.api.get(`/beatmap/user/score?${qs.stringify({b: beatmapId, u: user.id, mode: mode})}`);
             if(!data.score)
                 throw "No score";
             return new GatariScore(data.score, beatmapId, this);
         } catch (e) {
             throw e;
         }
-        return null;
     }
 }
