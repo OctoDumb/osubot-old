@@ -1,4 +1,4 @@
-import { IBeatmapStats, HitCounts, ICommandArgs, IHits } from "./Types";
+import { IBeatmapStats, HitCounts, ICommandArgs, IHits, PPArgs, CalcArgs } from "./Types";
 import { ICalcStats, OsuStats, TaikoStats, CatchStats, ManiaStats } from "./pp/Stats";
 
 export default {
@@ -139,5 +139,8 @@ export default {
     },
     async sleep(ms: number) {
         return new Promise(r => setTimeout(r, ms));
+    },
+    createPPArgs(args: PPArgs, mode: number) {
+        return new CalcArgs(args, mode);
     }
 };

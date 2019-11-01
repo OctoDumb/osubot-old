@@ -4,8 +4,10 @@ import TopSingle from './TopSingle';
 import RecentScore from './Recent';
 import Compare from './Compare';
 import ReplayT from './Replay';
+import Beatmap from "./Beatmap";
+import PP from "./PP";
 import { Replay } from '../Replay';
-import { APIUser, APITopScore, APIBeatmap, APIRecentScore, APIScore } from '../Types';
+import { APIUser, APITopScore, APIBeatmap, APIRecentScore, APIScore, ICommandArgs } from '../Types';
 import { IPPCalculator as ICalc } from '../pp/Calculator';
 
 interface ITemplates {
@@ -15,6 +17,8 @@ interface ITemplates {
     RecentScore: (score: APIRecentScore, beatmap: APIBeatmap, calc: ICalc, link: string) => string;
     Compare: (score: APIScore, beatmap: APIBeatmap, calc: ICalc) => string;
     Replay: (replay: Replay, map: APIBeatmap, calc: ICalc) => string;
+    Beatmap: (map: APIBeatmap) => string;
+    PP: (map: APIBeatmap, args: ICommandArgs) => string;
 }
 
 var Templates: ITemplates = {
@@ -23,7 +27,9 @@ var Templates: ITemplates = {
     TopSingle,
     RecentScore,
     Compare,
-    Replay: ReplayT
+    Replay: ReplayT,
+    Beatmap,
+    PP
 }
 
 export {

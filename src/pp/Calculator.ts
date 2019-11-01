@@ -1,4 +1,4 @@
-import { APITopScore, APIBeatmap, APIRecentScore, APIScore } from '../Types';
+import { APITopScore, APIBeatmap, APIRecentScore, APIScore, CalcArgs } from '../Types';
 import { ICalcStats } from './Stats';
 import Mods from './Mods';
 import { Replay } from '../Replay';
@@ -20,8 +20,8 @@ interface IPPCalculator {
     map: APIBeatmap,
     mods: Mods,
     stats: ICalcStats,
-    calculate(score: APITopScore | APIRecentScore | APIScore | Replay): IPP,
-    PP(score: APITopScore | APIRecentScore | APIScore | Replay): ModePP
+    calculate(score: APITopScore | APIRecentScore | APIScore | Replay | CalcArgs): IPP,
+    PP(score: APITopScore | APIRecentScore | APIScore | Replay | CalcArgs): ModePP
 }
 
 export {

@@ -14,6 +14,61 @@ interface ICommandArgs {
     place: number;
 }
 
+interface PPArgs {
+    score?: number;
+    acc?: number;
+    combo?: number;
+    miss?: number;
+    hits?: number;
+    mods: Mods;
+}
+
+class CalcArgs {
+    score?: number;
+    acc?: number;
+    combo?: number;
+    counts?: HitCounts;
+    mods: Mods;
+    mode: number;
+    constructor(args: PPArgs, mode: number) {
+        this.mods = args.mods;
+        this.mode = mode;
+        switch(mode) {
+            case 0:
+            case 1:
+            case 2: {
+                this.acc = args.acc;
+                this.combo = args.combo;
+                this.counts = new HitCounts({
+                    300: args.hits - args.miss,
+                    100: 0,
+                    50: 0,
+                    miss: args.miss
+                }, mode);
+                this.mods = args.mods;
+                break;
+            }
+
+            case 3: {
+                this.counts = new HitCounts({
+                    300: args.hits,
+                    100: 0,
+                    50: 0,
+                    miss: 0,
+                    katu: 0,
+                    geki: 0
+                }, this.mode)
+                this.score = args.score;
+                break;
+            }
+        }
+    }
+
+    accuracy() {
+        return this.acc;
+    }
+}
+
 enum BeatmapStatus {
     Graveyard = -2,
     WIP = -1,
@@ -243,5 +298,7 @@ export {
     IBeatmapStars,
     IBeatmapObjects,
 
-    ICommandArgs
+    ICommandArgs,
+    PPArgs,
+    CalcArgs
 }

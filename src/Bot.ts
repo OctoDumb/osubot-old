@@ -13,6 +13,7 @@ import Admin from './modules/Admin';
 import Main from './modules/Main';
 import BanchoPP from './pp/bancho';
 import Gatari from './modules/Gatari';
+import IsMap from './MapRegexp';
 
 interface IBotConfig {
     vk: {
@@ -65,6 +66,7 @@ export default class Bot {
             if(ctx.isOutbox || ctx.isFromGroup || ctx.isEvent)
                 return;
             let replayDoc = this.checkReplay(ctx);
+            let hasMap = IsMap(ctx.text);
             if(replayDoc) {
                 let { data: file } = await axios.default.get(replayDoc.url, {
                     responseType: "arraybuffer"
@@ -75,11 +77,18 @@ export default class Bot {
                 let map = await this.api.bancho.getBeatmap(mapId, replay.mode, replay.mods.diff());
                 let calc = new BanchoPP(map, replay.mods);
                 ctx.reply(this.templates.Replay(replay, map, calc));
+            } else if(hasMap) {
+                this.maps.sendMap(hasMap, ctx);
             } else {
-                for(let module of this.modules) {
-                    let check: Command = module.checkContext(ctx);
-                    if(check) {
-                        check.process(ctx);
+                if(!ctx.hasText) return;
+                if(ctx.text.toLowerCase().startsWith("map ")) {
+                    this.maps.stats(ctx);
+                } else {
+                    for(let module of this.modules) {
+                        let check: Command = module.checkContext(ctx);
+                        if(check) {
+                            check.process(ctx);
+                        }
                     }
                 }
             }

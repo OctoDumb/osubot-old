@@ -35,6 +35,39 @@ enum ModsBitwise {
 };
 
 enum ModsAcronyms {
+	"NF" = "NoFail",
+	"EZ" = "Easy",
+	"TD" = "TouchDevice",
+	"HD" = "Hidden",
+	"HR" = "HardRock",
+	"SD" = "SuddenDeath",
+	"DT" = "DoubleTime",
+	"RX" = "Relax",
+	"HT" = "HalfTime",
+	"NC" = "Nightcore",
+	"FL" = "Flashlight",
+	"AT" = "Autoplay",
+	"SO" = "SpunOut",
+	"AP" = "Relax2",
+	"PF" = "Perfect",
+	"K4" = "Key4",
+	"K5" = "Key5",
+	"K6" = "Key6",
+	"K7" = "Key7",
+	"K8" = "Key8",
+	"FI" = "FadeIn",
+	"RN" = "Random",
+	"CN" = "Cinema",
+	"TP" = "Target",
+	"K9" = "Key9",
+	"KX" = "Key10",
+	"K1" = "Key1",
+	"K3" = "Key3",
+	"K2" = "Key2",
+	"MR" = "Mirror"
+};
+
+enum ModsAcronyms2 {
     NoFail = "NF",
 	Easy = "EZ",
 	TouchDevice = "TD",
@@ -123,7 +156,7 @@ export default class Mods {
         let buf = "";
         let m = 0;
         while(offset < string.length) {
-            buf += string[offset];
+			buf += string[offset];
             if(ModsAcronyms[buf.toUpperCase().slice(-2)]) {
                 if(!(m & AcrToNum[buf.toUpperCase().slice(-2)]))
                     m += AcrToNum[buf.toUpperCase().slice(-2)];
@@ -140,7 +173,8 @@ export default class Mods {
             tempMods -= ModsBitwise.DoubleTime;
         if(this.sum() & ModsBitwise.Perfect)
 			tempMods -= ModsBitwise.SuddenDeath;
-		let str = this.parse(tempMods).map(mod => ModsAcronyms[ModsBitwise[mod]]).join("")
+		let p = this.parse(tempMods);
+		let str = p.map(mod => ModsAcronyms2[ModsBitwise[mod]]).join("")
 		if(str.length == 0)
 			return '';
 		else

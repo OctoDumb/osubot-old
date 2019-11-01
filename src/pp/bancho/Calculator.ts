@@ -1,6 +1,6 @@
 import { IPPCalculator as ICalc } from '../Calculator';
 import Mods from '../Mods';
-import { APITopScore, APIRecentScore, APIBeatmap, HitCounts, APIScore } from '../../Types';
+import { APITopScore, APIRecentScore, APIBeatmap, HitCounts, APIScore, CalcArgs } from '../../Types';
 import { ICalcStats } from '../Stats';
 import Util from '../../Util';
 import { Replay } from '../../Replay';
@@ -26,14 +26,14 @@ class BanchoPP implements ICalc {
             this.speedMultiplier *= 0.75;
     }
 
-    calculate(score: APITopScore | APIRecentScore | APIScore | Replay): IPP {
+    calculate(score: APITopScore | APIRecentScore | APIScore | Replay | CalcArgs): IPP {
         if(this.mods.has("Relax") || this.mods.has("Relax2") || this.mods.has("Autoplay"))
             return {pp: 0, fc: 0, ss: 0};
         
         return this.PP(score).value;
     }
 
-    PP(score: APITopScore | APIRecentScore | APIScore | Replay) {
+    PP(score: APITopScore | APIRecentScore | APIScore | Replay | CalcArgs) {
         switch(score.mode) {
             case 1:
                 return new BanchoTaiko(this.map, score);
@@ -51,7 +51,7 @@ class BanchoStd {
     map: APIBeatmap;
     mods: Mods;
     value: IPP;
-    constructor(map: APIBeatmap, score: APITopScore | APIRecentScore | APIScore | Replay) {
+    constructor(map: APIBeatmap, score: APITopScore | APIRecentScore | APIScore | Replay | CalcArgs) {
         this.map = map;
         this.mods = score.mods;
 
@@ -204,7 +204,7 @@ class BanchoTaiko {
     map: APIBeatmap;
     mods: Mods;
     value: IPP;
-    constructor(map: APIBeatmap, score: APITopScore | APIRecentScore | APIScore | Replay) {
+    constructor(map: APIBeatmap, score: APITopScore | APIRecentScore | APIScore | Replay | CalcArgs) {
         this.map = map;
         this.mods = score.mods;
 
@@ -217,7 +217,7 @@ class BanchoTaiko {
 
         let totalHits = score.counts.totalHits()
 
-        let str1 = this.strainValue(this.map.diff.stars, totalHits, score.accuracy(), score.counts.miss, map.combo);
+        let str1 = this.strainValue(totalHits, score.accuracy(), score.counts.miss, map.combo);
         let acc1 = this.accValue(score.accuracy(), totalHits);
 
         let pp = Math.pow(
@@ -226,7 +226,7 @@ class BanchoTaiko {
             1.0 / 1.1
         ) * multiplier;
 
-        let str2 = this.strainValue(this.map.diff.stars, map.combo, score.accuracy(), 0, map.combo);
+        let str2 = this.strainValue(map.combo, score.accuracy(), 0, map.combo);
         let acc2 = this.accValue(score.accuracy(), totalHits);
 
         let fc = Math.pow(
@@ -235,7 +235,7 @@ class BanchoTaiko {
             1.0 / 1.1
         ) * multiplier;
 
-        let str3 = this.strainValue(this.map.diff.stars, map.combo, 1, 0, map.combo);
+        let str3 = this.strainValue(map.combo, 1, 0, map.combo);
         let acc3 = this.accValue(score.accuracy(), totalHits);
 
         let ss = Math.pow(
@@ -251,8 +251,8 @@ class BanchoTaiko {
         };
     }
 
-    strainValue(strain: number, hits: number, acc: number, miss: number, combo: number): number {
-        let strainValue = Math.pow(5 * Math.max(1, strain / 0.0075) - 4, 2) / 1e5;
+    strainValue(hits: number, acc: number, miss: number, combo: number): number {
+        let strainValue = Math.pow(5 * Math.max(1, this.map.diff.stars / 0.0075) - 4, 2) / 1e5;
 
         let lengthBonus = 1 + 0.1 * Math.min(1, hits / 1500);
         strainValue *= lengthBonus;
@@ -285,7 +285,7 @@ class BanchoCatch {
     map: APIBeatmap;
     mods: Mods;
     value: IPP;
-    constructor(map: APIBeatmap, score: APITopScore | APIRecentScore | APIScore | Replay) {
+    constructor(map: APIBeatmap, score: APITopScore | APIRecentScore | APIScore | Replay | CalcArgs) {
         this.map = map;
         this.mods = score.mods;
 
@@ -331,7 +331,7 @@ class BanchoMania {
     map: APIBeatmap;
     mods: Mods;
     value: IPP;
-    constructor(map: APIBeatmap, score: APITopScore | APIRecentScore | APIScore | Replay) {
+    constructor(map: APIBeatmap, score: APITopScore | APIRecentScore | APIScore | Replay | CalcArgs) {
         this.map = map;
         this.mods = score.mods;
 

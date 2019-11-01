@@ -1,6 +1,8 @@
 import Bot from "./Bot";
 import { MessageContext } from "vk-io";
-import { APIBeatmap } from "./Types";
+import { APIBeatmap, ICommandArgs } from "./Types";
+import Util from "./Util";
+import Mods from "./pp/Mods";
 
 interface Chat {
     id: number;
@@ -31,7 +33,17 @@ export default class Maps {
 
     async sendMap(beatmapId: number, ctx: MessageContext) {
         let map = await this.bot.api.bancho.getBeatmap(beatmapId);
+        ctx.reply(this.bot.templates.Beatmap(map));
         this.setMap(ctx.peerId, map);
-        ctx.reply("Карта установлена");
+    }
+
+    async stats(ctx: MessageContext) {
+        let args = Util.parseArgs(ctx.text.split(" ").splice(1))
+        let chat = this.getChat(ctx.peerId);
+        if(!chat)
+            return ctx.reply("Сначала отправьте карту!");
+        let mods = new Mods(args.mods);
+        let map = await this.bot.api.bancho.getBeatmap(chat.map.id.map, chat.map.mode, mods.diff());
+        ctx.reply(this.bot.templates.PP(map, args));
     }
 }
