@@ -26,6 +26,7 @@ export default class BanchoTop extends Command {
                     ctx.reply(`[Server: ${self.module.name}]\n${self.module.bot.templates.TopSingle(score, map, user, args.place, calc, self.module.link)}`, {
                         attachment: cover
                     });
+                    self.module.bot.maps.setMap(ctx.peerId, map);
                 } else {
                     let top = await self.module.bot.api.bancho.getUserTop(dbUser.nickname, dbUser.mode || 0, 3);
                     let maps = await Promise.all(top.map(s => self.module.bot.api.bancho.getBeatmap(s.beatmapId, dbUser.mode || 0, s.mods.diff())));
