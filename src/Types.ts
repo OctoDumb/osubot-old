@@ -265,7 +265,7 @@ class APIBeatmap {
         this.title = data.title;
         this.length = Number(data.total_length);
         this.version = data.version;
-        this.combo = Number(data.max_combo);
+        this.combo = data.mode == 1 ? this.objects.circles : Number(data.max_combo);
         this.mode = Number(data.mode);
     }
 }
