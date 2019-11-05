@@ -92,11 +92,13 @@ class DatabaseCovers {
 
     async getCover(id: Number): Promise<string> {
         let cover = await this.db.get(`SELECT * FROM covers WHERE id = ?`, [id]);
-        if(!cover)
-            cover = await this.addCover(id);
-        else
-            cover = cover.attachment;
+        if(!cover.id)
+            return this.addCover(id);
         return cover;
+    }
+
+    async removeEmpty() {
+        await this.db.run("DELETE FROM covers WHERE attachment = ?", [""]);
     }
 }
 
