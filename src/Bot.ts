@@ -14,6 +14,7 @@ import Main from './modules/Main';
 import BanchoPP from './pp/bancho';
 import Gatari from './modules/Gatari';
 import IsMap from './MapRegexp';
+import Ripple from './modules/Ripple';
 
 interface IBotConfig {
     vk: {
@@ -48,6 +49,7 @@ export default class Bot {
         this.registerModule([
             new Bancho(this),
             new Gatari(this),
+            new Ripple(this),
             new Admin(this),
             new Main(this)
         ]);
@@ -68,15 +70,21 @@ export default class Bot {
             let replayDoc = this.checkReplay(ctx);
             let hasMap = IsMap(ctx.text);
             if(replayDoc) {
-                let { data: file } = await axios.default.get(replayDoc.url, {
-                    responseType: "arraybuffer"
-                });
-                let parser = new ReplayParser(file);
-                let replay = parser.getReplay();
-                let mapId = (await this.api.bancho.getBeatmap(replay.beatmapHash)).id.map;
-                let map = await this.api.bancho.getBeatmap(mapId, replay.mode, replay.mods.diff());
-                let calc = new BanchoPP(map, replay.mods);
-                ctx.reply(this.templates.Replay(replay, map, calc));
+                try {
+                    let { data: file } = await axios.default.get(replayDoc.url, {
+                        responseType: "arraybuffer"
+                    });
+                    let parser = new ReplayParser(file);
+                    let replay = parser.getReplay();
+                    let map = await this.api.bancho.getBeatmap(replay.beatmapHash);
+                    if(replay.mods.diff()) 
+                        map = await this.api.bancho.getBeatmap(map.id.map, replay.mode, replay.mods.diff());
+                    let calc = new BanchoPP(map, replay.mods);
+                    ctx.reply(this.templates.Replay(replay, map, calc));
+                    this.maps.setMap(ctx.peerId, map);
+                } catch(e) {
+                    ctx.reply("Произошла ошибка при обработке реплея!");
+                }
             } else if(hasMap) {
                 this.maps.sendMap(hasMap, ctx);
             } else {

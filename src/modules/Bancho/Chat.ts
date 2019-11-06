@@ -61,8 +61,8 @@ export default class BanchoChat extends Command {
                     });
                     ctx.reply(`[Server: ${self.module.name}]\nТоп беседы (ID ${id}):\n${users.map((user, i) => `#${i+1} ${user.nickname} | ${Util.round(user.pp, 1)} | Ранк ${user.rank} | ${Util.round(user.acc, 2)}%`).join("\n")}`);
                 } catch(e) {
-                    console.log(e.toString());
-                    ctx.reply("Ошибка");
+                    let err = await self.module.bot.database.errors.addError("b", ctx, String(e));
+                ctx.reply(`[Server: ${self.module.name}]\n${Util.error(String(e))} (${err})`);
                 }
             }
         });

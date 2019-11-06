@@ -119,7 +119,7 @@ class DatabaseErrors {
         let check = this.getError(code);
         if(!check)
             return this.addError(prefix, ctx,error);
-        let info = `Sender: @id${ctx.senderId}; Text: ${ctx.text}`;
+        let info = `Sent by: ${ctx.senderId}; Text: ${ctx.text}`;
         if(ctx.hasReplyMessage)
             info += `; Replied to: ${ctx.replyMessage.senderId}`;
         if(ctx.hasForwards)

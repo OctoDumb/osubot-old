@@ -2,6 +2,7 @@ import { Command } from "../../Command";
 import { Module } from "../../Module";
 import Mods from "../../pp/Mods";
 import Calculator from '../../pp/bancho';
+import Util from "../../Util";
 
 export default class BanchoCompare extends Command {
     constructor(module: Module) {
@@ -27,7 +28,8 @@ export default class BanchoCompare extends Command {
                     attachment: cover
                 });
             } catch(e) {
-                console.log(e);
+                let err = await self.module.bot.database.errors.addError("b", ctx, String(e));
+                ctx.reply(`[Server: ${self.module.name}]\n${Util.error(String(e))} (${err})`);
             }
         });
     }

@@ -1,6 +1,7 @@
 import { Command } from "../../Command";
 import { Module } from "../../Module";
 import Calculator from "../../pp/bancho";
+import Util from "../../Util";
 
 export default class GatariCompare extends Command {
     constructor(module: Module) {
@@ -26,7 +27,8 @@ export default class GatariCompare extends Command {
                     attachment: cover
                 });
             } catch(e) {
-                console.log(e);
+                let err = await self.module.bot.database.errors.addError("g", ctx, String(e));
+                ctx.reply(`[Server: ${self.module.name}]\n${Util.error(String(e))} (${err})`);
             }
         });
     }

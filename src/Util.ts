@@ -1,6 +1,34 @@
 import { IBeatmapStats, HitCounts, ICommandArgs, IHits, PPArgs, CalcArgs } from "./Types";
 import { ICalcStats, OsuStats, TaikoStats, CatchStats, ManiaStats } from "./pp/Stats";
 
+interface Err {
+    e: string,
+    t: string
+}
+
+const errors: Err[] = [
+    {
+        e: "User not found",
+        t: "Игрок не найден!"
+    },
+    {
+        e: "No top scores",
+        t: "Нет топ скоров!"
+    },
+    {
+        e: "No recent scores",
+        t: "Нет последних скоров!"
+    },
+    {
+        e: "No scores found",
+        t: "Не найдено скоров!"
+    },
+    {
+        e: "Beatmap not found",
+        t: "Невозможно получить данные о карте!"
+    }
+];
+
 export default {
     hash: function (length: number = 10): String {
         let characters = "0123456789abcdef";
@@ -142,5 +170,9 @@ export default {
     },
     createPPArgs(args: PPArgs, mode: number) {
         return new CalcArgs(args, mode);
+    },
+    error(e: string) {
+        let f = errors.find(er => er.e == e);
+        return f ? f.t : "Неизвестная ошибка!";
     }
 };

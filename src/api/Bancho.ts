@@ -165,6 +165,8 @@ export default class BanchoAPI implements IAPI {
     async getUserTop(nickname: String, mode: number = 0, limit: number = 3): Promise<APITopScore[]> {
         try {
             let { data } = await this.api.get(`/get_user_best?${qs.stringify({u: nickname, m: mode, k: this.token, limit: limit})}`);
+            if(!data[0])
+                throw "No top scores";
             return data.map(s => new BanchoTopScore(s, mode, this));
         } catch(e) {
             throw e;

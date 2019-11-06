@@ -36,8 +36,9 @@ export default class GatariTop extends Command {
                     }).join("\n");
                     ctx.reply(`[Server: ${self.module.name}]\nТоп скоры игрока ${user.nickname} [${Util.profileModes[dbUser.mode || 0]}]:\n${str}`);
                 }
-            } catch(err) {
-                console.log(err);
+            } catch(e) {
+                let err = await self.module.bot.database.errors.addError("g", ctx, String(e));
+                ctx.reply(`[Server: ${self.module.name}]\n${Util.error(String(e))} (${err})`);
             }
         });
     }

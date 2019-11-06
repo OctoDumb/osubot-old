@@ -1,5 +1,6 @@
 import { Command } from "../../Command";
 import { Module } from "../../Module";
+import Util from "../../Util";
 
 export default class GatariUser extends Command {
     constructor(module: Module) {
@@ -18,8 +19,8 @@ export default class GatariUser extends Command {
                 self.module.bot.database.servers.gatari.updateInfo(user);
                 ctx.reply(`[Server: ${self.module.name}]\n${self.module.bot.templates.User(user, dbUser.mode || 0, self.module.link)}`);
             } catch (e) {
-                let error = await self.module.bot.database.errors.addError("g", ctx, String(e));
-                ctx.reply(`[Server: ${self.module.name}]\nИгрок не найден! (${error})`);
+                let err = await self.module.bot.database.errors.addError("g", ctx, String(e));
+                ctx.reply(`[Server: ${self.module.name}]\n${Util.error(String(e))} (${err})`);
             }
         });
     }

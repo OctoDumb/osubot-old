@@ -1,6 +1,7 @@
 import { Command } from "../../Command";
 import { Module } from "../../Module";
 import Calculator from '../../pp/bancho';
+import Util from "../../Util";
 
 export default class BanchoRecent extends Command {
     constructor(module: Module) {
@@ -24,7 +25,8 @@ export default class BanchoRecent extends Command {
                 });
                 self.module.bot.maps.setMap(ctx.peerId, map);
             } catch(e) {
-                ctx.reply(`Ошибка лул`);
+                let err = await self.module.bot.database.errors.addError("b", ctx, String(e));
+                ctx.reply(`[Server: ${self.module.name}]\n${Util.error(String(e))} (${err})`);
             }
         });
     }

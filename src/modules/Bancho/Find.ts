@@ -1,5 +1,6 @@
 import { Command } from "../../Command";
 import { Module } from "../../Module";
+import Util from "../../Util";
 
 export default class BanchoFind extends Command {
     constructor(module: Module) {
@@ -13,7 +14,8 @@ export default class BanchoFind extends Command {
                     return ctx.reply("Не найдено пользователей с таким ником!");
                 ctx.reply(`[Server: ${self.module.name}]\nПользователи с ником ${u.nickname}:\n${users.map(us => `https://vk.com/id${us.id}`).join("\n")}`);
             } catch(e) {
-                ctx.reply("Ошибка");
+                let err = await self.module.bot.database.errors.addError("b", ctx, String(e));
+                ctx.reply(`[Server: ${self.module.name}]\n${Util.error(String(e))} (${err})`);
             }
         });
     }

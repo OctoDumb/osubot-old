@@ -2,6 +2,7 @@ import { Module } from '../../Module';
 import Bot from '../../Bot';
 import NewsCommand from './News';
 import EvalCommand from './Eval';
+import ErrorCommand from './Error';
 
 export default class Admin extends Module {
     constructor(bot: Bot) {
@@ -11,6 +12,7 @@ export default class Admin extends Module {
 
         this.registerCommand([
             new NewsCommand(this),
+            new ErrorCommand(this),
             new EvalCommand(this)
         ]);
     }
