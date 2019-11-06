@@ -31,9 +31,9 @@ class DatabaseServer {
         }
     }
 
-    async findByNickname(nickname: String): Promise<IDatabaseUser[]> {
+    async findByUserId(id: number): Promise<IDatabaseUser[]> {
         try {
-            let users: IDatabaseUser[] = await this.db.all(`SELECT * FROM ${this.table} WHERE nickname = ? COLLATE NOCASE`, [nickname]);
+            let users: IDatabaseUser[] = await this.db.all(`SELECT * FROM ${this.table} WHERE uid = ? COLLATE NOCASE`, [id]);
             return users;
         } catch(err) {
             throw err;
