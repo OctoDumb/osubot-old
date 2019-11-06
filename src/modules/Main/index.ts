@@ -1,6 +1,7 @@
 import { Module } from '../../Module';
 import Bot from '../../Bot';
 import NewsCommand from './News';
+import HelpCommand from './Help';
 
 export default class Main extends Module {
     constructor(bot: Bot) {
@@ -9,6 +10,7 @@ export default class Main extends Module {
         this.name = "Main";
 
         this.registerCommand([
+            new HelpCommand(this),
             new NewsCommand(this)
         ]);
     }
