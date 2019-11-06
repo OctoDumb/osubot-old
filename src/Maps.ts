@@ -44,6 +44,9 @@ export default class Maps {
             return ctx.reply("Сначала отправьте карту!");
         let mods = new Mods(args.mods);
         let map = await this.bot.api.bancho.getBeatmap(chat.map.id.map, chat.map.mode, mods.diff());
-        ctx.reply(this.bot.templates.PP(map, args));
+        let cover = await this.bot.database.covers.getCover(map.id.set);
+        ctx.reply(this.bot.templates.PP(map, args), {
+            attachment: cover
+        });
     }
 }
