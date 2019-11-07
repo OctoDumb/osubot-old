@@ -8,6 +8,7 @@ import GatariTop from "./Top";
 import GatariRecent from "./Recent";
 import GatariCompare from "./Compare";
 import GatariChat from "./Chat";
+import GatariFind from "./Find";
 
 export default class Gatari extends Module {
     link: string;
@@ -22,6 +23,7 @@ export default class Gatari extends Module {
             new GatariUser(this),
             new GatariNick(this),
             new GatariMode(this),
+            new GatariFind(this),
             new GatariTop(this),
             new GatariRecent(this),
             new GatariCompare(this),

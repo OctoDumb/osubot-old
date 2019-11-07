@@ -8,6 +8,7 @@ import RippleChat from "./Chat";
 import RippleCompare from "./Compare";
 import RippleMode from "./Mode";
 import RippleNick from "./Nick";
+import RippleFind from "./Find";
 
 export default class Ripple extends Module {
     link: string;
@@ -20,6 +21,7 @@ export default class Ripple extends Module {
 
         this.registerCommand([
             new RippleUser(this),
+            new RippleFind(this),
             new RippleTop(this),
             new RippleRecent(this),
             new RippleChat(this),
