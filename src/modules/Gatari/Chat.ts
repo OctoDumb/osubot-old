@@ -10,13 +10,11 @@ export default class GatariChat extends Command {
                     let members = (await self.module.bot.vk.api.messages.getConversationMembers({
                         peer_id: ctx.peerId
                     })).profiles;
-                    let ids = [];
                     let users = [];
                     for(let i = 0; i < members.length; i++) {
                         let u = await self.module.bot.database.servers.gatari.getUser(members[i].id);
-                        if(u.nickname && !ids.includes(u.uid)) {
+                        if(u.nickname && !users.some(uu => uu.uid == u.uid)) {
                             users.push(u);
-                            ids.push(u.uid);
                         }
                     }
                     users.filter(a => a.rank > 0 && a.pp > 0);
