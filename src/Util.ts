@@ -174,5 +174,15 @@ export default {
     error(e: string) {
         let f = errors.find(er => er.e == e);
         return f ? f.t : "Неизвестная ошибка!";
+    },
+    donater(status: number) {
+        var icons = {
+            1001: '💩',
+            1002: '🐸',
+            0: '',
+            1: '💖',
+            228: '👑'
+        };
+        return icons[status] || '';
     }
 };

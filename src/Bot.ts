@@ -15,6 +15,7 @@ import BanchoPP from './pp/bancho';
 import Gatari from './modules/Gatari';
 import IsMap from './MapRegexp';
 import Ripple from './modules/Ripple';
+import Donaters from './Donaters';
 
 interface IBotConfig {
     vk: {
@@ -37,6 +38,7 @@ export default class Bot {
     templates: ITemplates;
     maps: Maps;
     news: News;
+    donaters: Donaters;
     constructor(config: IBotConfig) {
         this.config = config;
 
@@ -103,6 +105,8 @@ export default class Bot {
         });
 
         this.news = new News(this);
+
+        this.donaters = new Donaters();
     }
 
     registerModule(module: Module | Module[]) {

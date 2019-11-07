@@ -16,9 +16,10 @@ export default class RippleUser extends Command {
                 return ctx.reply("Не указан ник!");
             try {
                 let user = await self.module.bot.api.ripple.getUser(dbUser.nickname, dbUser.mode || 0);
+                let status = self.module.bot.donaters.status("ripple", user.id);
                 if(!dbUser.mode)
                     self.module.bot.database.servers.ripple.updateInfo(user);
-                ctx.reply(`[Server:${self.module.name}]\n${self.module.bot.templates.User(user, dbUser.mode || 0, self.module.link)}`);
+                ctx.reply(`[Server:${self.module.name}]\n${self.module.bot.templates.User(user, dbUser.mode || 0, status, self.module.link)}`);
             } catch(e) {
                 let err = await self.module.bot.database.errors.addError("g", ctx, String(e));
                 ctx.reply(`[Server: ${self.module.name}]\n${Util.error(String(e))} (${err})`);

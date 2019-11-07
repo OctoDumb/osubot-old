@@ -11,7 +11,7 @@ import { APIUser, APITopScore, APIBeatmap, APIRecentScore, APIScore, ICommandArg
 import { IPPCalculator as ICalc } from '../pp/Calculator';
 
 interface ITemplates {
-    User: (user: APIUser, mode: number, link: string) => string;
+    User: (user: APIUser, mode: number, status: string, link: string) => string;
     TopScore: (score: APITopScore, beatmap: APIBeatmap, place: number, calc: ICalc, link: string) => string;
     TopSingle: (score: APITopScore, beatmap: APIBeatmap, user: APIUser, place: number, calc: ICalc, link: string) => string;
     RecentScore: (score: APIRecentScore, beatmap: APIBeatmap, calc: ICalc, link: string) => string;
