@@ -127,6 +127,7 @@ class RippleScore implements APIScore {
         }, mode);
         this.mods = new Mods(Number(data.enabled_mods));
         this.rank = data.rank;
+        this.mode = mode;
     }
 
     accuracy() {

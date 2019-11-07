@@ -125,6 +125,7 @@ class GatariScore implements APIScore {
         this.mods = new Mods(data.mods);
         this.mode = data.play_mode;
         this.rank = data.rank;
+        this.mode = data.play_mode;
     }
 
     accuracy() {
