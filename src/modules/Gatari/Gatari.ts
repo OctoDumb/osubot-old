@@ -12,7 +12,7 @@ import GatariChat from "./Chat";
 export default class Gatari extends Module {
     link: string;
     constructor(bot: Bot) {
-        super("gt", bot);
+        super("g", bot);
 
         this.name = "Gatari";
 

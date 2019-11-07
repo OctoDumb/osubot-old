@@ -12,7 +12,7 @@ import RippleNick from "./Nick";
 export default class Ripple extends Module {
     link: string;
     constructor(bot: Bot) {
-        super("rt", bot);
+        super("r", bot);
 
         this.name = "Ripple";
 

@@ -12,7 +12,7 @@ import BanchoChat from "./Chat";
 export default class Bancho extends Module {
     link: string;
     constructor(bot: Bot) {
-        super(["b", "st"], bot);
+        super("s", bot);
 
         this.name = "Bancho";
 
