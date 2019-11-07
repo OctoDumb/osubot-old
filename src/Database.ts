@@ -94,7 +94,7 @@ class DatabaseCovers {
         let cover = await this.db.get(`SELECT * FROM covers WHERE id = ?`, [id]);
         if(!cover.id)
             return this.addCover(id);
-        return cover;
+        return cover.attachment;
     }
 
     async removeEmpty() {
