@@ -182,12 +182,7 @@ export default class Mods {
 	}
 	
 	diff() {
-		let m = 0;
-		for(let mod of this.mods) {
-			if(mod & ModsBitwise.DifficultyChanging)
-				m += mod;
-		}
-		return m;
+		return this.sum() & ModsBitwise.DifficultyChanging;
 	}
 
     sum(): number {
