@@ -78,6 +78,7 @@ PP:
 
         case 3: { // osu!mania
             let pp = calc.calculate(Util.createPPArgs({
+                hits: map.objects.circles + map.objects.sliders,
                 score: 1000000,
                 mods: new Mods(0)
             }, map.mode));

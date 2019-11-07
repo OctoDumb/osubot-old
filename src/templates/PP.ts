@@ -32,8 +32,7 @@ ${Util.formatBeatmapLength(map.length / calc.speedMultiplier)} | ${map.stats} ${
         case 3: {
             let score = parseInt(args.string[0]);
             let ppArgs = Util.createPPArgs({
-                hits: hits,
-                miss: 0,
+                hits,
                 score: isNaN(score) ? 1000000 : Math.min(1000000, Math.max(0, score)),
                 mods: new Mods(args.mods)
             }, map.mode);
