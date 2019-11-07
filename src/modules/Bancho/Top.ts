@@ -17,7 +17,8 @@ export default class BanchoTop extends Command {
                 return ctx.reply("Не указан ник!");
             try {
                 let user = await self.module.bot.api.bancho.getUser(dbUser.nickname);
-                self.module.bot.database.servers.bancho.updateInfo(user);
+                if(!dbUser.mode)
+                    self.module.bot.database.servers.bancho.updateInfo(user);
                 if(args.place) {
                     let score = (await self.module.bot.api.bancho.getUserTop(dbUser.nickname, dbUser.mode || 0, args.place))[args.place - 1];
                     let map = await self.module.bot.api.bancho.getBeatmap(score.beatmapId, dbUser.mode || 0, score.mods.diff());

@@ -17,7 +17,8 @@ export default class RippleTop extends Command {
                 return ctx.reply("Не указан ник!");
             try {
                 let user = await self.module.bot.api.ripple.getUser(dbUser.nickname);
-                self.module.bot.database.servers.ripple.updateInfo(user);
+                if(!dbUser.mode)
+                    self.module.bot.database.servers.ripple.updateInfo(user);
                 if(args.place) {
                     let score = (await self.module.bot.api.ripple.getUserTop(dbUser.nickname, dbUser.mode || 0, args.place))[args.place - 1];
                     let map = await self.module.bot.api.bancho.getBeatmap(score.beatmapId, dbUser.mode || 0, score.mods.diff());

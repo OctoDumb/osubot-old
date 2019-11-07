@@ -141,6 +141,7 @@ class HitCounts implements IHits {
         switch(this.mode) {
             case 0:
             case 1:
+            case 2:
                 return `${this[300]}/${this[100]}/${this[50]}/${this.miss}`;
 
             case 3:

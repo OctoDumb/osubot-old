@@ -2,7 +2,8 @@ var rs = [
     /https?:\/\/osu\.ppy\.sh\/b\/(?<ID>\d+)/i,
     /(https?:\/\/)?osu\.ppy\.sh\/beatmaps\/(?<ID>\d+)/i,
     /(https?:\/\/)?osu\.ppy\.sh\/beatmapsets\/(\d+)#(osu|taiko|fruits|mania)+\/(?<ID>\d+)/i,
-    /(https?:\/\/)?osu\.gatari\.pw\/b\/(?<ID>\d+)/i
+    /(https?:\/\/)?osu\.gatari\.pw\/b\/(?<ID>\d+)/i,
+    /(https?:\/\/)?ripple\.moe\/b\/(?<ID>\d+)/i
 ];
 
 export default function(text: string): number {
