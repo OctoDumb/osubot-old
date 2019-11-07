@@ -33,7 +33,10 @@ export default class Maps {
 
     async sendMap(beatmapId: number, ctx: MessageContext) {
         let map = await this.bot.api.bancho.getBeatmap(beatmapId);
-        ctx.reply(this.bot.templates.Beatmap(map));
+        let cover = await this.bot.database.covers.getCover(map.id.set);
+        ctx.reply(this.bot.templates.Beatmap(map), {
+            attachment: cover
+        });
         this.setMap(ctx.peerId, map);
     }
 

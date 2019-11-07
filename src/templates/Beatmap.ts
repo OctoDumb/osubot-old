@@ -45,7 +45,12 @@ PP:
                 miss: 0,
                 mods: new Mods(0)
             }, map.mode));
-            break;
+            return `${map.artist} - ${map.title} [${map.version}] by ${map.creator.nickname} (${map.status})
+${Util.formatBeatmapLength(map.length)} | ${map.stats} ${Math.round(map.bpm)}BPM | ${Util.round(map.diff.stars, 2)}✩
+PP:
+- 98% = ${Util.round(pp98.pp, 2)}
+- 99% = ${Util.round(pp99.pp, 2)}
+- 100% = ${Util.round(pp98.ss, 2)}`;
         }
 
         case 2: { // osu!catch
@@ -63,12 +68,22 @@ PP:
                 miss: 0,
                 mods: new Mods(0)
             }, map.mode));
-            break;
+            return `${map.artist} - ${map.title} [${map.version}] by ${map.creator.nickname} (${map.status})
+${Util.formatBeatmapLength(map.length)} | ${map.stats} ${Math.round(map.bpm)}BPM | ${Util.round(map.diff.stars, 2)}✩
+PP:
+- 98% = ${Util.round(pp98.pp, 2)}
+- 99% = ${Util.round(pp99.pp, 2)}
+- 100% = ${Util.round(pp98.ss, 2)}`;
         }
 
         case 3: { // osu!mania
-            //
-            break;
+            let pp = calc.calculate(Util.createPPArgs({
+                score: 1000000,
+                mods: new Mods(0)
+            }, map.mode));
+            return `${map.artist} - ${map.title} [${map.version}] by ${map.creator.nickname} (${map.status})
+${Util.formatBeatmapLength(map.length)} | ${map.stats} ${Math.round(map.bpm)}BPM | ${Util.round(map.diff.stars, 2)}✩
+PP (1kk score): ${Util.round(pp.pp, 2)}`;
         }
 
         default:
