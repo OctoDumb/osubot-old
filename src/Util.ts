@@ -108,6 +108,9 @@ export default {
             }
         }
 
+        iArg.string.reverse();
+        iArg.nickname.reverse();
+
         return iArg;
     },
     getHitsFromAcc: {

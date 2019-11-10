@@ -144,8 +144,8 @@ export default class GatariAPI implements IAPI {
 
     async getUser(nickname: string, mode: number = 0): Promise<APIUser> {
         try {
-            let { data: user } = await this.api.get(`/users/get?${qs.stringify({u: nickname.replace(/\s/gm, '_')})}`);
-            let { data: stats } = await this.api.get(`/user/stats?${qs.stringify({u: nickname.replace(/\s/gm, '_'), mode: mode})}`);
+            let { data: user } = await this.api.get(`/users/get?${qs.stringify({u: nickname})}`);
+            let { data: stats } = await this.api.get(`/user/stats?${qs.stringify({u: nickname, mode: mode})}`);
             if(user.code != 200 || stats.code != 200)
                 throw "Unknown API error";
             if(!user.users[0])
