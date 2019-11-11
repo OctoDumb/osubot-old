@@ -16,6 +16,8 @@ import Gatari from './modules/Gatari';
 import IsMap from './MapRegexp';
 import Ripple from './modules/Ripple';
 import Donaters from './Donaters';
+import Akatsuki from './modules/Akatsuki';
+import AkatsukiRelax from './modules/AkatsukiRelax/Akatsuki';
 
 interface IBotConfig {
     vk: {
@@ -52,6 +54,8 @@ export default class Bot {
             new Bancho(this),
             new Gatari(this),
             new Ripple(this),
+            new Akatsuki(this),
+            new AkatsukiRelax(this),
             new Admin(this),
             new Main(this)
         ]);
