@@ -4,6 +4,7 @@ import NewsCommand from './News';
 import EvalCommand from './Eval';
 import ErrorCommand from './Error';
 import StatusCommand from './Status';
+import UploadCommand from './Upload';
 
 export default class Admin extends Module {
     constructor(bot: Bot) {
@@ -15,7 +16,8 @@ export default class Admin extends Module {
             new NewsCommand(this),
             new ErrorCommand(this),
             new StatusCommand(this),
-            new EvalCommand(this)
+            new EvalCommand(this),
+            new UploadCommand(this)
         ]);
     }
 }
