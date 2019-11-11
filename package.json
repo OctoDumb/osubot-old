@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepare": "tsc",
-    "start": "node ./build"
+    "start": "node ./build",
+    "update": "git pull && tsc"
   },
   "author": "",
   "license": "ISC",
