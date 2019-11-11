@@ -29,8 +29,7 @@ interface IBotConfig {
     tokens: {
         bancho: string,
         ripple: string
-    },
-    twitchId: string
+    }
 }
 
 interface TwitchStream {
@@ -124,9 +123,9 @@ export default class Bot {
 
         this.streamers = [];
 
-        this.twitch = Twitch(config);
+        // this.twitch = Twitch(config);
 
-        this.updateStreamers();
+        // this.updateStreamers();
     }
 
     registerModule(module: Module | Module[]) {
@@ -161,21 +160,21 @@ export default class Bot {
         return ctx.getAttachments("doc").filter(doc => doc.extension == "osr")[0];
     }
 
-    async updateStreamers() {
-        try {
-            let { streams } = await this.twitch.get('streams', { search: { game: 'osu!' } });
-            this.streamers = streams.map(s => {
-                return {
-                    url: s.channel.url,
-                    title: s.channel.status,
-                    viewers: s.viewers
-                };
-            });
-        } catch (e) {
-            console.log(e);
-        }
-        setTimeout(() => {
-            this.updateStreamers();
-        }, 5000);
-    }
+    // async updateStreamers() {
+    //     try {
+    //         let { streams } = await this.twitch.get('streams', { search: { game: 'osu!' } });
+    //         this.streamers = streams.map(s => {
+    //             return {
+    //                 url: s.channel.url,
+    //                 title: s.channel.status,
+    //                 viewers: s.viewers
+    //             };
+    //         });
+    //     } catch (e) {
+    //         console.log(e);
+    //     }
+    //     setTimeout(() => {
+    //         this.updateStreamers();
+    //     }, 5000);
+    // }
 }
