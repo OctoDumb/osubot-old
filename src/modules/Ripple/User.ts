@@ -21,7 +21,7 @@ export default class RippleUser extends Command {
                     self.module.bot.database.servers.ripple.updateInfo(user);
                 ctx.reply(`[Server:${self.module.name}]\n${self.module.bot.templates.User(user, dbUser.mode || 0, status, self.module.link)}`);
             } catch(e) {
-                let err = await self.module.bot.database.errors.addError("g", ctx, String(e));
+                let err = await self.module.bot.database.errors.addError("r", ctx, String(e));
                 ctx.reply(`[Server: ${self.module.name}]\n${Util.error(String(e))} (${err})`);
             }
         });

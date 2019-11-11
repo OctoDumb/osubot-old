@@ -59,7 +59,7 @@ export default class RippleChat extends Command {
                     });
                     ctx.reply(`[Server: ${self.module.name}]\nТоп беседы (ID ${id}):\n${users.map((user, i) => `#${i+1} ${user.nickname} | ${Util.round(user.pp, 1)}pp | Ранк ${user.rank} | ${Util.round(user.acc, 2)}%`).join("\n")}`);
                 } catch(e) {
-                    let err = await self.module.bot.database.errors.addError("b", ctx, String(e));
+                    let err = await self.module.bot.database.errors.addError("r", ctx, String(e));
                 ctx.reply(`[Server: ${self.module.name}]\n${Util.error(String(e))} (${err})`);
                 }
             }

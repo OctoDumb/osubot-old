@@ -28,7 +28,7 @@ export default class RippleCompare extends Command {
                     attachment: cover
                 });
             } catch(e) {
-                let err = await self.module.bot.database.errors.addError("g", ctx, String(e));
+                let err = await self.module.bot.database.errors.addError("r", ctx, String(e));
                 ctx.reply(`[Server: ${self.module.name}]\n${Util.error(String(e))} (${err})`);
             }
         });
