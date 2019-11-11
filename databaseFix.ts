@@ -72,4 +72,23 @@ let query = {
         }
         await bot.database.run(query.drop("old_ripple"));
     }
+
+    if(args.includes("-a")) {
+        console.log("Akatsuki");
+        await bot.database.run(query.rename("akatsuki", "old_akatsuki"));
+        await bot.database.run(query.create("akatsuki"));
+        let users = await bot.database.all(query.get("old_akatsuki"));
+        for(let i = 0; i < users.length; i++) {
+            console.log(i+1, users.length);
+            try {
+                let u = await bot.api.akatsuki.getUser(users[i].nickname);
+                await bot.database.run(query.insert("akatsuki"), [users[i].id, u.id, u.nickname, users[i].mode]);
+                await bot.database.run(query.info("akatsuki"), [u.pp, u.rank.total, u.accuracy, u.id]);
+                await Util.sleep(700);
+            } catch(e) {
+                //
+            }
+        }
+        await bot.database.run(query.drop("old_akatsuki"));
+    }
 })();
