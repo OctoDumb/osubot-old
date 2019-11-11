@@ -18,6 +18,7 @@ import Ripple from './modules/Ripple';
 import Donaters from './Donaters';
 import Akatsuki from './modules/Akatsuki';
 import AkatsukiRelax from './modules/AkatsukiRelax/Akatsuki';
+import Twitch from './Twitch.js';
 
 interface IBotConfig {
     vk: {
@@ -28,7 +29,14 @@ interface IBotConfig {
     tokens: {
         bancho: string,
         ripple: string
-    }
+    },
+    twitchId: string
+}
+
+interface TwitchStream {
+    url: string;
+    title: string;
+    viewers: number;
 }
 
 export default class Bot {
@@ -41,6 +49,8 @@ export default class Bot {
     maps: Maps;
     news: News;
     donaters: Donaters;
+    streamers: TwitchStream[];
+    twitch: any;
     constructor(config: IBotConfig) {
         this.config = config;
 
@@ -111,6 +121,12 @@ export default class Bot {
         this.news = new News(this);
 
         this.donaters = new Donaters();
+
+        this.streamers = [];
+
+        this.twitch = Twitch(config);
+
+        this.updateStreamers();
     }
 
     registerModule(module: Module | Module[]) {
@@ -143,5 +159,23 @@ export default class Bot {
         if(!ctx.hasAttachments("doc"))
             return null;
         return ctx.getAttachments("doc").filter(doc => doc.extension == "osr")[0];
+    }
+
+    async updateStreamers() {
+        try {
+            let { streams } = await this.twitch.get('streams', { search: { game: 'osu!' } });
+            this.streamers = streams.map(s => {
+                return {
+                    url: s.channel.url,
+                    title: s.channel.status,
+                    viewers: s.viewers
+                };
+            });
+        } catch (e) {
+            console.log(e);
+        }
+        setTimeout(() => {
+            this.updateStreamers();
+        }, 5000);
     }
 }
