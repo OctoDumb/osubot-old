@@ -5,6 +5,7 @@ import BanchoPP from "../pp/bancho";
 
 export default function(leaderboard: LeaderboardResponse): string {
     let map = leaderboard.maps.find(m => m.mods == 0).map;
+    console.log(leaderboard.scores[2]);
     return `Топ беседы на карте:
 ${map.artist} - ${map.title} [${map.version}] by ${map.creator.nickname}\n` + leaderboard.scores/* .slice(0, 10) */.map((lbscore, i) => {
         let smap = leaderboard.maps.find(m => m.mods == lbscore.score.mods.diff()).map;
