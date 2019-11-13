@@ -244,6 +244,7 @@ export default class BanchoAPI implements IAPI {
                     let s: APIScore[] = await Promise.all(usPromise.map((p) => p.catch(e => e)));
                     s = s.filter((p, j) => {
                         let ok = (typeof p != "string" && !(p instanceof Error));
+                        console.log(usrs[j].nickname, ok);
                         if(!ok) usrs.splice(j, 1);
                         return ok;
                     });
@@ -254,7 +255,7 @@ export default class BanchoAPI implements IAPI {
                                 map: await this.getBeatmap(beatmapId, mode, s[j].mods.diff())
                             });
                     }
-                    console.log(s.map(ss => ss.score), usrs.map(u => `${u.id} - ${u.uid}`));
+                    console.log(s.length, usrs.length);
                     scores.push(...s.map((score, j) => {
                         return {
                             user: usrs[j],
