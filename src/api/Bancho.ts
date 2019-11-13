@@ -236,11 +236,17 @@ export default class BanchoAPI implements IAPI {
             });
             for(var i = 0; i < Math.ceil(users.length / 5); i++) {
                 try {
-                    let usPromise = users.slice(i*5, i*5+5).map(
+                    let usrs = users.slice(i*5, i*5+5);
+                    let usPromise = usrs.map(
                         u => this.getScore(u.nickname, beatmapId, mode)
                     );  
-                    let s = await Promise.all(usPromise.map(p => p.catch(e => e)));
-                    s = s.filter(p => (typeof p != "string" && !(p instanceof Error)));
+                    let s = await Promise.all(usPromise.map((p) => p.catch(e => e)));
+                    s = s.filter((p, j) => {
+                        let ok = (typeof p != "string" && !(p instanceof Error));
+                        if(!ok)
+                            users.splice(j, 1);
+                        return ok;
+                    });
                     for(var j = 0; j < s.length; j++) {
                         if(!cache.find(c => c.mods == s[j].mods.diff()))
                             cache.push({
@@ -250,7 +256,7 @@ export default class BanchoAPI implements IAPI {
                     }
                     scores.push(...s.map((score, j) => {
                         return {
-                            user: users[i*5+j],
+                            user: usrs[j],
                             score
                         };
                     }));
