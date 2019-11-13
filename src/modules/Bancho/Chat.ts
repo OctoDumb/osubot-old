@@ -17,7 +17,7 @@ export default class BanchoChat extends Command {
                             users.push(u);
                         }
                     }
-                    users.filter(a => a.rank > 0 && a.pp > 0);
+                    users = users.filter(a => a.rank > 0 && a.pp > 0);
                     users.sort((a,b) => {
                         if(a.rank > b.rank)
                             return 1;
