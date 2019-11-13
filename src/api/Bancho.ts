@@ -252,6 +252,7 @@ export default class BanchoAPI implements IAPI {
                         s.splice(j, 1);
                         usrs.splice(j, 1);
                     });
+                    console.log(s);
                     for(let j = 0; j < s.length; j++) {
                         if(!cache.find(c => c.mods == s[j].mods.diff()))
                             cache.push({
