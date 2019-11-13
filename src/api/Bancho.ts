@@ -242,9 +242,9 @@ export default class BanchoAPI implements IAPI {
                         u => this.getScore(u.nickname, beatmapId, mode)
                     );  
                     let s: APIScore[] = await Promise.all(usPromise.map((p) => p.catch(e => e)));
+                    console.log(usrs.map(u => u.nickname), s.length);
                     s = s.filter((p, j) => {
                         let ok = (typeof p != "string" && !(p instanceof Error));
-                        console.log(usrs[j].nickname, ok);
                         if(!ok) usrs.splice(j, 1);
                         return ok;
                     });
