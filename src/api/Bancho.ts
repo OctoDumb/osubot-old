@@ -244,7 +244,7 @@ export default class BanchoAPI implements IAPI {
                     s = s.filter((p, j) => {
                         let ok = (typeof p != "string" && !(p instanceof Error));
                         if(!ok)
-                            users.splice(j, 1);
+                            usrs.splice(j, 1);
                         return ok;
                     });
                     for(var j = 0; j < s.length; j++) {
