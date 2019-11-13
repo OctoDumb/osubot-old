@@ -162,20 +162,20 @@ export default class Bot {
     }
 
     async updateStreamers() {
-        // try {
-        //     let { streams } = await this.twitch.get('streams', { search: { game: 'osu!' } });
-        //     this.streamers = streams.map(s => {
-        //         return {
-        //             url: s.channel.url,
-        //             title: s.channel.status,
-        //             viewers: s.viewers
-        //         };
-        //     });
-        // } catch (e) {
-        //     console.log(e);
-        // }
-        // setTimeout(() => {
-        //     this.updateStreamers();
-        // }, 5000);
+        try {
+            let { streams } = await this.twitch.get('streams', { search: { game: 'osu!' } });
+            this.streamers = streams.map(s => {
+                return {
+                    url: s.channel.url,
+                    title: s.channel.status,
+                    viewers: s.viewers
+                };
+            });
+        } catch (e) {
+            console.log(e);
+        }
+        setTimeout(() => {
+            this.updateStreamers();
+        }, 5000);
     }
 }
