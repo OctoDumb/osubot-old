@@ -6,8 +6,9 @@ import Compare from './Compare';
 import ReplayT from './Replay';
 import Beatmap from "./Beatmap";
 import PP from "./PP";
+import Leaderboard from "./Leaderboard";
 import { Replay } from '../Replay';
-import { APIUser, APITopScore, APIBeatmap, APIRecentScore, APIScore, ICommandArgs } from '../Types';
+import { APIUser, APITopScore, APIBeatmap, APIRecentScore, APIScore, ICommandArgs, LeaderboardResponse } from '../Types';
 import { IPPCalculator as ICalc } from '../pp/Calculator';
 
 interface ITemplates {
@@ -19,6 +20,7 @@ interface ITemplates {
     Replay: (replay: Replay, map: APIBeatmap, calc: ICalc) => string;
     Beatmap: (map: APIBeatmap) => string;
     PP: (map: APIBeatmap, args: ICommandArgs) => string;
+    Leaderboard: (leaderboard: LeaderboardResponse) => string;
 }
 
 var Templates: ITemplates = {
@@ -29,7 +31,8 @@ var Templates: ITemplates = {
     Compare,
     Replay: ReplayT,
     Beatmap,
-    PP
+    PP,
+    Leaderboard
 }
 
 export {

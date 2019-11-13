@@ -2,17 +2,7 @@ import sqlite from 'sqlite3';
 import { VK, MessageContext } from 'vk-io';
 import axios from 'axios';
 import util from './Util';
-import { APIUser } from './Types';
-
-interface IDatabaseUser {
-    id: number,
-    uid: number,
-    nickname: string,
-    mode: number,
-    pp: number,
-    rank: number,
-    acc: number
-}
+import { APIUser, IDatabaseUser } from './Types';
 
 class DatabaseServer {
     table: String;

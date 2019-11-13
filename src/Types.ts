@@ -283,6 +283,26 @@ interface APIRecentScore {
     accuracy(): number;
 }
 
+interface IDatabaseUser {
+    id: number,
+    uid: number,
+    nickname: string,
+    mode: number,
+    pp: number,
+    rank: number,
+    acc: number
+}
+
+interface LeaderboardScore {
+    user: IDatabaseUser,
+    score: APIScore
+}
+
+interface LeaderboardResponse {
+    maps: { mods: number, map: APIBeatmap }[],
+    scores: LeaderboardScore[]
+}
+
 export {
     APIUser,
     APITopScore,
@@ -301,5 +321,9 @@ export {
 
     ICommandArgs,
     PPArgs,
-    CalcArgs
+    CalcArgs,
+
+    IDatabaseUser,
+    LeaderboardScore,
+    LeaderboardResponse
 }

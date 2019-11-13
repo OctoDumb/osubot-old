@@ -1,7 +1,7 @@
 import IAPI from './base';
 import * as axios from 'axios';
 import qs from 'querystring';
-import { APIUser, APITopScore, APIBeatmap, APIRecentScore, HitCounts, APIScore } from '../Types';
+import { APIUser, APITopScore, APIBeatmap, APIRecentScore, HitCounts, APIScore, IDatabaseUser, LeaderboardScore, LeaderboardResponse } from '../Types';
 import Mods from '../pp/Mods';
 import Util from '../Util';
 import { isNullOrUndefined } from 'util';
@@ -186,7 +186,7 @@ export default class BanchoAPI implements IAPI {
         }
     }
 
-    async getScore(nickname: String, beatmapId: number, mode: number = 0, mods: number): Promise<APIScore> {
+    async getScore(nickname: String, beatmapId: number, mode: number = 0, mods: number = null): Promise<APIScore> {
         let opts = {
             k: this.token,
             u: nickname,
@@ -224,5 +224,52 @@ export default class BanchoAPI implements IAPI {
         if(mods)
             beatmap.stats.modify(new Mods(mods));
         return beatmap;
+    }
+
+    async getLeaderboard(beatmapId: number, users: IDatabaseUser[], mode: number = 0): Promise<LeaderboardResponse> {
+        let cache: { mods: number, map: APIBeatmap }[] = [];
+        let scores: LeaderboardScore[] = [];
+        try {
+            cache.push({
+                mods: 0,
+                map: await this.getBeatmap(beatmapId, mode, 0)
+            });
+            for(var i = 0; i < Math.ceil(users.length / 5); i++) {
+                try {
+                    let usPromise = users.slice(i*5, i*5+5).map(
+                        u => this.getScore(u.nickname, beatmapId, mode)
+                    );  
+                    let s = await Promise.all(usPromise.map(p => p.catch(e => e)));
+                    s = s.filter(p => (typeof p != "string" && !(p instanceof Error)));
+                    for(var j = 0; j < s.length; j++) {
+                        if(!cache.find(c => c.mods == s[j].mods.diff()))
+                            cache.push({
+                                mods: s[j].mods.diff(),
+                                map: await this.getBeatmap(beatmapId, mode, s[j].mods.diff())
+                            });
+                    }
+                    scores.push(...s.map((score, j) => {
+                        return {
+                            user: users[i*5+j],
+                            score
+                        };
+                    }));
+                }catch(e){
+                    console.log(e);
+                } // Ignore "No scores"
+            }
+            return {
+                maps: cache,
+                scores: scores.sort((a,b) => {
+                    if(a.score.score > b.score.score)
+                        return -1;
+                    else if(a.score.score < b.score.score)
+                        return 1;
+                    return 0;
+                })
+            }
+        } catch (e) {
+            throw e || "Unknown error";
+        }
     }
 }
