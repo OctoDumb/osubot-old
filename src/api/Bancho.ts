@@ -243,15 +243,12 @@ export default class BanchoAPI implements IAPI {
                     );  
                     let s: APIScore[] = await Promise.all(usPromise.map((p) => p.catch(e => undefined)));
                     console.log(usrs.map(u => u.nickname), s.length);
-                    let del = [];
-                    s.forEach((p, j) => {
-                        if(!p) del.push(j);
-                    });
-                    if(del[0])
-                        for(let j = del.length; j >= 0; j--) {
+                    for(let j = s.length-1; j >= 0; j++) {
+                        if(!s[j]) {
                             s.splice(j, 1);
                             usrs.splice(j, 1);
                         }
+                    }
                     console.log(s.length, usrs.length);
                     for(let j = 0; j < s.length; j++) {
                         try {
