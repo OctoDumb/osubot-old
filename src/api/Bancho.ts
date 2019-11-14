@@ -4,7 +4,7 @@ import qs from 'querystring';
 import { APIUser, APITopScore, APIBeatmap, APIRecentScore, HitCounts, APIScore, IDatabaseUser, LeaderboardScore, LeaderboardResponse } from '../Types';
 import Mods from '../pp/Mods';
 import Util from '../Util';
-import { isNullOrUndefined } from 'util';
+import { isNullOrUndefined, isNull } from 'util';
 
 class BanchoUser implements APIUser {
     api: IAPI;
@@ -241,18 +241,18 @@ export default class BanchoAPI implements IAPI {
                     let usPromise = usrs.map(
                         u => this.getScore(u.nickname, beatmapId, mode)
                     );  
-                    let s: APIScore[] = await Promise.all(usPromise.map((p) => p.catch(e => e)));
+                    let s: APIScore[] = await Promise.all(usPromise.map((p) => p.catch(e => null)));
                     console.log(usrs.map(u => u.nickname), s.length);
                     let del = [];
                     s.forEach((p, j) => {
-                        let ok = (typeof p != "string" && !(p instanceof Error));
+                        let ok = isNull(p);
                         if(!ok) del.push(j);
                     });
                     del.forEach(j => {
                         s.splice(j, 1);
                         usrs.splice(j, 1);
                     });
-                    console.log(s);
+                    console.log(s.length, usrs.length);
                     for(let j = 0; j < s.length; j++) {
                         if(!cache.find(c => c.mods == s[j].mods.diff()))
                             cache.push({
