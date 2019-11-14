@@ -227,7 +227,6 @@ export default class BanchoAPI implements IAPI {
     }
 
     async getLeaderboard(beatmapId: number, users: IDatabaseUser[], mode: number = 0): Promise<LeaderboardResponse> {
-        console.log(users.length);
         let cache: { mods: number, map: APIBeatmap }[] = [];
         let scores: LeaderboardScore[] = [];
         try {
@@ -235,12 +234,10 @@ export default class BanchoAPI implements IAPI {
                 mods: 0,
                 map: await this.getBeatmap(beatmapId, mode, 0)
             });
-            console.log(Math.ceil(users.length / 5));
-            for(var i = 0; i <= Math.ceil(users.length / 5); i++) {
+            let lim = Math.ceil(users.length / 5);
+            for(var i = 0; i < lim; i++) {
                 try {
                     let usrs = users.splice(0, 5);
-                    console.log(usrs.map(u => u.nickname));
-                    // let usrs = users.slice(i*5, i*5+5);
                     let usPromise = usrs.map(
                         u => this.getScore(u.nickname, beatmapId, mode)
                     );  
@@ -259,9 +256,7 @@ export default class BanchoAPI implements IAPI {
                                     mods: s[j].mods.diff(),
                                     map: await this.getBeatmap(beatmapId, mode, s[j].mods.diff())
                                 }); 
-                        } catch(e) {
-                            console.log(s[j], e);
-                        }
+                        } catch(e) {}
                     }
                     scores.push(...s.map((score, j) => {
                         return {
