@@ -235,6 +235,7 @@ export default class BanchoAPI implements IAPI {
                 map: await this.getBeatmap(beatmapId, mode, 0)
             });
             for(var i = 0; i < Math.ceil(users.length / 5); i++) {
+                console.log(i);
                 try {
                     let usrs = users.splice(0, 5);
                     // let usrs = users.slice(i*5, i*5+5);

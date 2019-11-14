@@ -18,7 +18,7 @@ export default class BanchoLeaderboard extends Command {
                 for(let i = 0; i < profiles.length; i++) {
                     let profile = profiles[i];
                     let user = await self.module.bot.database.servers.bancho.getUser(profile.id);
-                    if(user.id && !users.find(u => u.uid == user.uid))
+                    if(user.id && !users.some(u => u.uid == user.uid))
                         users.push(user);
                 }
                 users = users.filter(a => a.rank > 0 && a.pp > 0);
