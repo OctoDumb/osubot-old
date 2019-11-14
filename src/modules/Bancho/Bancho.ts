@@ -29,7 +29,7 @@ export default class Bancho extends Module {
             new BanchoRecent(this),
             new BanchoCompare(this),
             new BanchoChat(this),
-            // new BanchoLeaderboard(this)
+            new BanchoLeaderboard(this)
         ]);
     }
 }
