@@ -248,17 +248,22 @@ export default class BanchoAPI implements IAPI {
                         let ok = isNull(p);
                         if(!ok) del.push(j);
                     });
-                    del.forEach(j => {
-                        s.splice(j, 1);
-                        usrs.splice(j, 1);
-                    });
+                    if(del[0])
+                        for(let j = del.length; j >= 0; j--) {
+                            s.splice(j, 1);
+                            usrs.splice(j, 1);
+                        }
                     console.log(s.length, usrs.length);
                     for(let j = 0; j < s.length; j++) {
-                        if(!cache.find(c => c.mods == s[j].mods.diff()))
-                            cache.push({
-                                mods: s[j].mods.diff(),
-                                map: await this.getBeatmap(beatmapId, mode, s[j].mods.diff())
-                            });
+                        try {
+                            if(!cache.find(c => c.mods == s[j].mods.diff()))
+                                cache.push({
+                                    mods: s[j].mods.diff(),
+                                    map: await this.getBeatmap(beatmapId, mode, s[j].mods.diff())
+                                }); 
+                        } catch(e) {
+                            console.log(s[j], e);
+                        }
                     }
                     console.log(s.length, usrs.length);
                     scores.push(...s.map((score, j) => {
