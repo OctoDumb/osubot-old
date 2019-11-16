@@ -89,7 +89,9 @@ export default {
             combo: 0,
             miss: 0,
             acc: 0,
-            place: 0
+            place: 0,
+            apx: 0,
+            more: 0
         };
 
         for(let i = args.length - 1; i > -1; i--) {
@@ -106,6 +108,10 @@ export default {
                 iArg.acc = Number(arg.slice(0, -1));
             } else if(arg.startsWith("\\")) {
                 iArg.place = Number(arg.slice(1));
+            } else if(arg.startsWith("~")) {
+                iArg.apx = Math.max(Number(arg.slice(1)), 1);
+            } else if(arg.startsWith(">")) {
+                iArg.more = Math.max(Number(arg.slice(1)), 1);
             } else {
                 iArg.string.push(arg);
                 iArg.nickname.push(arg);

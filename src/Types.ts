@@ -12,6 +12,8 @@ interface ICommandArgs {
     acc: number;
     miss: number;
     place: number;
+    apx: number;
+    more: number;
 }
 
 interface PPArgs {
