@@ -38,7 +38,7 @@ export default class BanchoTop extends Command {
                 } else if(args.more) {
                     let top = await self.module.bot.api.bancho.getUserTop(dbUser.nickname, dbUser.mode || 0, 100);
                     let amount = top.filter(t => t.pp > args.more).length;
-                    ctx.reply(`[Server: ${self.module.name}]\nУ игрока ${user.nickname} ${amount ? amount : 'нет'} скоров выше ${args.more}pp`);
+                    ctx.reply(`[Server: ${self.module.name}]\nУ игрока ${user.nickname} ${amount ? amount : 'нет'}${amount == 100 ? '+' : ''} ${Util.scoreNum(amount)} выше ${args.more}pp`);
                 } else if(args.place) {
                     let score = (await self.module.bot.api.bancho.getUserTop(dbUser.nickname, dbUser.mode || 0, args.place))[args.place - 1];
                     let map = await self.module.bot.api.bancho.getBeatmap(score.beatmapId, dbUser.mode || 0, score.mods.diff());

@@ -178,17 +178,17 @@ export default {
             return `${combo}x`;
         return `${combo}x/${full}x`;
     },
-    async sleep(ms: number) {
+    async sleep(ms: number): Promise<void> {
         return new Promise(r => setTimeout(r, ms));
     },
-    createPPArgs(args: PPArgs, mode: number) {
+    createPPArgs(args: PPArgs, mode: number): CalcArgs {
         return new CalcArgs(args, mode);
     },
-    error(e: string) {
+    error(e: string): string {
         let f = errors.find(er => er.e == e);
         return f ? f.t : "Неизвестная ошибка!";
     },
-    donater(status: number) {
+    donater(status: number): string {
         var icons = {
             1001: '💩',
             1002: '🐸',
@@ -202,5 +202,19 @@ export default {
             228: '👑'
         };
         return icons[status] || '';
+    },
+    scoreNum(amount: number): string {
+        if(amount > 10 && amount < 20)
+            return 'скоров';
+        switch(amount % 10) {
+            case 1:
+                return 'скор';
+            case 2:
+            case 3:
+            case 4:
+                return 'скора';
+            default:
+                return 'скоров';
+        }
     }
 };
