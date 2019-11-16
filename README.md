@@ -34,6 +34,6 @@ npm install
 4. Build & run
 
 ```
-npm run-script prepare
+tsc
 npm start
 ```
