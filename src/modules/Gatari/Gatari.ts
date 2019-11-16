@@ -9,6 +9,7 @@ import GatariRecent from "./Recent";
 import GatariCompare from "./Compare";
 import GatariChat from "./Chat";
 import GatariFind from "./Find";
+import GatariLeaderboard from "./Leaderboard";
 
 export default class Gatari extends Module {
     link: string;
@@ -27,7 +28,8 @@ export default class Gatari extends Module {
             new GatariTop(this),
             new GatariRecent(this),
             new GatariCompare(this),
-            new GatariChat(this)
+            new GatariChat(this),
+            new GatariLeaderboard(this)
         ]);
     }
 }

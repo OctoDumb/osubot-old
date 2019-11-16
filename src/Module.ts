@@ -10,7 +10,7 @@ interface ICommandsModule {
 }
 
 export class Module implements ICommandsModule {
-    name: String;
+    name: string;
     link?: string;
     prefix: String | String[];
     commands: Command[];

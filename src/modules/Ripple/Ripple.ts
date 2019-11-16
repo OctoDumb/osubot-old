@@ -9,6 +9,7 @@ import RippleCompare from "./Compare";
 import RippleMode from "./Mode";
 import RippleNick from "./Nick";
 import RippleFind from "./Find";
+import RippleLeaderboard from "./Leaderboard";
 
 export default class Ripple extends Module {
     link: string;
@@ -27,7 +28,8 @@ export default class Ripple extends Module {
             new RippleChat(this),
             new RippleCompare(this),
             new RippleMode(this),
-            new RippleNick(this)
+            new RippleNick(this),
+            new RippleLeaderboard(this)
         ]);
     }
 }

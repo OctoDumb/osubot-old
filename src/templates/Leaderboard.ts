@@ -3,7 +3,9 @@ import Util from "../Util";
 // import { IPPCalculator as ICalc } from "../pp/Calculator";
 import BanchoPP from "../pp/bancho";
 
-export default function(leaderboard: LeaderboardResponse): string {
+export default function(leaderboard: LeaderboardResponse, server: string): string {
+    if(!leaderboard.scores[0])
+        return `[Server: ${server}]\nНи у кого нет скоров на этой карте!`;
     let map = leaderboard.maps.find(m => m.mods == 0).map;
     return `Топ беседы на карте:
 ${map.artist} - ${map.title} [${map.version}] by ${map.creator.nickname}\n` + leaderboard.scores/* .slice(0, 10) */.map((lbscore, i) => {

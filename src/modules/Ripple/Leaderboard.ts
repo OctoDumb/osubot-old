@@ -2,7 +2,7 @@ import { Command } from "../../Command";
 import { Module } from "../../Module";
 import { IDatabaseUser } from "../../Types";
 
-export default class BanchoLeaderboard extends Command {
+export default class RippleLeaderboard extends Command {
     constructor(module: Module) {
         super(["lb", "leaderboard"], module, async (ctx, self, args) => {
             if(!ctx.isChat)
@@ -17,12 +17,12 @@ export default class BanchoLeaderboard extends Command {
                 let users: IDatabaseUser[] = [];
                 for(let i = 0; i < profiles.length; i++) {
                     let profile = profiles[i];
-                    let user = await self.module.bot.database.servers.bancho.getUser(profile.id);
+                    let user = await self.module.bot.database.servers.ripple.getUser(profile.id);
                     if(user.id && !users.some(u => u.uid == user.uid))
                         users.push(user);
                 }
                 users = users.filter(a => a.rank > 0 && a.pp > 0);
-                let leaderboard = await self.module.bot.api.bancho.getLeaderboard(chat.map.id.map, users, chat.map.mode);
+                let leaderboard = await self.module.bot.api.ripple.getLeaderboard(chat.map.id.map, users, chat.map.mode);
                 ctx.reply(self.module.bot.templates.Leaderboard(leaderboard, self.module.name));
             } catch(e) {
                 ctx.reply("Ошибка!");

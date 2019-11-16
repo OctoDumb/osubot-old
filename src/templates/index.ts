@@ -20,7 +20,7 @@ interface ITemplates {
     Replay: (replay: Replay, map: APIBeatmap, calc: ICalc) => string;
     Beatmap: (map: APIBeatmap) => string;
     PP: (map: APIBeatmap, args: ICommandArgs) => string;
-    Leaderboard: (leaderboard: LeaderboardResponse) => string;
+    Leaderboard: (leaderboard: LeaderboardResponse, server: string) => string;
 }
 
 var Templates: ITemplates = {
