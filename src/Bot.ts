@@ -178,6 +178,6 @@ export default class Bot {
         }
         setTimeout(() => {
             this.updateStreamers();
-        }, 5000);
+        }, 15000);
     }
 }
