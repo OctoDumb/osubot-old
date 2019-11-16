@@ -1,10 +1,11 @@
 import IAPI from "./base";
 import * as axios from "axios";
-import { APIUser, APITopScore, HitCounts, APIRecentScore, APIScore } from "../Types";
+import { APIUser, APITopScore, HitCounts, APIRecentScore, APIScore, IDatabaseUser, LeaderboardResponse, APIBeatmap, LeaderboardScore } from "../Types";
 import qs from "querystring";
 import Util from "../Util";
 import Mods from "../pp/Mods";
 import { isNullOrUndefined } from "util";
+import Bot from "../Bot";
 
 class RippleUser implements APIUser {
     api: IAPI;
@@ -136,8 +137,10 @@ class RippleScore implements APIScore {
 }
 
 export default class RippleAPI implements IAPI {
+    bot: Bot;
     api: axios.AxiosInstance
-    constructor() {
+    constructor(bot: Bot) {
+        this.bot = bot;
         this.api = axios.default.create({
             baseURL: "https://ripple.moe/api",
             timeout: 3000
@@ -176,7 +179,7 @@ export default class RippleAPI implements IAPI {
         }
     }
 
-    async getScore(nickname: string, beatmapId: number, mode: number = 0, mods: number): Promise<APIScore> {
+    async getScore(nickname: string, beatmapId: number, mode: number = 0, mods: number = null): Promise<APIScore> {
         let opts = {
             u: nickname,
             b: beatmapId,
@@ -191,6 +194,61 @@ export default class RippleAPI implements IAPI {
             return new RippleScore(data[0], mode, beatmapId, this);
         } catch(e) {
             throw e || "Unknown API error";
+        }
+    }
+    
+    async getLeaderboard(beatmapId: number, users: IDatabaseUser[], mode: number = 0): Promise<LeaderboardResponse> {
+        let cache: { mods: number, map: APIBeatmap }[] = [];
+        let scores: LeaderboardScore[] = [];
+        try {
+            cache.push({
+                mods: 0,
+                map: await this.bot.api.bancho.getBeatmap(beatmapId, mode, 0)
+            });
+            let lim = Math.ceil(users.length / 5);
+            for(var i = 0; i < lim; i++) {
+                try {
+                    let usrs = users.splice(0, 5);
+                    let usPromise = usrs.map(
+                        u => this.getScore(u.nickname, beatmapId, mode)
+                    );  
+                    let s: APIScore[] = await Promise.all(usPromise.map((p) => p.catch(e => e)));
+                    for(let j = s.length-1; j >= 0; j--) {
+                        let ok = (typeof s[j] != "string" && !(s[j] instanceof Error));
+                        if(!ok) {
+                            s.splice(j, 1);
+                            usrs.splice(j, 1);
+                        }
+                    }
+                    for(let j = 0; j < s.length; j++) {
+                        try {
+                            if(!cache.find(c => c.mods == s[j].mods.diff()))
+                                cache.push({
+                                    mods: s[j].mods.diff(),
+                                    map: await this.bot.api.bancho.getBeatmap(beatmapId, mode, s[j].mods.diff())
+                                }); 
+                        } catch(e) {}
+                    }
+                    scores.push(...s.map((score, j) => {
+                        return {
+                            user: usrs[j],
+                            score
+                        };
+                    }));
+                }catch(e){} // Ignore "No scores"
+            }
+            return {
+                maps: cache,
+                scores: scores.sort((a,b) => {
+                    if(a.score.score > b.score.score)
+                        return -1;
+                    else if(a.score.score < b.score.score)
+                        return 1;
+                    return 0;
+                })
+            }
+        } catch (e) {
+            throw e || "Unknown error";
         }
     }
 }

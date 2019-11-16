@@ -5,6 +5,7 @@ import { APIUser, APITopScore, APIBeatmap, APIRecentScore, HitCounts, APIScore, 
 import Mods from '../pp/Mods';
 import Util from '../Util';
 import { isNullOrUndefined, isNull } from 'util';
+import Bot from '../Bot';
 
 class BanchoUser implements APIUser {
     api: IAPI;
@@ -136,19 +137,15 @@ class BanchoScore implements APIScore {
 }
 
 export default class BanchoAPI implements IAPI {
+    bot: Bot;
     token: String;
     api: axios.AxiosInstance;
-    map: axios.AxiosInstance;
-    constructor(token) {
-        this.token = token;
+    constructor(bot: Bot) {
+        this.bot = bot;
+        this.token = bot.config.tokens.bancho;
         this.api = axios.default.create({
             baseURL: "https://osu.ppy.sh/api",
             timeout: 3000
-        });
-        this.map = axios.default.create({
-            baseURL: "https://osu.ppy.sh/osu/",
-            timeout: 6000,
-            responseType: "text"
         });
     }
 
@@ -264,9 +261,7 @@ export default class BanchoAPI implements IAPI {
                             score
                         };
                     }));
-                }catch(e){
-                    console.log(e);
-                } // Ignore "No scores"
+                }catch(e){} // Ignore "No scores"
             }
             return {
                 maps: cache,

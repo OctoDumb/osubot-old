@@ -1,9 +1,10 @@
 import IAPI from './base';
 import * as axios from 'axios';
 import qs from 'querystring';
-import { APIUser, APITopScore, HitCounts, APIRecentScore, APIScore } from '../Types';
+import { APIUser, APITopScore, HitCounts, APIRecentScore, APIScore, IDatabaseUser, LeaderboardResponse, APIBeatmap, LeaderboardScore } from '../Types';
 import Mods from '../pp/Mods';
 import Util from '../Util';
+import Bot from '../Bot';
 
 class GatariUser implements APIUser {
     api: IAPI;
@@ -134,8 +135,10 @@ class GatariScore implements APIScore {
 }
 
 export default class GatariAPI implements IAPI {
+    bot: Bot;
     api: axios.AxiosInstance;
-    constructor() {
+    constructor(bot: Bot) {
+        this.bot = bot;
         this.api = axios.default.create({
             baseURL: "https://api.gatari.pw",
             timeout: 3000
@@ -191,6 +194,61 @@ export default class GatariAPI implements IAPI {
             return new GatariScore(data.score, beatmapId, this);
         } catch (e) {
             throw e;
+        }
+    }
+
+    async getLeaderboard(beatmapId: number, users: IDatabaseUser[], mode: number = 0): Promise<LeaderboardResponse> {
+        let cache: { mods: number, map: APIBeatmap }[] = [];
+        let scores: LeaderboardScore[] = [];
+        try {
+            cache.push({
+                mods: 0,
+                map: await this.bot.api.bancho.getBeatmap(beatmapId, mode, 0)
+            });
+            let lim = Math.ceil(users.length / 5);
+            for(var i = 0; i < lim; i++) {
+                try {
+                    let usrs = users.splice(0, 5);
+                    let usPromise = usrs.map(
+                        u => this.getScore(u.nickname, beatmapId, mode)
+                    );  
+                    let s: APIScore[] = await Promise.all(usPromise.map((p) => p.catch(e => e)));
+                    for(let j = s.length-1; j >= 0; j--) {
+                        let ok = (typeof s[j] != "string" && !(s[j] instanceof Error));
+                        if(!ok) {
+                            s.splice(j, 1);
+                            usrs.splice(j, 1);
+                        }
+                    }
+                    for(let j = 0; j < s.length; j++) {
+                        try {
+                            if(!cache.find(c => c.mods == s[j].mods.diff()))
+                                cache.push({
+                                    mods: s[j].mods.diff(),
+                                    map: await this.bot.api.bancho.getBeatmap(beatmapId, mode, s[j].mods.diff())
+                                }); 
+                        } catch(e) {}
+                    }
+                    scores.push(...s.map((score, j) => {
+                        return {
+                            user: usrs[j],
+                            score
+                        };
+                    }));
+                }catch(e){} // Ignore "No scores"
+            }
+            return {
+                maps: cache,
+                scores: scores.sort((a,b) => {
+                    if(a.score.score > b.score.score)
+                        return -1;
+                    else if(a.score.score < b.score.score)
+                        return 1;
+                    return 0;
+                })
+            }
+        } catch (e) {
+            throw e || "Unknown error";
         }
     }
 }

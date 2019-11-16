@@ -14,11 +14,11 @@ class APICollection {
     akatsuki: AkatsukiAPI;
     relax: AkatsukiRelaxAPI;
     constructor(bot: Bot) {
-        this.bancho = new BanchoAPI(bot.config.tokens.bancho);
-        this.gatari = new GatariAPI();
-        this.ripple = new RippleAPI();
-        this.akatsuki = new AkatsukiAPI();
-        this.relax = new AkatsukiRelaxAPI();
+        this.bancho = new BanchoAPI(bot);
+        this.gatari = new GatariAPI(bot);
+        this.ripple = new RippleAPI(bot);
+        this.akatsuki = new AkatsukiAPI(bot);
+        this.relax = new AkatsukiRelaxAPI(bot);
     }
 }
 
