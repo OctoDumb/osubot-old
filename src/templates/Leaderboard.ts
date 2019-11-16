@@ -7,7 +7,8 @@ export default function(leaderboard: LeaderboardResponse, server: string): strin
     if(!leaderboard.scores[0])
         return `[Server: ${server}]\nНи у кого нет скоров на этой карте!`;
     let map = leaderboard.maps.find(m => m.mods == 0).map;
-    return `Топ беседы на карте:
+    return `[Server: ${server}]
+Топ беседы на карте:
 ${map.artist} - ${map.title} [${map.version}] by ${map.creator.nickname}\n` + leaderboard.scores/* .slice(0, 10) */.map((lbscore, i) => {
         let smap = leaderboard.maps.find(m => m.mods == lbscore.score.mods.diff()).map;
         let calc = new BanchoPP(smap, lbscore.score.mods);
