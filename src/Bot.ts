@@ -84,7 +84,7 @@ export default class Bot {
             if(ctx.isOutbox || ctx.isFromGroup || ctx.isEvent)
                 return;
             let replayDoc = this.checkReplay(ctx);
-            let hasMap = IsMap(ctx.text);
+            let hasMap = this.checkMap(ctx);
             if(replayDoc) {
                 try {
                     let { data: file } = await axios.default.get(replayDoc.url, {
@@ -161,6 +161,20 @@ export default class Bot {
         if(!ctx.hasAttachments("doc"))
             return null;
         return ctx.getAttachments("doc").filter(doc => doc.extension == "osr")[0];
+    }
+
+    checkMap(ctx: MessageContext): number {
+        let hasMap = IsMap(ctx.text);
+        let hasAtt = ctx.hasAttachments("link");
+        if(hasMap)
+            return hasMap;
+        if(hasAtt) {
+            let url = ctx.getAttachments("link")[0].url;
+            hasMap = IsMap(url);
+            if(hasMap)
+                return hasMap;
+            return null;
+        }
     }
 
     async updateStreamers() {
