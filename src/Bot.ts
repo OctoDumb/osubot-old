@@ -18,7 +18,7 @@ import Ripple from './modules/Ripple';
 import Donaters from './Donaters';
 import Akatsuki from './modules/Akatsuki';
 import AkatsukiRelax from './modules/AkatsukiRelax/Akatsuki';
-import Twitch from './Twitch.js';
+import * as TwitchJs from 'twitch-js';
 
 interface IBotConfig {
     vk: {
@@ -124,7 +124,9 @@ export default class Bot {
 
         this.streamers = [];
 
-        this.twitch = Twitch(config);
+        this.twitch = new TwitchJs.default({
+            clientId: config.twitchId
+        }).api;
 
         this.updateStreamers();
     }
