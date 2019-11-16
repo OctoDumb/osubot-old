@@ -26,7 +26,7 @@ npm install
     },
     "tokens": {
         "bancho": "Bancho token",
-        "ripple": "Ripple token"
+        "ripple": "Ripple token (useless atm)"
     }
 }
 ```
