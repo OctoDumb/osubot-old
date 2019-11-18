@@ -5,6 +5,7 @@ import EvalCommand from './Eval';
 import ErrorCommand from './Error';
 import StatusCommand from './Status';
 import UploadCommand from './Upload';
+import AdminVKScript from './VKScript';
 
 export default class Admin extends Module {
     constructor(bot: Bot) {
@@ -17,7 +18,8 @@ export default class Admin extends Module {
             new ErrorCommand(this),
             new StatusCommand(this),
             new EvalCommand(this),
-            new UploadCommand(this)
+            new UploadCommand(this),
+            new AdminVKScript(this)
         ]);
     }
 }
