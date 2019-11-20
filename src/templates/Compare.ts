@@ -9,7 +9,7 @@ ${Util.formatBeatmapLength(map.length / calc.speedMultiplier)} | ${map.stats} ${
 
 Очки: ${score.score} | Комбо: ${Util.formatCombo(score.combo, map.combo)}
 Точность: ${Util.round(score.accuracy() * 100, 2)}%
-PP: ${pp.pp.toFixed(2)}${pp.ss == pp.pp ? '' : pp.fc == pp.pp ? ` ⯈ SS: ${pp.ss.toFixed(2)}` : ` ⯈ FC: ${pp.fc.toFixed(2)} ⯈ SS: ${pp.ss.toFixed(2)}`}
-Хиткаунты: ${score.counts.toString()}
+PP: ${Util.round(pp.pp, 2)}${pp.ss == pp.pp ? '' : pp.fc == pp.pp ? ` ⯈ SS: ${Util.round(pp.ss, 2)}` : ` ⯈ FC: ${Util.round(pp.fc, 2)} ⯈ SS: ${Util.round(pp.ss, 2)}`}
+Хиткаунты: ${score.counts}
 Ранк: ${score.rank}`;
 }
