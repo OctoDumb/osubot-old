@@ -19,7 +19,7 @@ export default class BanchoUser extends Command {
                 let status = self.module.bot.donaters.status("bancho", user.id);
                 if(!dbUser.mode)
                     self.module.bot.database.servers.bancho.updateInfo(user);
-                ctx.reply(`[Server:${self.module.name}]\n${self.module.bot.templates.User(user, dbUser.mode || 0, status, self.module.link)}`);
+                ctx.reply(`[Server: ${self.module.name}]\n${self.module.bot.templates.User(user, dbUser.mode || 0, status, self.module.link)}`);
             } catch(e) {
                 let err = await self.module.bot.database.errors.addError("b", ctx, String(e));
                 ctx.reply(`[Server: ${self.module.name}]\n${Util.error(String(e))} (${err})`);
