@@ -130,7 +130,7 @@ export default class Bot {
             clientId: config.twitchId
         }).api;
 
-        // this.updateStreamers();
+        this.updateStreamers();
     }
 
     registerModule(module: Module | Module[]) {
