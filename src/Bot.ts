@@ -19,6 +19,7 @@ import Donaters from './Donaters';
 import Akatsuki from './modules/Akatsuki';
 import AkatsukiRelax from './modules/AkatsukiRelax/Akatsuki';
 import * as TwitchJs from 'twitch-js';
+import Enjuu from './modules/Enjuu';
 
 interface IBotConfig {
     vk: {
@@ -66,6 +67,7 @@ export default class Bot {
             new Ripple(this),
             new Akatsuki(this),
             new AkatsukiRelax(this),
+            new Enjuu(this),
             new Admin(this),
             new Main(this)
         ]);
@@ -128,7 +130,7 @@ export default class Bot {
             clientId: config.twitchId
         }).api;
 
-        this.updateStreamers();
+        // this.updateStreamers();
     }
 
     registerModule(module: Module | Module[]) {
@@ -143,6 +145,7 @@ export default class Bot {
         this.database.run("CREATE TABLE IF NOT EXISTS gatari (id INTEGER, uid INTEGER, mode INTEGER, pp REAL DEFAULT 0, rank INTEGER DEFAULT 999999, acc REAL DEFAULT 100)");
         this.database.run("CREATE TABLE IF NOT EXISTS ripple (id INTEGER, uid INTEGER, mode INTEGER, pp REAL DEFAULT 0, rank INTEGER DEFAULT 999999, acc REAL DEFAULT 100)");
         this.database.run("CREATE TABLE IF NOT EXISTS akatsuki (id INTEGER, uid INTEGER, mode INTEGER, pp REAL DEFAULT 0, rank INTEGER DEFAULT 999999, acc REAL DEFAULT 100)");
+        this.database.run("CREATE TABLE IF NOT EXISTS enjuu (id INTEGER, uid INTEGER, mode INTEGER, pp REAL DEFAULT 0, rank INTEGER DEFAULT 999999, acc REAL DEFAULT 100)");
         this.database.run("CREATE TABLE IF NOT EXISTS covers (id INTEGER attachment TEXT)");
         this.database.run("CREATE TABLE IF NOT EXISTS errors (code TEXT, info TEXT, error TEXT)");
     }

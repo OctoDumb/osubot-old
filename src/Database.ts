@@ -132,7 +132,8 @@ interface IServersList {
     bancho: DatabaseServer,
     gatari: DatabaseServer,
     ripple: DatabaseServer,
-    akatsuki: DatabaseServer
+    akatsuki: DatabaseServer,
+    enjuu: DatabaseServer
 }
 
 export default class Database {
@@ -146,7 +147,8 @@ export default class Database {
             bancho: new DatabaseServer("bancho", this),
             gatari: new DatabaseServer("gatari", this),
             ripple: new DatabaseServer("ripple", this),
-            akatsuki: new DatabaseServer("akatsuki", this)
+            akatsuki: new DatabaseServer("akatsuki", this),
+            enjuu: new DatabaseServer("enjuu", this)
         }
 
         this.covers = new DatabaseCovers(this);
