@@ -7,6 +7,8 @@ import EnjuuMode from "./Mode";
 import EnjuuChat from "./Chat";
 import EnjuuFind from "./Find";
 import EnjuuRecent from "./Recent";
+import EnjuuCompare from "./Compare";
+import EnjuuLeaderboard from "./Leaderboard";
 
 export default class Enjuu extends Module {
     constructor(bot: Bot) {
@@ -23,7 +25,9 @@ export default class Enjuu extends Module {
             new EnjuuTop(this),
             new EnjuuChat(this),
             new EnjuuFind(this),
-            new EnjuuRecent(this)
+            new EnjuuRecent(this),
+            new EnjuuCompare(this),
+            new EnjuuLeaderboard(this)
         ]);
     }
 }
