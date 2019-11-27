@@ -141,11 +141,10 @@ export default class Bot {
     }
 
     initDB(): void {
-        this.database.run("CREATE TABLE IF NOT EXISTS bancho (id INTEGER, uid INTEGER, mode INTEGER, pp REAL DEFAULT 0, rank INTEGER DEFAULT 999999, acc REAL DEFAULT 100)");
-        this.database.run("CREATE TABLE IF NOT EXISTS gatari (id INTEGER, uid INTEGER, mode INTEGER, pp REAL DEFAULT 0, rank INTEGER DEFAULT 999999, acc REAL DEFAULT 100)");
-        this.database.run("CREATE TABLE IF NOT EXISTS ripple (id INTEGER, uid INTEGER, mode INTEGER, pp REAL DEFAULT 0, rank INTEGER DEFAULT 999999, acc REAL DEFAULT 100)");
-        this.database.run("CREATE TABLE IF NOT EXISTS akatsuki (id INTEGER, uid INTEGER, mode INTEGER, pp REAL DEFAULT 0, rank INTEGER DEFAULT 999999, acc REAL DEFAULT 100)");
-        this.database.run("CREATE TABLE IF NOT EXISTS enjuu (id INTEGER, uid INTEGER, mode INTEGER, pp REAL DEFAULT 0, rank INTEGER DEFAULT 999999, acc REAL DEFAULT 100)");
+        for(let k in this.database.servers) {
+            let t = this.database.servers[k].table;
+            this.database.run(`CREATE TABLE IF NOT EXISTS ${t} (id INTEGER, uid INTEGER, nickname TEXT, mode INTEGER, pp REAL DEFAULT 0, rank INTEGER DEFAULT 999999, acc REAL DEFAULT 100)`);
+        }
         this.database.run("CREATE TABLE IF NOT EXISTS covers (id INTEGER attachment TEXT)");
         this.database.run("CREATE TABLE IF NOT EXISTS errors (code TEXT, info TEXT, error TEXT)");
     }

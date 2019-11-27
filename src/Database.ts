@@ -182,13 +182,13 @@ export default class Database {
         });
     }
 
-    async run(stmt: string, opts: any[] = []): Promise<void> {
+    async run(stmt: string, opts: any[] = []): Promise<sqlite.RunResult> {
         return new Promise((resolve, reject) => {
-            this.db.run(stmt, opts, (_res: sqlite.RunResult, err: Error) => {
+            this.db.run(stmt, opts, (res: sqlite.RunResult, err: Error) => {
                 if(err)
                     reject(err);
                 else
-                    resolve();
+                    resolve(res);
             });
         });
     }
