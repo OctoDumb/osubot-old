@@ -10,6 +10,7 @@ import BanchoCompare from "./Compare";
 import BanchoChat from "./Chat";
 import BanchoFind from "./Find";
 import BanchoLeaderboard from "./Leaderboard";
+import BanchoTrack from "./Track";
 
 export default class Bancho extends Module {
     link: string;
@@ -29,7 +30,8 @@ export default class Bancho extends Module {
             new BanchoRecent(this),
             new BanchoCompare(this),
             new BanchoChat(this),
-            new BanchoLeaderboard(this)
+            new BanchoLeaderboard(this),
+            new BanchoTrack(this)
         ]);
     }
 }
