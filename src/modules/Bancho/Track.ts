@@ -4,7 +4,7 @@ import Util from "../../Util";
 
 export default class BanchoTrack extends Command {
     constructor(module: Module) {
-        super(["u", "update"], module, async (ctx, self, args) => {
+        super("update", module, async (ctx, self, args) => {
             let dbUser = await self.module.bot.database.servers.bancho.getUser(ctx.senderId);
             if(ctx.hasReplyMessage)
                 dbUser.nickname = (await self.module.bot.database.servers.bancho.getUser(ctx.replyMessage.senderId)).nickname;
