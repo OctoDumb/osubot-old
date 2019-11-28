@@ -20,6 +20,7 @@ import Akatsuki from './modules/Akatsuki';
 import AkatsukiRelax from './modules/AkatsukiRelax/Akatsuki';
 import * as TwitchJs from 'twitch-js';
 import Enjuu from './modules/Enjuu';
+import OsuTrackAPI from './Track';
 
 interface IBotConfig {
     vk: {
@@ -52,6 +53,7 @@ export default class Bot {
     donaters: Donaters;
     streamers: TwitchStream[];
     twitch: any;
+    track: OsuTrackAPI;
     constructor(config: IBotConfig) {
         this.config = config;
 
@@ -131,6 +133,8 @@ export default class Bot {
         }).api;
 
         this.updateStreamers();
+
+        this.track = new OsuTrackAPI();
     }
 
     registerModule(module: Module | Module[]) {

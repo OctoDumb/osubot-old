@@ -273,6 +273,40 @@ class APIBeatmap {
     }
 }
 
+class TrackTopScore {
+    beatmapId: number;
+    score: number;
+    combo: number;
+    counts: HitCounts;
+    mods: Mods;
+    rank: string;
+    pp: number;
+    mode: number;
+    place: number;
+    constructor(data: any, mode: number) {
+        this.beatmapId = Number(data.beatmap_id);
+        this.score = Number(data.score);
+        this.combo = Number(data.maxcombo);
+        this.counts = new HitCounts({
+            300: Number(data.count300),
+            100: Number(data.count100),
+            50: Number(data.count50),
+            miss: Number(data.countmiss),
+            katu: Number(data.countkatu),
+            geki: Number(data.countgeki)
+        }, mode);
+        this.mods = new Mods(Number(data.enabled_mods));
+        this.rank = data.rank;
+        this.pp = Number(data.pp);
+        this.mode = mode;
+        this.place = data.ranking;
+    }
+
+    accuracy() {
+        return Util.accuracy(this.counts);
+    }
+}
+
 interface APIRecentScore {
     api: IAPI;
     beatmapId: number;
@@ -305,12 +339,25 @@ interface LeaderboardResponse {
     scores: LeaderboardScore[]
 }
 
+interface OsuTrackResponse {
+    username: string;
+    mode: number;
+    playcount: number;
+    pp: number;
+    rank: number;
+    accuracy: number;
+    levelup: boolean;
+    highscores: TrackTopScore[];
+}
+
 export {
     APIUser,
     APITopScore,
     APIScore,
     APIBeatmap,
     APIRecentScore,
+
+    TrackTopScore,
 
     BeatmapStatus,
     ProfileMode,
@@ -327,5 +374,6 @@ export {
 
     IDatabaseUser,
     LeaderboardScore,
-    LeaderboardResponse
+    LeaderboardResponse,
+    OsuTrackResponse
 }

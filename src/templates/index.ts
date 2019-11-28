@@ -7,8 +7,9 @@ import ReplayT from './Replay';
 import Beatmap from "./Beatmap";
 import PP from "./PP";
 import Leaderboard from "./Leaderboard";
+import Track from "./Track";
 import { Replay } from '../Replay';
-import { APIUser, APITopScore, APIBeatmap, APIRecentScore, APIScore, ICommandArgs, LeaderboardResponse } from '../Types';
+import { APIUser, APITopScore, APIBeatmap, APIRecentScore, APIScore, ICommandArgs, LeaderboardResponse, OsuTrackResponse } from '../Types';
 import { IPPCalculator as ICalc } from '../pp/Calculator';
 
 interface ITemplates {
@@ -21,6 +22,7 @@ interface ITemplates {
     Beatmap: (map: APIBeatmap) => string;
     PP: (map: APIBeatmap, args: ICommandArgs) => string;
     Leaderboard: (leaderboard: LeaderboardResponse, server: string) => string;
+    Track: (response: OsuTrackResponse) => string;
 }
 
 var Templates: ITemplates = {
@@ -32,7 +34,8 @@ var Templates: ITemplates = {
     Replay: ReplayT,
     Beatmap,
     PP,
-    Leaderboard
+    Leaderboard,
+    Track
 }
 
 export {
