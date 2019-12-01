@@ -28,7 +28,7 @@ export default class News {
                 let code = ids.map(id => `API.messages.send(${JSON.stringify({peer_id: id, message, attachment: attachment || ""})});`).join("\n");
                 await this.bot.vk.api.execute({ code });
             } catch(e) {
-                //
+                console.log(e);
             }
         }
         // for(let i = 1; i < 2e3; i++) {
