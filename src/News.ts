@@ -25,8 +25,9 @@ export default class News {
                 for(let j = 1; j <= 25; j++)
                     ids.push(2000000000 + (i*25) + j);
                 ids.filter(id => !this.forbidden.includes(id));
-                let code = ids.map(id => `API.messages.send(${JSON.stringify({peer_id: id, message, random_id: "a", attachment: attachment || ""})});`).join("\n");
-                await this.bot.vk.api.execute({ code });
+                let code = ids.map(id => `API.messages.send(${JSON.stringify({peer_id: id, message, random_id: 2281337, attachment: attachment || ""})});`).join("\n");
+                let r = await this.bot.vk.api.execute({ code });
+                console.log(r);
             } catch(e) {
                 console.log(e);
             }
