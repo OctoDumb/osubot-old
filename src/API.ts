@@ -7,6 +7,7 @@ import RippleAPI from './api/Ripple';
 import AkatsukiAPI from './api/Akatsuki';
 import AkatsukiRelaxAPI from './api/AkatsukiRelax';
 import EnjuuAPI from './api/Enjuu';
+import VudekAPI from './api/Vudek';
 
 class APICollection {
     bancho: BanchoAPI;
@@ -15,6 +16,7 @@ class APICollection {
     akatsuki: AkatsukiAPI;
     relax: AkatsukiRelaxAPI;
     enjuu: EnjuuAPI;
+    vudek: VudekAPI;
     constructor(bot: Bot) {
         this.bancho = new BanchoAPI(bot);
         this.gatari = new GatariAPI(bot);
@@ -22,6 +24,7 @@ class APICollection {
         this.akatsuki = new AkatsukiAPI(bot);
         this.relax = new AkatsukiRelaxAPI(bot);
         this.enjuu = new EnjuuAPI(bot);
+        this.vudek = new VudekAPI(bot);
     }
 }
 

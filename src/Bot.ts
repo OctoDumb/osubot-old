@@ -21,6 +21,7 @@ import AkatsukiRelax from './modules/AkatsukiRelax/Akatsuki';
 import * as TwitchJs from 'twitch-js';
 import Enjuu from './modules/Enjuu';
 import OsuTrackAPI from './Track';
+import Vudek from './modules/Vudek';
 
 interface IBotConfig {
     vk: {
@@ -70,6 +71,7 @@ export default class Bot {
             new Akatsuki(this),
             new AkatsukiRelax(this),
             new Enjuu(this),
+            new Vudek(this),
             new Admin(this),
             new Main(this)
         ]);
