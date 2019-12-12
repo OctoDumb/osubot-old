@@ -6,7 +6,9 @@ interface Donater {
     status: number
 }
 
-type ServerString = string | "bancho" | "gatari" | "ripple" | "akatsuki"
+type ServerString = string | "bancho" | "gatari" | "ripple" | "akatsuki" | "vudek";
+
+let servers = ["bancho", "gatari", "ripple", "akatsuki", "vudek"];
 
 export default class Donaters {
     list: {
@@ -21,13 +23,19 @@ export default class Donaters {
 
         this.list = JSON.parse(fs.readFileSync("./donaters.json").toString());
 
-        setInterval(() => {
-            this.save();
-        }, 30000);
+        for(let i = 0; i < servers.length; i++) {
+            if(!this.list[servers[i]])
+                this.list[servers[i]] = [];
+        }
+
+        this.save();
     }
 
     save() {
         fs.writeFileSync("./donaters.json", JSON.stringify(this.list, null, 4));
+        setTimeout(() => {
+            this.save();
+        }, 30000);
     }
 
     setDonater(server: ServerString, id: number, status: number = 1): boolean {
