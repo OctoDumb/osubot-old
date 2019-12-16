@@ -19,7 +19,27 @@ export default class EnjuuTop extends Command {
                 let user = await self.module.bot.api.enjuu.getUser(dbUser.nickname);
                 if(!dbUser.mode)
                     self.module.bot.database.servers.enjuu.updateInfo(user);
-                if(args.place) {
+                if(args.apx) {
+                    let top = await self.module.bot.api.enjuu.getUserTop(dbUser.nickname, dbUser.mode || 0, 100);
+                    let nearest = top[0];
+                    let place = 1;
+                    for(let i = 0; i < top.length; i++) {
+                        if(Math.abs(top[i].pp - args.apx) < nearest.pp - args.apx) {
+                            nearest = top[i];
+                            place = i+1;
+                        }
+                    }
+                    let map = await self.module.bot.api.bancho.getBeatmap(nearest.beatmapId, dbUser.mode || 0, nearest.mods.diff());
+                    let cover = await self.module.bot.database.covers.getCover(map.id.set);
+                    let calc = new BanchoPP(map, nearest.mods);
+                    ctx.reply(`[Server: ${self.module.name}] Ближайшее к ${args.apx}pp\n${self.module.bot.templates.TopSingle(nearest, map, user, place, calc, self.module.link)}`, {
+                        attachment: cover
+                    });
+                } else if(args.more) {
+                    let top = await self.module.bot.api.enjuu.getUserTop(dbUser.nickname, dbUser.mode || 0, 100);
+                    let amount = top.filter(t => t.pp > args.more).length;
+                    ctx.reply(`[Server: ${self.module.name}]\nУ игрока ${user.nickname} ${amount ? amount : 'нет'}${amount == 100 ? '+' : ''} ${Util.scoreNum(amount)} выше ${args.more}pp`);
+                } else if(args.place) {
                     let score = (await self.module.bot.api.enjuu.getUserTop(dbUser.nickname, dbUser.mode || 0, args.place))[args.place - 1];
                     let map = await self.module.bot.api.bancho.getBeatmap(score.beatmapId, dbUser.mode || 0, score.mods.diff());
                     let cover = await self.module.bot.database.covers.getCover(map.id.set);
