@@ -188,19 +188,33 @@ export default {
         let f = errors.find(er => er.e == e);
         return f ? f.t : "Неизвестная ошибка!";
     },
-    donater(status: number): string {
+    donater(status: number | string): string {
         var icons = {
+            'poop': '💩',
             1001: '💩',
+            'frog': '🐸',
             1002: '🐸',
+            'pig': '🐷',
             1003: '🐷',
+            'sunglasses': '😎',
             1004: '😎',
+            'stop': '⛔',
             1005: '⛔',
+            'verified': '✅',
             1006: '✅',
+            'jp': '🇯🇵',
             1007: '🇯🇵',
+            'skull': '💀',
             1008: '💀',
+            'car': '🚓',
             1009: '🚓',
+            'orange': '🍊',
             0: '',
+            'supporter': '💖',
+            'heart': '💖',
             1: '💖',
+            'crown': '👑',
+            'owner': '👑',
             228: '👑'
         };
         return icons[status] || '';

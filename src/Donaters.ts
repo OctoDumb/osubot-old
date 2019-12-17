@@ -3,7 +3,7 @@ import Util from "./Util";
 
 interface Donater {
     id: number,
-    status: number
+    status: number | string
 }
 
 type ServerString = string | "bancho" | "gatari" | "ripple" | "akatsuki" | "vudek";
@@ -38,7 +38,7 @@ export default class Donaters {
         }, 30000);
     }
 
-    setDonater(server: ServerString, id: number, status: number = 1): boolean {
+    setDonater(server: ServerString, id: number, status: number | string = 0): boolean {
         if(!this.list[server])
             return false;
         if(this.list[server].some(a => a.id == id))
