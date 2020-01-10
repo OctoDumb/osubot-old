@@ -200,6 +200,7 @@ interface APITopScore {
     rank: string;
     pp: number;
     mode: number;
+    date?: Date;
     accuracy(): number;
 }
 

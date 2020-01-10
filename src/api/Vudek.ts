@@ -48,6 +48,7 @@ class VudekTopScore implements APITopScore {
     rank: string;
     pp: number;
     mode: number;
+    date: Date;
     constructor(data: any, mode: number, api: IAPI) {
         this.api = api;
         this.beatmapId = Number(data.beatmap_id);
@@ -65,6 +66,7 @@ class VudekTopScore implements APITopScore {
         this.rank = data.rank;
         this.pp = Number(data.pp);
         this.mode = mode;
+        this.date = new Date(data.date);
     }
 
     accuracy() {

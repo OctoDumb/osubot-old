@@ -47,6 +47,7 @@ class AkatsukiTopScore implements APITopScore {
     rank: string;
     pp: number;
     mode: number;
+    date: Date;
     constructor(data: any, mode: number, api: IAPI) {
         this.api = api;
         this.beatmapId = data.beatmap.beatmap_id;
@@ -64,6 +65,7 @@ class AkatsukiTopScore implements APITopScore {
         this.rank = data.rank;
         this.pp = data.pp;
         this.mode = mode;
+        this.date = new Date(data.time);
     }
 
     accuracy() {
