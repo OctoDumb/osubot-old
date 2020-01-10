@@ -375,7 +375,7 @@ class BanchoMania {
     }
 
     strainValue(mul: number, strain: number, score: number, hits: number) {
-        score *= mul;
+        score /= mul;
         let strainValue = Math.pow(5 * Math.max(1, strain / 0.2) - 4, 2.2) / 135;
         strainValue *= 1 + 0.1 * Math.min(1, hits / 1500);
 
@@ -396,7 +396,7 @@ class BanchoMania {
     }
 
     accValue(hitWindow: number, strainValue: number, score: number, mul: number) {
-        score *= mul;
+        score /= mul;
         return Math.max(0, 0.2 - ((hitWindow - 34) * 0.006667)) * strainValue * Math.pow((Math.max(0, (score - 960000)) / 4e4), 1.1);
     }
 }
