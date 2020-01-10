@@ -212,6 +212,8 @@ export default {
             'car': '🚓',
             1009: '🚓',
             'orange': '🍊',
+            1010: '✨',
+            'sparkles': '✨',
             0: '',
             'supporter': '💖',
             'heart': '💖',
