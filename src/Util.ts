@@ -179,7 +179,7 @@ export default {
         return `${combo}x/${full}x`;
     },
     formatDate(d: Date) {
-        return `${this.fixNumberLength(d.getDate())}.${this.fixNumberLength(d.getMonth() + 1)}.${this.fixNumberLength.getFullYear()} ${this.fixNumberLength(d.getHours())}:${this.fixNumberLength(d.getMinutes())}`;
+        return `${this.fixNumberLength(d.getDate())}.${this.fixNumberLength(d.getMonth() + 1)}.${this.fixNumberLength(d.getFullYear())} ${this.fixNumberLength(d.getHours())}:${this.fixNumberLength(d.getMinutes())}`;
     },
     async sleep(ms: number): Promise<void> {
         return new Promise(r => setTimeout(r, ms));
