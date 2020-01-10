@@ -223,7 +223,7 @@ export default class BanchoAPI implements IAPI {
         return beatmap;
     }
 
-    async getLeaderboard(beatmapId: number, users: IDatabaseUser[], mode: number = 0): Promise<LeaderboardResponse> {
+    async getLeaderboard(beatmapId: number, users: IDatabaseUser[], mode: number = 0, mods: number = null): Promise<LeaderboardResponse> {
         let cache: { mods: number, map: APIBeatmap }[] = [];
         let scores: LeaderboardScore[] = [];
         try {
@@ -236,16 +236,12 @@ export default class BanchoAPI implements IAPI {
                 try {
                     let usrs = users.splice(0, 5);
                     let usPromise = usrs.map(
-                        u => this.getScore(u.nickname, beatmapId, mode)
+                        u => this.getScore(u.nickname, beatmapId, mode, mods)
                     );  
-                    let s: APIScore[] = await Promise.all(usPromise.map((p) => p.catch(e => e)));
-                    for(let j = s.length-1; j >= 0; j--) {
-                        let ok = (typeof s[j] != "string" && !(s[j] instanceof Error));
-                        if(!ok) {
-                            s.splice(j, 1);
-                            usrs.splice(j, 1);
-                        }
-                    }
+                    let s: APIScore[] = (await Promise.all(usPromise.map(
+                            (p) => p.catch(e => e)
+                        ))
+                    ).filter(p => typeof p != "string" && !(p instanceof Error));
                     for(let j = 0; j < s.length; j++) {
                         try {
                             if(!cache.find(c => c.mods == s[j].mods.diff()))

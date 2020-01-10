@@ -1,6 +1,7 @@
 import { Command } from "../../Command";
 import { Module } from "../../Module";
 import { IDatabaseUser } from "../../Types";
+import Mods from "../../pp/Mods";
 
 export default class RippleLeaderboard extends Command {
     constructor(module: Module) {
@@ -22,7 +23,7 @@ export default class RippleLeaderboard extends Command {
                         users.push(user);
                 }
                 users = users.filter(a => a.rank > 0 && a.pp > 0);
-                let leaderboard = await self.module.bot.api.ripple.getLeaderboard(chat.map.id.map, users, chat.map.mode);
+                let leaderboard = await self.module.bot.api.ripple.getLeaderboard(chat.map.id.map, users, chat.map.mode, args.mods.length == 0 ? null : new Mods(args.mods).sum());
                 ctx.reply(self.module.bot.templates.Leaderboard(leaderboard, self.module.name));
             } catch(e) {
                 ctx.reply("Ошибка!");
