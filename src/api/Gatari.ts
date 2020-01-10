@@ -216,7 +216,7 @@ export default class GatariAPI implements IAPI {
                             (p) => p.catch(e => e)
                         ))
                     );
-                    for(let j = s.length - 1; j >= 1; j--) {
+                    for(let j = s.length - 1; j >= 0; j--) {
                         let ok = typeof s[j] != "string" && !(s[j] instanceof Error);
                         if(!ok) {
                             s.splice(j, 1);
