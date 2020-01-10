@@ -212,9 +212,12 @@ export default class GatariAPI implements IAPI {
                     let usPromise = usrs.map(
                         u => this.getScore(u.nickname, beatmapId, mode)
                     );  
-                    let s: APIScore[] = await Promise.all(usPromise.map((p) => p.catch(e => e)));
-                    for(let j = s.length-1; j >= 0; j--) {
-                        let ok = (typeof s[j] != "string" && !(s[j] instanceof Error));
+                    let s: APIScore[] = (await Promise.all(usPromise.map(
+                            (p) => p.catch(e => e)
+                        ))
+                    );
+                    for(let j = s.length - 1; j >= 1; j--) {
+                        let ok = typeof s[j] != "string" && !(s[j] instanceof Error);
                         if(!ok) {
                             s.splice(j, 1);
                             usrs.splice(j, 1);

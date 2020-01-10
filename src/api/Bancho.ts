@@ -243,7 +243,14 @@ export default class BanchoAPI implements IAPI {
                     let s: APIScore[] = (await Promise.all(usPromise.map(
                             (p) => p.catch(e => e)
                         ))
-                    ).filter(p => typeof p != "string" && !(p instanceof Error));
+                    );
+                    for(let j = s.length - 1; j >= 1; j--) {
+                        let ok = typeof s[j] != "string" && !(s[j] instanceof Error);
+                        if(!ok) {
+                            s.splice(j, 1);
+                            usrs.splice(j, 1);
+                        }
+                    }
                     for(let j = 0; j < s.length; j++) {
                         try {
                             if(!cache.find(c => c.mods == s[j].mods.diff()))
