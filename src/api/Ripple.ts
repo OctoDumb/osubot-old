@@ -115,6 +115,7 @@ class RippleScore implements APIScore {
     mods: Mods;
     mode: number;
     rank: string;
+    date: Date;
     constructor(data: any, mode: number, id: number, api: IAPI) {
         this.api = api;
         this.beatmapId = id;
@@ -131,6 +132,7 @@ class RippleScore implements APIScore {
         this.mods = new Mods(Number(data.enabled_mods));
         this.rank = data.rank;
         this.mode = mode;
+        this.date = new Date(data.date);
     }
 
     accuracy() {

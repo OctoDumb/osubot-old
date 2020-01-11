@@ -178,8 +178,11 @@ export default {
             return `${combo}x`;
         return `${combo}x/${full}x`;
     },
-    formatDate(d: Date) {
-        return `${this.fixNumberLength(d.getDate())}.${this.fixNumberLength(d.getMonth() + 1)}.${this.fixNumberLength(d.getFullYear())} ${this.fixNumberLength(d.getHours())}:${this.fixNumberLength(d.getMinutes())}`;
+    formatDate(d: Date, crop: boolean = false) {
+        if(!crop)
+            return `${this.fixNumberLength(d.getDate())}.${this.fixNumberLength(d.getMonth() + 1)}.${this.fixNumberLength(d.getFullYear())} ${this.fixNumberLength(d.getHours())}:${this.fixNumberLength(d.getMinutes())}`;
+        else
+            return `${this.fixNumberLength(d.getDate())}.${this.fixNumberLength(d.getMonth() + 1)}.${this.fixNumberLength(d.getFullYear())}`;
     },
     async sleep(ms: number): Promise<void> {
         return new Promise(r => setTimeout(r, ms));

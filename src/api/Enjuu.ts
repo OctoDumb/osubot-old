@@ -115,6 +115,7 @@ class EnjuuScore implements APIScore {
     mods: Mods;
     mode: number;
     rank: string;
+    date: Date;
     constructor(data: any, mode: number, id: number, api: IAPI) {
         this.api = api;
         this.beatmapId = id;
@@ -131,6 +132,7 @@ class EnjuuScore implements APIScore {
         this.mods = new Mods(Number(data.enabled_mods));
         this.rank = data.rank;
         this.mode = mode;
+        this.date = new Date(data.date);
     }
 
     accuracy() {
@@ -213,7 +215,7 @@ export default class EnjuuAPI implements IAPI {
                     let usrs = users.splice(0, 5);
                     let usPromise = usrs.map(
                         u => this.getScore(u.nickname, beatmapId, mode, mods)
-                    );  
+                    );
                     let s: APIScore[] = (await Promise.all(usPromise.map(
                             (p) => p.catch(e => e)
                         ))

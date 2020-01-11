@@ -47,6 +47,7 @@ class GatariTopScore implements APITopScore {
     rank: string;
     pp: number;
     mode: number;
+    date: Date;
     constructor(score: any, api: IAPI) {
         this.api = api;
         this.beatmapId = score.beatmap.beatmap_id;
@@ -64,6 +65,7 @@ class GatariTopScore implements APITopScore {
         this.rank = score.ranking;
         this.pp = score.pp;
         this.mode = score.play_mode;
+        this.date = new Date(score.time);
     }
 
     accuracy() {
@@ -112,6 +114,7 @@ class GatariScore implements APIScore {
     mods: Mods;
     mode: number;
     rank: string;
+    date: Date;
     constructor(data: any, id: number, api: IAPI) {
         this.api = api;
         this.beatmapId = id;
@@ -127,6 +130,7 @@ class GatariScore implements APIScore {
         this.mode = data.play_mode;
         this.rank = data.rank;
         this.mode = data.play_mode;
+        this.date = new Date(data.time * 1e3);
     }
 
     accuracy() {

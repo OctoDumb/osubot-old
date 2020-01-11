@@ -200,7 +200,7 @@ interface APITopScore {
     rank: string;
     pp: number;
     mode: number;
-    date?: Date;
+    date: Date;
     accuracy(): number;
 }
 
@@ -214,6 +214,7 @@ interface APIScore {
     mode: number;
     accuracy(): number;
     rank: string;
+    date: Date;
 }
 
 class APIBeatmap {

@@ -13,6 +13,6 @@ ${map.artist} - ${map.title} [${map.version}] by ${map.creator.nickname}\n` + le
         let smap = leaderboard.maps.find(m => m.mods == lbscore.score.mods.diff()).map;
         let calc = new BanchoPP(smap, lbscore.score.mods);
         let pp = calc.calculate(lbscore.score);
-        return `#${i+1} ${lbscore.user.nickname} | ${lbscore.score.score} | ${Util.formatCombo(lbscore.score.combo, smap.combo)} | ${Util.round(lbscore.score.accuracy() * 100, 2)}% | ${Util.round(pp.pp, 2)}pp ${lbscore.score.mods}`;
+        return `#${i+1} ${lbscore.user.nickname} | ${lbscore.score.score} | ${Util.formatCombo(lbscore.score.combo, smap.combo)} | ${Util.round(lbscore.score.accuracy() * 100, 2)}% | ${Util.round(pp.pp, 2)}pp ${lbscore.score.mods} | ${Util.formatDate(lbscore.score.date, true)}`;
     }).join("\n");
 }
