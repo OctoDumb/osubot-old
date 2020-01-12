@@ -17,11 +17,12 @@ import IsMap from './MapRegexp';
 import Ripple from './modules/Ripple';
 import Donaters from './Donaters';
 import Akatsuki from './modules/Akatsuki';
-import AkatsukiRelax from './modules/AkatsukiRelax/Akatsuki';
+import AkatsukiRelax from './modules/AkatsukiRelax';
 import * as TwitchJs from 'twitch-js';
 import Enjuu from './modules/Enjuu';
 import OsuTrackAPI from './Track';
 import Vudek from './modules/Vudek';
+import Kurikku from './modules/Kurikku';
 
 interface IBotConfig {
     vk: {
@@ -72,6 +73,7 @@ export default class Bot {
             new AkatsukiRelax(this),
             new Enjuu(this),
             new Vudek(this),
+            new Kurikku(this),
             new Admin(this),
             new Main(this)
         ]);

@@ -134,7 +134,8 @@ interface IServersList {
     ripple: DatabaseServer,
     akatsuki: DatabaseServer,
     enjuu: DatabaseServer,
-    vudek: DatabaseServer
+    vudek: DatabaseServer,
+    kurikku: DatabaseServer
 }
 
 export default class Database {
@@ -150,7 +151,8 @@ export default class Database {
             ripple: new DatabaseServer("ripple", this),
             akatsuki: new DatabaseServer("akatsuki", this),
             enjuu: new DatabaseServer("enjuu", this),
-            vudek: new DatabaseServer("vudek", this)
+            vudek: new DatabaseServer("vudek", this),
+            kurikku: new DatabaseServer("kurikku", this)
         }
 
         this.covers = new DatabaseCovers(this);
