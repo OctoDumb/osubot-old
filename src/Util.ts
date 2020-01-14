@@ -91,11 +91,12 @@ export default {
             acc: 0,
             place: 0,
             apx: 0,
-            more: 0
+            more: 0,
+            mode: null
         };
 
         for(let i = args.length - 1; i > -1; i--) {
-            let arg = args[i];
+            let arg = args[i].toLowerCase();
             if(arg.startsWith("+")) {
                 iArg.mods = arg.slice(1);
             } else if(arg.endsWith("x")) {
@@ -112,6 +113,14 @@ export default {
                 iArg.apx = Math.max(Number(arg.slice(1)), 1);
             } else if(arg.startsWith(">")) {
                 iArg.more = Math.max(Number(arg.slice(1)), 1);
+            } else if(arg == "-std" || arg == "-osu") {
+                iArg.mode = 0;
+            } else if(arg == "-taiko" || arg == "-drums") {
+                iArg.mode = 1;
+            } else if(arg == "-fruits" || arg == "-ctb") {
+                iArg.mode = 2;
+            } else if(arg == "-mania") {
+                iArg.mode = 3;
             } else {
                 iArg.string.push(arg);
                 iArg.nickname.push(arg);

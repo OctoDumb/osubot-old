@@ -18,7 +18,7 @@ export default class AkatsukiTop extends Command {
             try {
                 let user = await self.module.bot.api.akatsuki.getUser(dbUser.nickname);
                 if(!dbUser.mode)
-                    self.module.bot.database.servers.akatsuki.updateInfo(user);
+                    self.module.bot.database.servers.akatsuki.updateInfo(user, dbUser.mode || 0);
                 if(args.apx) {
                     let top = await self.module.bot.api.akatsuki.getUserTop(dbUser.nickname, dbUser.mode || 0, 100);
                     let nearest = top[0];

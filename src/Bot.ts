@@ -150,8 +150,7 @@ export default class Bot {
 
     initDB(): void {
         for(let k in this.database.servers) {
-            let t = this.database.servers[k].table;
-            this.database.run(`CREATE TABLE IF NOT EXISTS ${t} (id INTEGER, uid INTEGER, nickname TEXT, mode INTEGER, pp REAL DEFAULT 0, rank INTEGER DEFAULT 999999, acc REAL DEFAULT 100)`);
+            this.database.servers[k].createTables();
         }
         this.database.run("CREATE TABLE IF NOT EXISTS covers (id INTEGER attachment TEXT)");
         this.database.run("CREATE TABLE IF NOT EXISTS errors (code TEXT, info TEXT, error TEXT)");

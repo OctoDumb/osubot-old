@@ -12,8 +12,8 @@ export default class BanchoChat extends Command {
                     })).profiles;
                     let users = [];
                     for(let i = 0; i < members.length; i++) {
-                        let u = await self.module.bot.database.servers.bancho.getUser(members[i].id);
-                        if(u.nickname && !users.some(uu => uu.uid == u.uid)) {
+                        let u = await self.module.bot.database.servers.bancho.getUserStats(members[i].id, args.mode || 0);
+                        if(u.id && !users.some(uu => uu.id == u.id)) {
                             users.push(u);
                         }
                     }
@@ -40,13 +40,11 @@ export default class BanchoChat extends Command {
                     let members = (await self.module.bot.vk.api.messages.getConversationMembers({
                         peer_id: id + 2000000000
                     })).profiles;
-                    let ids = [];
                     let users = [];
                     for(let i = 0; i < members.length; i++) {
-                        let u = await self.module.bot.database.servers.bancho.getUser(members[i].id);
-                        if(u.nickname && !ids.includes(u.uid)) {
+                        let u = await self.module.bot.database.servers.bancho.getUserStats(members[i].id, args.mode || 0);
+                        if(u.id && !users.some(uu => uu.id == u.id)) {
                             users.push(u);
-                            ids.push(u.uid);
                         }
                     }
                     users.filter(a => a.rank > 0 && a.pp > 0);

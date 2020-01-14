@@ -14,12 +14,13 @@ export default class KurikkuUser extends Command {
                 dbUser.nickname = args.nickname.join(" ");
             if(!dbUser.nickname)
                 return ctx.reply("Не указан ник!");
+            let mode = args.mode === null ? dbUser.mode || 0 : args.mode;
             try {
-                let user = await self.module.bot.api.kurikku.getUser(dbUser.nickname, dbUser.mode || 0);
+                let user = await self.module.bot.api.kurikku.getUser(dbUser.nickname, mode);
                 let status = self.module.bot.donaters.status("kurikku", user.id);
                 if(!dbUser.mode)
-                    self.module.bot.database.servers.kurikku.updateInfo(user);
-                ctx.reply(`[Server:${self.module.name}]\n${self.module.bot.templates.User(user, dbUser.mode || 0, status, self.module.link)}`);
+                    self.module.bot.database.servers.kurikku.updateInfo(user, mode);
+                ctx.reply(`[Server:${self.module.name}]\n${self.module.bot.templates.User(user, mode, status, self.module.link)}`);
             } catch(e) {
                 let err = await self.module.bot.database.errors.addError("r", ctx, String(e));
                 ctx.reply(`[Server: ${self.module.name}]\n${Util.error(String(e))} (${err})`);

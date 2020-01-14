@@ -18,7 +18,7 @@ export default class BanchoTop extends Command {
             try {
                 let user = await self.module.bot.api.bancho.getUser(dbUser.nickname);
                 if(!dbUser.mode)
-                    self.module.bot.database.servers.bancho.updateInfo(user);
+                    self.module.bot.database.servers.bancho.updateInfo(user, dbUser.mode || 0);
                 if(args.apx) {
                     let top = await self.module.bot.api.bancho.getUserTop(dbUser.nickname, dbUser.mode || 0, 100);
                     let nearest = top[0];

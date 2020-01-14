@@ -18,7 +18,7 @@ export default class VudekTop extends Command {
             try {
                 let user = await self.module.bot.api.vudek.getUser(dbUser.nickname);
                 if(!dbUser.mode)
-                    self.module.bot.database.servers.vudek.updateInfo(user);
+                    self.module.bot.database.servers.vudek.updateInfo(user, dbUser.mode || 0);
                 if(args.apx) {
                     let top = await self.module.bot.api.vudek.getUserTop(dbUser.nickname, dbUser.mode || 0, 100);
                     let nearest = top[0];

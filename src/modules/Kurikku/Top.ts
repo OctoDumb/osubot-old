@@ -18,7 +18,7 @@ export default class KurikkuTop extends Command {
             try {
                 let user = await self.module.bot.api.kurikku.getUser(dbUser.nickname);
                 if(!dbUser.mode)
-                    self.module.bot.database.servers.kurikku.updateInfo(user);
+                    self.module.bot.database.servers.kurikku.updateInfo(user, dbUser.mode || 0);
                 if(args.apx) {
                     let top = await self.module.bot.api.kurikku.getUserTop(dbUser.nickname, dbUser.mode || 0, 100);
                     let nearest = top[0];

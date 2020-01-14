@@ -2,7 +2,7 @@ import sqlite from 'sqlite3';
 import { VK, MessageContext } from 'vk-io';
 import axios from 'axios';
 import util from './Util';
-import { APIUser, IDatabaseUser } from './Types';
+import { APIUser, IDatabaseUser, IDatabaseUserStats } from './Types';
 
 class DatabaseServer {
     table: String;
@@ -42,7 +42,7 @@ class DatabaseServer {
         }
     }
 
-    async setMode(id: Number, mode: Number): Promise<Boolean> {
+    async setMode(id: number, mode: number): Promise<boolean> {
         try {
             let user: IDatabaseUser = await this.getUser(id);
             if(!user)
@@ -53,10 +53,24 @@ class DatabaseServer {
         }
     }
 
-    async updateInfo(user: APIUser): Promise<void> {
-        let dbUser = await this.db.get(`SELECT * FROM ${this.table} WHERE uid = ? LIMIT 1`, [user.id]);
-        if(dbUser)
-            await this.db.run(`UPDATE ${this.table} SET pp = ?, rank = ?, acc = ? WHERE uid = ?`, [user.pp, user.rank.total, user.accuracy, user.id]);
+    async updateInfo(user: APIUser, mode: number): Promise<void> {
+        let dbUser = await this.db.get(`SELECT * FROM ${this.table}_stats_${mode} WHERE id = ? LIMIT 1`, [user.id]);
+        if(!dbUser.id)
+            await this.db.run(`INSERT INTO ${this.table}_stats_${mode} (id, nickname, pp, rank, acc) VALUES (?, ?, ?, ?, ?)`, [user.id, user.nickname, user.pp, user.rank.total, user.accuracy]);
+        else
+            await this.db.run(`UPDATE ${this.table}_stats_${mode} SET nickname = ?, pp = ?, rank = ?, acc = ? WHERE id = ?`, [user.nickname, user.pp, user.rank.total, user.accuracy, user.id]);
+    }
+
+    async getUserStats(id: number, mode: number): Promise<IDatabaseUserStats> {
+        let u = await this.getUser(id);
+        let stats: IDatabaseUserStats = await this.db.get(`SELECT * FROM ${this.table}_stats_${mode} WHERE id = ?`, [u.uid]);
+        return stats;
+    }
+
+    async createTables(): Promise<void> {
+        await this.db.run(`CREATE TABLE IF NOT EXISTS ${this.table} (id INTEGER, uid INTEGER, nickname TEXT, mode INTEGER)`);
+        for(let i = 0; i < 4; i++)
+            await this.db.run(`CREATE TABLE IF NOT EXISTS ${this.table}_stats_${i} (id INTEGER, nickname TEXT, pp REAL DEFAULT 0, rank INTEGER DEFAULT 9999999, acc REAL DEFAULT 100)`);
     }
 }
 

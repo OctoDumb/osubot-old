@@ -14,6 +14,7 @@ interface ICommandArgs {
     place: number;
     apx: number;
     more: number;
+    mode?: number;
 }
 
 interface PPArgs {
@@ -331,6 +332,14 @@ interface IDatabaseUser {
     acc: number
 }
 
+interface IDatabaseUserStats {
+    id: number,
+    nickname: string,
+    pp: number,
+    rank: number,
+    acc: number
+}
+
 interface LeaderboardScore {
     user: IDatabaseUser,
     score: APIScore
@@ -375,6 +384,7 @@ export {
     CalcArgs,
 
     IDatabaseUser,
+    IDatabaseUserStats,
     LeaderboardScore,
     LeaderboardResponse,
     OsuTrackResponse
