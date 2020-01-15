@@ -15,8 +15,9 @@ export default class AkatsukiRelaxRecent extends Command {
                 dbUser.nickname = args.nickname.join(" ");
             if(!dbUser.nickname)
                 return ctx.reply("Не указан ник!");
+            let mode = args.mode === null ? dbUser.mode || 0 : args.mode;
             try {
-                let recent = await self.module.bot.api.relax.getUserRecent(dbUser.nickname, dbUser.mode || 0);
+                let recent = await self.module.bot.api.relax.getUserRecent(dbUser.nickname, mode);
                 console.log(recent);
                 let map = await self.module.bot.api.bancho.getBeatmap(recent.beatmapId, recent.mode, recent.mods.diff());
                 let cover = await self.module.bot.database.covers.getCover(map.id.set);

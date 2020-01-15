@@ -15,12 +15,13 @@ export default class GatariCompare extends Command {
                 dbUser.nickname = args.nickname.join(" ");
             if(!dbUser.nickname)
                 return ctx.reply("Не указан ник!");
+            let mode = args.mode === null ? dbUser.mode || 0 : args.mode;
             try {
                 let chat = self.module.bot.maps.getChat(ctx.peerId);
                 if(!chat)
                     return ctx.reply("Отправьте карту!");
-                let score = await self.module.bot.api.gatari.getScore(dbUser.nickname, chat.map.id.map, dbUser.mode || 0);
-                let map = await self.module.bot.api.bancho.getBeatmap(chat.map.id.map, dbUser.mode || 0, score.mods.diff());
+                let score = await self.module.bot.api.gatari.getScore(dbUser.nickname, chat.map.id.map, mode);
+                let map = await self.module.bot.api.bancho.getBeatmap(chat.map.id.map, mode, score.mods.diff());
                 let cover = await self.module.bot.database.covers.getCover(map.id.set);
                 let calc = new Calculator(map, score.mods);
                 ctx.reply(`[Server: ${self.module.name}]\n${self.module.bot.templates.Compare(score, map, calc)}`, {
