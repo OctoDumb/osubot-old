@@ -56,6 +56,8 @@ export default class Bot {
     streamers: TwitchStream[];
     twitch: any;
     track: OsuTrackAPI;
+    startTime: number;
+    totalMessages: number;
     constructor(config: IBotConfig) {
         this.config = config;
 
@@ -91,6 +93,7 @@ export default class Bot {
         this.vk.updates.on("message", async (ctx) => {
             if(ctx.isOutbox || ctx.isFromGroup || ctx.isEvent)
                 return;
+            this.totalMessages++;
             let replayDoc = this.checkReplay(ctx);
             let hasMap = this.checkMap(ctx);
             if(replayDoc) {
@@ -139,6 +142,10 @@ export default class Bot {
         this.updateStreamers();
 
         this.track = new OsuTrackAPI();
+
+        this.startTime = 0;
+
+        this.totalMessages = 0;
     }
 
     registerModule(module: Module | Module[]) {
@@ -158,6 +165,7 @@ export default class Bot {
 
     async start() {
         await this.vk.updates.start();
+        this.startTime = Date.now();
         console.log('Started');
     }
 
@@ -201,6 +209,6 @@ export default class Bot {
         }
         setTimeout(() => {
             this.updateStreamers();
-        }, 15000);
+        }, 30000);
     }
 }

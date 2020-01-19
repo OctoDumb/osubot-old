@@ -4,8 +4,6 @@ import { Module } from "../../Module";
 export default class ErrorCommand extends Command {
     constructor(module: Module) {
         super(["e", "err", "error"], module, async (ctx, self, args) => {
-            if(ctx.senderId != module.bot.config.vk.owner) return;
-
             let err = await self.module.bot.database.errors.getError(args.string[0]);
 
             if(!err)
@@ -16,5 +14,7 @@ ${err.info}
 
 ${err.error}`);
         });
+
+        this.permission = (ctx) => ctx.senderId == module.bot.config.vk.owner;
     }
 }

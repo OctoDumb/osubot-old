@@ -6,8 +6,6 @@ import fs from "fs";
 export default class UploadCommand extends Command {
     constructor(module: Module) {
         super("upload", module, async (ctx, self, args) => {
-            if(ctx.senderId != module.bot.config.vk.owner) return;
-
             if(!ctx.getAttachments("doc")[0])
                 return ctx.reply("Нет вложений!");
             
@@ -19,5 +17,7 @@ export default class UploadCommand extends Command {
 
             ctx.reply("Файл успешно загружен!");
         });
+
+        this.permission = (ctx) => ctx.senderId == module.bot.config.vk.owner;
     }
 }
