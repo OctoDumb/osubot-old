@@ -217,7 +217,7 @@ class BanchoTaiko {
 
         let totalHits = score.counts.totalHits()
 
-        let str1 = this.strainValue(totalHits, score.accuracy(), score.counts.miss, map.combo);
+        let str1 = this.strainValue(totalHits, score.accuracy(), score.counts.miss);
         let acc1 = this.accValue(score.accuracy(), totalHits);
 
         let pp = Math.pow(
@@ -226,8 +226,8 @@ class BanchoTaiko {
             1.0 / 1.1
         ) * multiplier;
 
-        let str2 = this.strainValue(map.combo, score.accuracy(), 0, map.combo);
-        let acc2 = this.accValue(score.accuracy(), totalHits);
+        let str2 = this.strainValue(map.combo, score.accuracy(), 0);
+        let acc2 = this.accValue(score.accuracy(), map.combo);
 
         let fc = Math.pow(
             Math.pow(str2, 1.1) +
@@ -235,8 +235,8 @@ class BanchoTaiko {
             1.0 / 1.1
         ) * multiplier;
 
-        let str3 = this.strainValue(map.combo, 1, 0, map.combo);
-        let acc3 = this.accValue(score.accuracy(), totalHits);
+        let str3 = this.strainValue(map.combo, 1, 0);
+        let acc3 = this.accValue(1, map.combo);
 
         let ss = Math.pow(
             Math.pow(str3, 1.1) +
@@ -251,7 +251,7 @@ class BanchoTaiko {
         };
     }
 
-    strainValue(hits: number, acc: number, miss: number, combo: number): number {
+    strainValue(hits: number, acc: number, miss: number): number {
         let strainValue = Math.pow(5 * Math.max(1, this.map.diff.stars / 0.0075) - 4, 2) / 1e5;
 
         let lengthBonus = 1 + 0.1 * Math.min(1, hits / 1500);
@@ -259,7 +259,7 @@ class BanchoTaiko {
 
         strainValue *= Math.pow(0.985, miss);
 
-        strainValue *= Math.min(Math.pow((hits - miss), 0.5) / Math.pow(combo, 0.5), 1);
+        strainValue *= Math.min(Math.pow((hits - miss), 0.5) / Math.pow(this.map.combo, 0.5), 1);
 
         if(this.mods.has("Hidden"))
             strainValue *= 1.025;
