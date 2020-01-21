@@ -58,6 +58,7 @@ export default class Bot {
     track: OsuTrackAPI;
     startTime: number;
     totalMessages: number;
+    version: string;
     constructor(config: IBotConfig) {
         this.config = config;
 
@@ -149,6 +150,8 @@ export default class Bot {
         this.startTime = 0;
 
         this.totalMessages = 0;
+
+        this.version = require('../../package.json').version;
     }
 
     registerModule(module: Module | Module[]) {
@@ -199,7 +202,7 @@ export default class Bot {
 
     async updateStreamers() {
         try {
-            let { streams } = await this.twitch.get('streams', { search: { game: 'osu!' } });
+            let { streams } = await this.twitch.get('streams', { version: 'kraken', search: { game: 'osu!' } });
             this.streamers = streams.map(s => {
                 return {
                     url: s.channel.url,

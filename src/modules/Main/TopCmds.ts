@@ -7,7 +7,7 @@ export default class TopCmdsCommand extends Command {
             let commands: Command[] = [];
             self.module.bot.modules.forEach(m => {
                 m.commands.forEach(c => {
-                    if(c.name != "topcmds" && c.module.name != "Admin")
+                    if(m.name != "Main" && m.name != "Admin")
                         commands.push(c);
                 });
             });
