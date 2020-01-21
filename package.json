@@ -1,6 +1,6 @@
 {
   "name": "osubot2",
-  "version": "1.0.0",
+  "version": "1.17.1",
   "description": "",
   "main": "index.ts",
   "scripts": {
@@ -9,8 +9,16 @@
     "start": "node ./build",
     "update": "git pull && tsc"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "OctopuSSX",
+  "license": "GPL-3.0-or-later",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/OctoDumb/osubot"
+  },
+  "bugs": {
+    "url": "https://github.com/OctoDumb/osubot/issues"
+  },
+  "homepage": "https://github.coim/OctoDumb/osubot#readme",
   "dependencies": {
     "axios": "^0.19.1",
     "int64-buffer": "^0.99.1007",
