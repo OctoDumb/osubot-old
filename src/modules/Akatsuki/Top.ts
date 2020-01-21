@@ -17,7 +17,7 @@ export default class AkatsukiTop extends Command {
                 return ctx.reply("Не указан ник!");
             let mode = args.mode === null ? dbUser.mode || 0 : args.mode;
             try {
-                let user = await self.module.bot.api.akatsuki.getUser(dbUser.nickname);
+                let user = await self.module.bot.api.akatsuki.getUser(dbUser.nickname, mode);
                 self.module.bot.database.servers.akatsuki.updateInfo(user, mode);
                 if(args.apx) {
                     let top = await self.module.bot.api.akatsuki.getUserTop(dbUser.nickname, mode, 100);

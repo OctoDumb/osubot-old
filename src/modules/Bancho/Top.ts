@@ -17,7 +17,7 @@ export default class BanchoTop extends Command {
                 return ctx.reply("Не указан ник!");
             let mode = args.mode === null ? dbUser.mode || 0 : args.mode;
             try {
-                let user = await self.module.bot.api.bancho.getUser(dbUser.nickname);
+                let user = await self.module.bot.api.bancho.getUser(dbUser.nickname, mode);
                 self.module.bot.database.servers.bancho.updateInfo(user, mode);
                 if(args.apx) {
                     let top = await self.module.bot.api.bancho.getUserTop(dbUser.nickname, mode, 100);

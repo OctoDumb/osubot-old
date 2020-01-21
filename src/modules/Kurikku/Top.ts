@@ -17,9 +17,8 @@ export default class KurikkuTop extends Command {
                 return ctx.reply("Не указан ник!");
             let mode = args.mode === null ? dbUser.mode || 0 : args.mode;
             try {
-                let user = await self.module.bot.api.kurikku.getUser(dbUser.nickname);
-                if(!dbUser.mode)
-                    self.module.bot.database.servers.kurikku.updateInfo(user, mode);
+                let user = await self.module.bot.api.kurikku.getUser(dbUser.nickname, mode);
+                self.module.bot.database.servers.kurikku.updateInfo(user, mode);
                 if(args.apx) {
                     let top = await self.module.bot.api.kurikku.getUserTop(dbUser.nickname, mode, 100);
                     let nearest = top[0];

@@ -17,9 +17,8 @@ export default class GatariTop extends Command {
                 return ctx.reply("Не указан ник!");
             let mode = args.mode === null ? dbUser.mode || 0 : args.mode;
             try {
-                let user = await self.module.bot.api.gatari.getUser(dbUser.nickname);
-                if(!dbUser.mode)
-                    self.module.bot.database.servers.gatari.updateInfo(user, mode);
+                let user = await self.module.bot.api.gatari.getUser(dbUser.nickname, mode);
+                self.module.bot.database.servers.gatari.updateInfo(user, mode);
                 if(args.apx) {
                     let top = await self.module.bot.api.gatari.getUserTop(dbUser.nickname, mode, 100);
                     let nearest = top[0];
