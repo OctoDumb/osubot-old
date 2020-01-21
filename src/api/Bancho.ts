@@ -142,7 +142,7 @@ class BanchoScore implements APIScore {
 
 export default class BanchoAPI implements IAPI {
     bot: Bot;
-    token: String;
+    token: string;
     api: axios.AxiosInstance;
     constructor(bot: Bot) {
         this.bot = bot;
@@ -153,7 +153,7 @@ export default class BanchoAPI implements IAPI {
         });
     }
 
-    async getUser(nickname: String, mode: Number = 0): Promise<APIUser> {
+    async getUser(nickname: string, mode: number = 0): Promise<APIUser> {
         try {
             let { data } = await this.api.get(`/get_user?${qs.stringify({u: nickname, m: mode, k: this.token})}`);
             if(!data[0])
@@ -164,7 +164,7 @@ export default class BanchoAPI implements IAPI {
         }
     }
 
-    async getUserTop(nickname: String, mode: number = 0, limit: number = 3): Promise<APITopScore[]> {
+    async getUserTop(nickname: string, mode: number = 0, limit: number = 3): Promise<APITopScore[]> {
         try {
             let { data } = await this.api.get(`/get_user_best?${qs.stringify({u: nickname, m: mode, k: this.token, limit: limit})}`);
             if(!data[0])
@@ -175,7 +175,7 @@ export default class BanchoAPI implements IAPI {
         }
     }
 
-    async getUserRecent(nickname: String, mode: number = 0): Promise<APIRecentScore> {
+    async getUserRecent(nickname: string, mode: number = 0): Promise<APIRecentScore> {
         try {
             let { data } = await this.api.get(`/get_user_recent?${qs.stringify({u: nickname, m: mode, k: this.token, limit: 1})}`);
             if(data[0])
@@ -187,7 +187,7 @@ export default class BanchoAPI implements IAPI {
         }
     }
 
-    async getScore(nickname: String, beatmapId: number, mode: number = 0, mods: number = null): Promise<APIScore> {
+    async getScore(nickname: string, beatmapId: number, mode: number = 0, mods: number = null): Promise<APIScore> {
         let opts = {
             k: this.token,
             u: nickname,
