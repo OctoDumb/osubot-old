@@ -136,7 +136,10 @@ export default class Bot {
         this.streamers = [];
 
         this.twitch = new TwitchJs.default({
-            clientId: config.twitchId
+            clientId: config.twitchId,
+            log: {
+                level: 'error'
+            }
         }).api;
 
         this.updateStreamers();
