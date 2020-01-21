@@ -17,7 +17,7 @@ npm install
 ```
 
 3. Create a config `config.json`
-```json
+```jsonc
 {
     "vk": {
         "token": "Your group's token",
@@ -27,7 +27,8 @@ npm install
     "tokens": {
         "bancho": "Bancho token",
         "ripple": "Ripple token (useless atm)"
-    }
+    },
+    "twitchId": "Twitch application Client ID (?)"
 }
 ```
 
