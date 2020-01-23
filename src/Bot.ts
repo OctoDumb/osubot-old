@@ -107,8 +107,11 @@ export default class Bot {
                     let map = await this.api.bancho.getBeatmap(replay.beatmapHash);
                     if(replay.mods.diff()) 
                         map = await this.api.bancho.getBeatmap(map.id.map, replay.mode, replay.mods.diff());
+                    let cover = await this.database.covers.getCover(map.id.set);
                     let calc = new BanchoPP(map, replay.mods);
-                    ctx.reply(this.templates.Replay(replay, map, calc));
+                    ctx.reply(this.templates.Replay(replay, map, calc), {
+                        attachment: cover
+                    });
                     this.maps.setMap(ctx.peerId, map);
                 } catch(e) {
                     ctx.reply("Произошла ошибка при обработке реплея!");
