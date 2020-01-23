@@ -24,7 +24,7 @@ export default class KurikkuLeaderboard extends Command {
                 }
                 users = users.filter(a => a.rank > 0 && a.pp > 0);
                 let leaderboard = await self.module.bot.api.kurikku.getLeaderboard(chat.map.id.map, users, chat.map.mode, args.mods.length == 0 ? null : new Mods(args.mods).sum());
-                ctx.reply(self.module.bot.templates.Leaderboard(leaderboard, self.module.name, self.module.bot.donaters.status));
+                ctx.reply(self.module.bot.templates.Leaderboard(leaderboard, self.module.name, self.module.bot.donaters.status.bind(self.module.bot.donaters)));
             } catch(e) {
                 ctx.reply("Ошибка!");
             }
