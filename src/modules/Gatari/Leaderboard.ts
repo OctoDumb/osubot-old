@@ -1,6 +1,6 @@
 import { Command } from "../../Command";
 import { Module } from "../../Module";
-import { IDatabaseUser } from "../../Types";
+import { IDatabaseUserStats } from "../../Types";
 
 export default class GatariLeaderboard extends Command {
     constructor(module: Module) {
@@ -14,11 +14,11 @@ export default class GatariLeaderboard extends Command {
                 let { profiles } = await self.module.bot.vk.api.messages.getConversationMembers({
                     peer_id: ctx.peerId
                 });
-                let users: IDatabaseUser[] = [];
+                let users: IDatabaseUserStats[] = [];
                 for(let i = 0; i < profiles.length; i++) {
                     let profile = profiles[i];
                     let user = await self.module.bot.database.servers.gatari.getUser(profile.id);
-                    if(user.id && !users.some(u => u.uid == user.uid))
+                    if(user.id && !users.some(u => u.id == user.id))
                         users.push(user);
                 }
                 users = users.filter(a => a.rank > 0 && a.pp > 0);

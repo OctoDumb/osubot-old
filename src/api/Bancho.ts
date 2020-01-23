@@ -1,7 +1,7 @@
 import IAPI from './base';
 import * as axios from 'axios';
 import qs from 'querystring';
-import { APIUser, APITopScore, APIBeatmap, APIRecentScore, HitCounts, APIScore, IDatabaseUser, LeaderboardScore, LeaderboardResponse } from '../Types';
+import { APIUser, APITopScore, APIBeatmap, APIRecentScore, HitCounts, APIScore, IDatabaseUser, LeaderboardScore, LeaderboardResponse, IDatabaseUserStats } from '../Types';
 import Mods from '../pp/Mods';
 import Util from '../Util';
 import { isNullOrUndefined, isNull } from 'util';
@@ -227,7 +227,7 @@ export default class BanchoAPI implements IAPI {
         return beatmap;
     }
 
-    async getLeaderboard(beatmapId: number, users: IDatabaseUser[], mode: number = 0, mods: number = null): Promise<LeaderboardResponse> {
+    async getLeaderboard(beatmapId: number, users: IDatabaseUserStats[], mode: number = 0, mods: number = null): Promise<LeaderboardResponse> {
         let cache: { mods: number, map: APIBeatmap }[] = [];
         let scores: LeaderboardScore[] = [];
         try {

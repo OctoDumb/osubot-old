@@ -1,6 +1,6 @@
 import { Command } from "../../Command";
 import { Module } from "../../Module";
-import { IDatabaseUser } from "../../Types";
+import { IDatabaseUserStats } from "../../Types";
 import Mods from "../../pp/Mods";
 
 export default class KurikkuLeaderboard extends Command {
@@ -15,11 +15,11 @@ export default class KurikkuLeaderboard extends Command {
                 let { profiles } = await self.module.bot.vk.api.messages.getConversationMembers({
                     peer_id: ctx.peerId
                 });
-                let users: IDatabaseUser[] = [];
+                let users: IDatabaseUserStats[] = [];
                 for(let i = 0; i < profiles.length; i++) {
                     let profile = profiles[i];
-                    let user = await self.module.bot.database.servers.kurikku.getUser(profile.id);
-                    if(user.id && !users.some(u => u.uid == user.uid))
+                    let user = await self.module.bot.database.servers.kurikku.getUserStats(profile.id, chat.map.mode);
+                    if(user.id && !users.some(u => u.id == user.id))
                         users.push(user);
                 }
                 users = users.filter(a => a.rank > 0 && a.pp > 0);

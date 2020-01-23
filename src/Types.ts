@@ -341,7 +341,7 @@ interface IDatabaseUserStats {
 }
 
 interface LeaderboardScore {
-    user: IDatabaseUser,
+    user: IDatabaseUserStats,
     score: APIScore
 }
 

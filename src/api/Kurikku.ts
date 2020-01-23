@@ -1,6 +1,6 @@
 import IAPI from "./base";
 import * as axios from "axios";
-import { APIUser, APITopScore, HitCounts, APIRecentScore, APIScore, IDatabaseUser, LeaderboardResponse, APIBeatmap, LeaderboardScore } from "../Types";
+import { APIUser, APITopScore, HitCounts, APIRecentScore, APIScore, IDatabaseUser, LeaderboardResponse, APIBeatmap, LeaderboardScore, IDatabaseUserStats } from "../Types";
 import qs from "querystring";
 import Util from "../Util";
 import Mods from "../pp/Mods";
@@ -201,7 +201,7 @@ export default class KurikkuAPI implements IAPI {
         }
     }
     
-    async getLeaderboard(beatmapId: number, users: IDatabaseUser[], mode: number = 0, mods: number = null): Promise<LeaderboardResponse> {
+    async getLeaderboard(beatmapId: number, users: IDatabaseUserStats[], mode: number = 0, mods: number = null): Promise<LeaderboardResponse> {
         let cache: { mods: number, map: APIBeatmap }[] = [];
         let scores: LeaderboardScore[] = [];
         try {
