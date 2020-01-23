@@ -18,6 +18,7 @@ export default class AkatsukiTop extends Command {
             let mode = args.mode === null ? dbUser.mode || 0 : args.mode;
             try {
                 let user = await self.module.bot.api.relax.getUser(dbUser.nickname);
+                let status = self.module.bot.donaters.status("akatsuki", user.id);
                 if(args.apx) {
                     let top = await self.module.bot.api.relax.getUserTop(dbUser.nickname, mode, 100);
                     let nearest = top[0];
@@ -31,7 +32,7 @@ export default class AkatsukiTop extends Command {
                     let map = await self.module.bot.api.bancho.getBeatmap(nearest.beatmapId, mode, nearest.mods.diff());
                     let cover = await self.module.bot.database.covers.getCover(map.id.set);
                     let calc = new BanchoPP(map, nearest.mods);
-                    ctx.reply(`[Server: ${self.module.name}] Ближайшее к ${args.apx}pp\n${self.module.bot.templates.TopSingle(nearest, map, user, place, calc, self.module.link)}`, {
+                    ctx.reply(`[Server: ${self.module.name}] Ближайшее к ${args.apx}pp\n${self.module.bot.templates.TopSingle(nearest, map, user, place, calc, self.module.link, status)}`, {
                         attachment: cover
                     });
                 } else if(args.more) {
@@ -44,7 +45,7 @@ export default class AkatsukiTop extends Command {
                     let cover = await self.module.bot.database.covers.getCover(map.id.set);
                     let calc = new BanchoPP(map, score.mods);
                     self.module.bot.maps.setMap(ctx.peerId, map);
-                    ctx.reply(`[Server: ${self.module.name}]\n${self.module.bot.templates.TopSingle(score, map, user, args.place, calc, self.module.link)}`, {
+                    ctx.reply(`[Server: ${self.module.name}]\n${self.module.bot.templates.TopSingle(score, map, user, args.place, calc, self.module.link, status)}`, {
                         attachment: cover
                     });
                 } else {
@@ -54,7 +55,7 @@ export default class AkatsukiTop extends Command {
                         let calc = new BanchoPP(map, top[i].mods);
                         return self.module.bot.templates.TopScore(top[i], map, i+1, calc, self.module.link);
                     }).join("\n");
-                    ctx.reply(`[Server: ${self.module.name}]\nТоп скоры игрока ${user.nickname} [${Util.profileModes[mode]}]:\n${str}`);
+                    ctx.reply(`[Server: ${self.module.name}]\nТоп скоры игрока ${user.nickname} ${status} [${Util.profileModes[mode]}]:\n${str}`);
                 }
             } catch(e) {
                 let err = await self.module.bot.database.errors.addError("a", ctx, String(e));

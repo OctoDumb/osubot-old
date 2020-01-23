@@ -19,6 +19,7 @@ export default class BanchoTop extends Command {
             try {
                 let user = await self.module.bot.api.bancho.getUser(dbUser.nickname, mode);
                 self.module.bot.database.servers.bancho.updateInfo(user, mode);
+                let status = self.module.bot.donaters.status("bancho", user.id);
                 if(args.apx) {
                     let top = await self.module.bot.api.bancho.getUserTop(dbUser.nickname, mode, 100);
                     let nearest = top[0];
@@ -33,7 +34,7 @@ export default class BanchoTop extends Command {
                     let cover = await self.module.bot.database.covers.getCover(map.id.set);
                     let calc = new BanchoPP(map, nearest.mods);
                     self.module.bot.maps.setMap(ctx.peerId, map);
-                    ctx.reply(`[Server: ${self.module.name}] Ближайшее к ${args.apx}pp\n${self.module.bot.templates.TopSingle(nearest, map, user, place, calc, self.module.link)}`, {
+                    ctx.reply(`[Server: ${self.module.name}] Ближайшее к ${args.apx}pp\n${self.module.bot.templates.TopSingle(nearest, map, user, place, calc, self.module.link, status)}`, {
                         attachment: cover
                     });
                 } else if(args.more) {
@@ -45,7 +46,7 @@ export default class BanchoTop extends Command {
                     let map = await self.module.bot.api.bancho.getBeatmap(score.beatmapId, mode, score.mods.diff());
                     let cover = await self.module.bot.database.covers.getCover(map.id.set);
                     let calc = new BanchoPP(map, score.mods);
-                    ctx.reply(`[Server: ${self.module.name}]\n${self.module.bot.templates.TopSingle(score, map, user, args.place, calc, self.module.link)}`, {
+                    ctx.reply(`[Server: ${self.module.name}]\n${self.module.bot.templates.TopSingle(score, map, user, args.place, calc, self.module.link, status)}`, {
                         attachment: cover
                     });
                     self.module.bot.maps.setMap(ctx.peerId, map);
@@ -56,7 +57,7 @@ export default class BanchoTop extends Command {
                         let calc = new BanchoPP(map, top[i].mods);
                         return self.module.bot.templates.TopScore(top[i], map, i+1, calc, self.module.link);
                     }).join("\n");
-                    ctx.reply(`[Server: ${self.module.name}]\nТоп скоры игрока ${user.nickname} [${Util.profileModes[mode]}]:\n${str}`);
+                    ctx.reply(`[Server: ${self.module.name}]\nТоп скоры игрока ${user.nickname} ${status} [${Util.profileModes[mode]}]:\n${str}`);
                 }
             } catch(e) {
                 let err = await self.module.bot.database.errors.addError("b", ctx, String(e));
