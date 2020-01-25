@@ -201,7 +201,7 @@ export default class EnjuuAPI implements IAPI {
         }
     }
     
-    async getLeaderboard(beatmapId: number, users: IDatabaseUserStats[], mode: number = 0, mods: number = null): Promise<LeaderboardResponse> {
+    async getLeaderboard(beatmapId: number, users: IDatabaseUser[], mode: number = 0, mods: number = null): Promise<LeaderboardResponse> {
         let cache: { mods: number, map: APIBeatmap }[] = [];
         let scores: LeaderboardScore[] = [];
         try {

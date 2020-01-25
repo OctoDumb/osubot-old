@@ -201,7 +201,7 @@ export default class VudekAPI implements IAPI {
         }
     }
     
-    async getLeaderboard(beatmapId: number, users: IDatabaseUserStats[], mode: number = 0): Promise<LeaderboardResponse> {
+    async getLeaderboard(beatmapId: number, users: IDatabaseUser[], mode: number = 0): Promise<LeaderboardResponse> {
         let cache: { mods: number, map: APIBeatmap }[] = [];
         let scores: LeaderboardScore[] = [];
         try {
