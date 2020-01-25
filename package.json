@@ -1,6 +1,6 @@
 {
   "name": "osubot2",
-  "version": "1.17.4-0",
+  "version": "1.17.4",
   "description": "",
   "main": "index.ts",
   "scripts": {
