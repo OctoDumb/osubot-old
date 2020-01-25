@@ -25,16 +25,16 @@ import Vudek from './modules/Vudek';
 import Kurikku from './modules/Kurikku';
 
 interface IBotConfig {
-    vk: {
+    vk?: {
         token: string,
         id: number,
         owner: number
     },
-    tokens: {
+    tokens?: {
         bancho: string,
         ripple: string
     },
-    twitchId: string
+    twitchId?: string
 }
 
 interface TwitchStream {
