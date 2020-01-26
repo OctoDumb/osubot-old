@@ -25,7 +25,7 @@ export default class GatariChat extends Command {
                             return -1;
                         else return 0;
                     });
-                    ctx.reply(`[Server: ${self.module.name}]\nТоп${users.length > 15 ? '-15' : ''} беседы (ID ${ctx.chatId}):\n${users.splice(0, 15).map((user, i) => `#${i+1} ${user.nickname} | ${Util.round(user.pp, 1)}pp | Ранк ${user.rank} | ${Util.round(user.acc, 2)}%`).join("\n")}`);
+                    ctx.reply(`[Server: ${self.module.name}]\nТоп${users.length > 15 ? '-15' : ''} беседы (ID ${ctx.chatId}):\n${users.splice(0, 15).map((user, i) => `#${i+1} ${user.nickname} ${self.module.bot.donaters.status("gatari", user.id)} | ${Util.round(user.pp, 1)}pp | Ранк ${user.rank} | ${Util.round(user.acc, 2)}%`).join("\n")}`);
                 } catch(e) {
                     console.log(e.toString());
                     ctx.reply("Ошибка");
@@ -55,7 +55,7 @@ export default class GatariChat extends Command {
                             return -1;
                         else return 0;
                     });
-                    ctx.reply(`[Server: ${self.module.name}]\nТоп беседы (ID ${id}):\n${users.map((user, i) => `#${i+1} ${user.nickname} | ${Util.round(user.pp, 1)}pp | Ранк ${user.rank} | ${Util.round(user.acc, 2)}%`).join("\n")}`);
+                    ctx.reply(`[Server: ${self.module.name}]\nТоп беседы (ID ${id}):\n${users.map((user, i) => `#${i+1} ${user.nickname} ${self.module.bot.donaters.status("gatari", user.id)} | ${Util.round(user.pp, 1)}pp | Ранк ${user.rank} | ${Util.round(user.acc, 2)}%`).join("\n")}`);
                 } catch(e) {
                     let err = await self.module.bot.database.errors.addError("g", ctx, String(e));
                     ctx.reply(`[Server: ${self.module.name}]\n${Util.error(String(e))} (${err})`);
