@@ -32,6 +32,7 @@ export default class News {
             group: true,
             osuupdate: false
         };
+        Object.freeze(this.defaults);
 
         setInterval(() => {
             this.save();
