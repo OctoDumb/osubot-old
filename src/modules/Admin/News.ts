@@ -9,7 +9,11 @@ export default class NewsCommand extends Command {
 
             let msg = ctx.replyMessage || ctx.forwards[0];
 
-            module.bot.news.notify(msg.text, msg.attachments.map(att => att.toString()).join(","));
+            self.module.bot.news.notify({
+                message: msg.text,
+                attachment: msg.attachments.map(att => att.toString()).join(","),
+                type: "group"
+            })
         });
 
         this.permission = (ctx) => ctx.senderId == module.bot.config.vk.owner;

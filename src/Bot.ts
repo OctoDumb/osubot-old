@@ -23,6 +23,7 @@ import Enjuu from './modules/Enjuu';
 import OsuTrackAPI from './Track';
 import Vudek from './modules/Vudek';
 import Kurikku from './modules/Kurikku';
+import BanchoV2 from "./api/BanchoV2";
 
 interface IBotConfig {
     vk?: {
@@ -56,6 +57,7 @@ export default class Bot {
     streamers: TwitchStream[];
     twitch: any;
     track: OsuTrackAPI;
+    v2: BanchoV2;
     startTime: number;
     totalMessages: number;
     version: string;
@@ -155,6 +157,21 @@ export default class Bot {
         this.totalMessages = 0;
 
         this.version = require('../../package.json').version;
+
+        this.v2 = new BanchoV2();
+
+        this.v2.on('osu-update', update => {
+            let changesString = [];
+            for(let ch in update.changes) {
+                changesString.push(`${ch} [${update.changes[ch]}]`);
+            }
+            this.news.notify({
+                message: `🔔 Новое обновление osu! (${update.version})${update.majors ? `\n❗ Есть важные изменения! (${update.majors})` : ""}
+                ${changesString.join("\n")}
+                https://osu.ppy.sh/home/changelog/stable40/${update.version}`,
+                type: 'osuupdate'
+            });
+        });
     }
 
     registerModule(module: Module | Module[]) {
@@ -174,6 +191,7 @@ export default class Bot {
 
     async start() {
         await this.vk.updates.start();
+        this.v2.start();
         this.startTime = Date.now();
         console.log('Started');
     }

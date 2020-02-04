@@ -1,9 +1,11 @@
 import { Command } from "../../Command";
 import { Module } from "../../Module";
 
+const types = ['group', 'osuupdate'];
+
 export default class NewsCommand extends Command {
     constructor(module: Module) {
-        super("news", module, async (ctx, self) => {
+        super("news", module, async (ctx, self, args) => {
             if(!ctx.isChat)
                 return;
             try {
@@ -15,10 +17,16 @@ export default class NewsCommand extends Command {
 
                 if(!user.is_admin)
                     return ctx.reply("Вы не можете управлять рассылкой!");
+                
+                if(!args.string[0])
+                    return ctx.send(`Укажите тип рассылки! (${types.join("/")})`);
 
-                let n = self.module.bot.news.switch(ctx.peerId);
+                if(!types.includes(args.string[0].toLowerCase()))
+                    return ctx.send(`Неизвестный тип рассылки!`);
 
-                ctx.reply(`Рассылка ${n ? 'включена' : 'отключена'}!`);
+                let n = self.module.bot.news.switch(ctx.peerId, args.string[0].toLowerCase());
+
+                ctx.reply(`Рассылка ${args.string[0].toLowerCase()} ${n ? 'включена' : 'отключена'}!`);
             } catch(e) {
                 ctx.reply("Мне нужны права администратора, чтобы проверить, являетесь ли Вы администратором!");
             }
