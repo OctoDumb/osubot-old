@@ -5,6 +5,7 @@ import EvalCommand from './Eval';
 import ErrorCommand from './Error';
 import StatusCommand from './Status';
 import UploadCommand from './Upload';
+import DownloadCommand from './Download';
 import AdminVKScript from './VKScript';
 
 export default class Admin extends Module {
@@ -19,6 +20,7 @@ export default class Admin extends Module {
             new StatusCommand(this),
             new EvalCommand(this),
             new UploadCommand(this),
+            new DownloadCommand(this),
             new AdminVKScript(this)
         ]);
     }
