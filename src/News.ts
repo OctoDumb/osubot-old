@@ -58,7 +58,7 @@ export default class News {
     }
 
     getChatRules(id: number): INewsRule {
-        return this.rules[id] || this.defaults;
+        return Object.assign(this.defaults, this.rules[id]);
     }
 
     save() {
