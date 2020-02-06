@@ -35,6 +35,10 @@ interface IBotConfig {
         bancho: string,
         ripple: string
     },
+    osu?: {
+        username: string,
+        password: string
+    },
     twitchId?: string
 }
 
@@ -160,7 +164,7 @@ export default class Bot {
 
         this.v2 = new BanchoV2();
 
-        this.v2.on('osu-update', update => {
+        this.v2.on('osuupdate', update => {
             let changesString = [];
             for(let ch in update.changes) {
                 changesString.push(`${ch} [${update.changes[ch]}]`);
@@ -191,6 +195,10 @@ export default class Bot {
 
     async start() {
         await this.vk.updates.start();
+        await this.v2.login(
+            this.config.osu.username,
+            this.config.osu.password
+        )
         this.v2.start();
         this.startTime = Date.now();
         console.log('Started');
