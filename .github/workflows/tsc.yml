@@ -13,6 +13,6 @@ jobs:
         with:
           node-version: 11
       - name: Install modules
-        run: yarn install
+        run: npm install
       - name: Compile
         uses: iCrawl/action-tsc@v1
