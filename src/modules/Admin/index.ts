@@ -7,6 +7,7 @@ import StatusCommand from './Status';
 import UploadCommand from './Upload';
 import DownloadCommand from './Download';
 import AdminVKScript from './VKScript';
+import IgnoreCommand from './Ignore';
 
 export default class Admin extends Module {
     constructor(bot: Bot) {
@@ -21,7 +22,8 @@ export default class Admin extends Module {
             new EvalCommand(this),
             new UploadCommand(this),
             new DownloadCommand(this),
-            new AdminVKScript(this)
+            new AdminVKScript(this),
+            new IgnoreCommand(this)
         ]);
     }
 }

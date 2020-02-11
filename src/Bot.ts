@@ -25,6 +25,7 @@ import Vudek from './modules/Vudek';
 import Kurikku from './modules/Kurikku';
 import BanchoV2 from "./api/BanchoV2";
 import Util from './Util';
+import IgnoreList from './Ignore';
 
 interface IBotConfig {
     vk?: {
@@ -58,6 +59,7 @@ export default class Bot {
     templates: ITemplates;
     maps: Maps;
     news: News;
+    ignored: IgnoreList;
     donaters: Donaters;
     streamers: TwitchStream[];
     twitch: any;
@@ -99,7 +101,7 @@ export default class Bot {
         this.maps = new Maps(this);
 
         this.vk.updates.on("message", async (ctx) => {
-            if(ctx.isOutbox || ctx.isFromGroup || ctx.isEvent)
+            if(ctx.isOutbox || ctx.isFromGroup || ctx.isEvent || this.ignored.isIgnored(ctx.senderId))
                 return;
             this.totalMessages++;
             let replayDoc = this.checkReplay(ctx);
@@ -158,6 +160,8 @@ export default class Bot {
         });
 
         this.news = new News(this);
+
+        this.ignored = new IgnoreList();
 
         this.donaters = new Donaters();
 
