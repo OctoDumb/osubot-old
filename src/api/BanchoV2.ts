@@ -82,7 +82,7 @@ class BanchoAPIV2 extends EventEmitter<APIV2Events> {
     }
 
     async getChangelog() {
-        let { data } = await this.request('/changelog');
+        let data = await this.request('/changelog', { stream: "stable40" });
         let v = data.builds[0];
         if(this.data.lastBuild == Infinity)
             this.data.lastBuild = v.id;
