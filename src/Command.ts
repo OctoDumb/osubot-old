@@ -22,7 +22,16 @@ export class Command {
     public process(ctx: MessageContext) {
         if(!this.permission(ctx)) return;
         this.uses++;
-        this.function(ctx, this, Util.parseArgs(ctx.text.split(" ").slice(2)));
+        if(ctx.hasMessagePayload && ctx.messagePayload.osubot)
+            this.function(
+                ctx, this,
+                Util.parseArgs(ctx.messagePayload.command.split(" ").slice(2))
+            );
+        else
+            this.function(
+                ctx, this, 
+                Util.parseArgs(ctx.text.split(" ").slice(2))
+            );
     }
 
     public check(name: String) {

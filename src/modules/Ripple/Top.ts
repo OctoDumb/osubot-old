@@ -46,9 +46,20 @@ export default class RippleTop extends Command {
                     let map = await self.module.bot.api.bancho.getBeatmap(score.beatmapId, mode, score.mods.diff());
                     let cover = await self.module.bot.database.covers.getCover(map.id.set);
                     let calc = new BanchoPP(map, score.mods);
+                    let keyboard = Util.createKeyboard([
+                        [{
+                            text: '[R] Мой скор на карте',
+                            command: `{map${map.id.map}}r c`
+                        }],
+                        ctx.isChat ? [{
+                            text: '[R] Топ чата на карте',
+                            command: `{map${map.id.map}}r lb`
+                        }] : []
+                    ]);
                     self.module.bot.maps.setMap(ctx.peerId, map);
                     ctx.reply(`[Server: ${self.module.name}]\n${self.module.bot.templates.TopSingle(score, map, user, args.place, calc, self.module.link, status)}`, {
-                        attachment: cover
+                        attachment: cover,
+                        keyboard
                     });
                 } else {
                     let top = await self.module.bot.api.ripple.getUserTop(dbUser.nickname, mode, 3);

@@ -12,7 +12,13 @@ export default class BanchoFind extends Command {
                 let users = await self.module.bot.database.servers.bancho.findByUserId(u.id);
                 if(!users[0])
                     return ctx.reply("Не найдено пользователей с таким ником!");
-                ctx.reply(`[Server: ${self.module.name}]\nПользователи с ником ${u.nickname}:\n${users.map(us => `https://vk.com/id${us.id}`).join("\n")}`);
+                let keyboard = Util.createKeyboard([
+                    [{
+                        text: '[B] Посмотреть профиль',
+                        command: `s u ${u.nickname}`
+                    }]
+                ]);
+                ctx.reply(`[Server: ${self.module.name}]\nПользователи с ником ${u.nickname}:\n${users.map(us => `https://vk.com/id${us.id}`).join("\n")}`, { keyboard });
             } catch(e) {
                 let err = await self.module.bot.database.errors.addError("b", ctx, String(e));
                 ctx.reply(`[Server: ${self.module.name}]\n${Util.error(String(e))} (${err})`);

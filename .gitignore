@@ -6,3 +6,5 @@ config.json
 package-lock.json
 news_forbidden.json
 donaters.json
+
+src/test.ts

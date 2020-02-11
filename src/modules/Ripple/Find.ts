@@ -1,5 +1,6 @@
 import { Command } from "../../Command";
 import { Module } from "../../Module";
+import Util from "../../Util";
 
 export default class RippleFind extends Command {
     constructor(module: Module) {
@@ -11,7 +12,13 @@ export default class RippleFind extends Command {
                 let users = await self.module.bot.database.servers.ripple.findByUserId(u.id);
                 if(!users[0])
                     return ctx.reply("Не найдено пользователей с таким ником!");
-                ctx.reply(`[Server: ${self.module.name}]\nПользователи с ником ${u.nickname}:\n${users.map(us => `https://vk.com/id${us.id}`).join("\n")}`);
+                let keyboard = Util.createKeyboard([
+                    [{
+                        text: '[R] Посмотреть профиль',
+                        command: `r u ${u.nickname}`
+                    }]
+                ]);
+                ctx.reply(`[Server: ${self.module.name}]\nПользователи с ником ${u.nickname}:\n${users.map(us => `https://vk.com/id${us.id}`).join("\n")}`, { keyboard });
             } catch(e) {
                 ctx.reply("Ошибка");
             }

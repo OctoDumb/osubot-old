@@ -21,8 +21,19 @@ export default class BanchoRecent extends Command {
                 let map = await self.module.bot.api.bancho.getBeatmap(recent.beatmapId, recent.mode, recent.mods.diff());
                 let cover = await self.module.bot.database.covers.getCover(map.id.set);
                 let calc = new Calculator(map, recent.mods);
+                let keyboard = Util.createKeyboard([
+                    [{
+                        text: '[B] Мой скор на карте',
+                        command: `{map${map.id.map}}s c`
+                    }],
+                    ctx.isChat ? [{
+                        text: '[B] Топ чата на карте',
+                        command: `{map${map.id.map}}s lb`
+                    }] : []
+                ]);
                 ctx.reply(`[Server: ${self.module.name}]\n${self.module.bot.templates.RecentScore(recent, map, calc, self.module.link)}`, {
-                    attachment: cover
+                    attachment: cover,
+                    keyboard
                 });
                 self.module.bot.maps.setMap(ctx.peerId, map);
             } catch(e) {

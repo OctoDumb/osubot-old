@@ -16,9 +16,7 @@ class Replay {
     combo: number;
     perfect: number;
     mods: Mods;
-    constructor() {
-        //
-    }
+    constructor() { }
 
     accuracy() {
         return Util.accuracy(this.counts);

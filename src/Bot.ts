@@ -24,6 +24,7 @@ import OsuTrackAPI from './Track';
 import Vudek from './modules/Vudek';
 import Kurikku from './modules/Kurikku';
 import BanchoV2 from "./api/BanchoV2";
+import Util from './Util';
 
 interface IBotConfig {
     vk?: {
@@ -115,8 +116,18 @@ export default class Bot {
                         map = await this.api.bancho.getBeatmap(map.id.map, replay.mode, replay.mods.diff());
                     let cover = await this.database.covers.getCover(map.id.set);
                     let calc = new BanchoPP(map, replay.mods);
+                    let keyboard = Util.createKeyboard([['B','s'],['G','g'],['R','r']]
+                        .map(s => Array.prototype.concat([{
+                            text: `[${s[0]}] Мой скор на карте`,
+                            command: `${s[1]} c ${Util.getModeArg(replay.mode)}`
+                        }], ctx.isChat ? [{
+                            text: `[${s[0]}] Топ чата на карте`,
+                            command: `${s[1]} lb ${Util.getModeArg(replay.mode)}`
+                        }]:[]))
+                    );
                     ctx.reply(this.templates.Replay(replay, map, calc), {
-                        attachment: cover
+                        attachment: cover,
+                        keyboard
                     });
                     this.maps.setMap(ctx.peerId, map);
                 } catch(e) {
@@ -130,9 +141,16 @@ export default class Bot {
                     this.maps.stats(ctx);
                 } else {
                     for(let module of this.modules) {
-                        let check: Command = module.checkContext(ctx);
+                        let check = module.checkContext(ctx);
                         if(check) {
-                            check.process(ctx);
+                            if(check.map) {
+                                let chat = this.maps.getChat(ctx.peerId);
+                                if(!chat || chat.map.id.map != check.map) {
+                                    let map = await this.api.bancho.getBeatmap(check.map);
+                                    this.maps.setMap(ctx.peerId, map);
+                                }
+                            }
+                            check.command.process(ctx);
                         }
                     }
                 }

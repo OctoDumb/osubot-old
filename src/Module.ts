@@ -28,10 +28,18 @@ export class Module implements ICommandsModule {
             this.commands.push(command);
     }
 
-    checkContext(ctx: MessageContext): Command {
+    checkContext(ctx: MessageContext): {command: Command, map?: number} {
         if(!ctx.hasText)
             return null;
-        var args = ctx.text.split(" ");
+        // var args = ctx.text.split(" ");
+        var args = ctx.hasMessagePayload ?
+            ctx.messagePayload.osubot ? ctx.messagePayload.command.split(" ") :
+            ctx.text.split(" ") : ctx.text.split(" ");
+        let map: number;
+        if(args[0].startsWith("{map")) {
+            map = Number(args[0].split("}")[0].slice(4));
+            args[0] = args[0].split("}")[1];
+        }
         if(args.length < 2)
             return null;
         var prefix = args.shift();
@@ -39,7 +47,10 @@ export class Module implements ICommandsModule {
         if(!this.checkPrefix(prefix.toLowerCase()) || !this.findCommand(command))
             return null;
         else
-            return this.findCommand(command);
+            return {
+                command: this.findCommand(command),
+                map
+            }
     }
 
     checkPrefix(prefix: string): boolean {

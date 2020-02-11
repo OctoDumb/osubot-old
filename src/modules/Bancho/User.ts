@@ -19,7 +19,17 @@ export default class BanchoUser extends Command {
                 let user = await self.module.bot.api.bancho.getUser(dbUser.nickname, mode);
                 let status = self.module.bot.donaters.status("bancho", user.id);
                 self.module.bot.database.servers.bancho.updateInfo(user, mode);
-                ctx.reply(`[Server: ${self.module.name}]\n${self.module.bot.templates.User(user, mode, status, self.module.link)}`);
+                let keyboard = Util.createKeyboard([
+                    [{
+                        text: `[B] Топ скоры ${user.nickname}`,
+                        command: `s t ${user.nickname} ${Util.getModeArg(mode)}`
+                    }],
+                    [{
+                        text: `[B] Последний скор ${user.nickname}`,
+                        command: `s r ${user.nickname} ${Util.getModeArg(mode)}`
+                    }]
+                ]);
+                ctx.reply(`[Server: ${self.module.name}]\n${self.module.bot.templates.User(user, mode, status, self.module.link)}`, { keyboard });
             } catch(e) {
                 let err = await self.module.bot.database.errors.addError("b", ctx, String(e));
                 ctx.reply(`[Server: ${self.module.name}]\n${Util.error(String(e))} (${err})`);

@@ -18,9 +18,18 @@ export default class RippleUser extends Command {
             try {
                 let user = await self.module.bot.api.ripple.getUser(dbUser.nickname, mode);
                 let status = self.module.bot.donaters.status("ripple", user.id);
-                if(!dbUser.mode)
-                    self.module.bot.database.servers.ripple.updateInfo(user, mode);
-                ctx.reply(`[Server:${self.module.name}]\n${self.module.bot.templates.User(user, mode, status, self.module.link)}`);
+                self.module.bot.database.servers.ripple.updateInfo(user, mode);
+                let keyboard = Util.createKeyboard([
+                    [{
+                        text: `[R] Топ скоры ${user.nickname}`,
+                        command: `r t ${user.nickname} ${Util.getModeArg(mode)}`
+                    }],
+                    [{
+                        text: `[R] Последний скор ${user.nickname}`,
+                        command: `r r ${user.nickname} ${Util.getModeArg(mode)}`
+                    }]
+                ]);
+                ctx.reply(`[Server:${self.module.name}]\n${self.module.bot.templates.User(user, mode, status, self.module.link)}`, { keyboard });
             } catch(e) {
                 let err = await self.module.bot.database.errors.addError("r", ctx, String(e));
                 ctx.reply(`[Server: ${self.module.name}]\n${Util.error(String(e))} (${err})`);

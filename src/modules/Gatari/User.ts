@@ -18,9 +18,18 @@ export default class GatariUser extends Command {
             try {
                 let user = await self.module.bot.api.gatari.getUser(dbUser.nickname, mode);
                 let status = self.module.bot.donaters.status("gatari", user.id);
-                if(!dbUser.mode)
-                    self.module.bot.database.servers.gatari.updateInfo(user, mode);
-                ctx.reply(`[Server: ${self.module.name}]\n${self.module.bot.templates.User(user, mode, status, self.module.link)}`);
+                self.module.bot.database.servers.gatari.updateInfo(user, mode);
+                let keyboard = Util.createKeyboard([
+                    [{
+                        text: `[G] Топ скоры ${user.nickname}`,
+                        command: `g t ${user.nickname} ${Util.getModeArg(mode)}`
+                    }],
+                    [{
+                        text: `[G] Последний скор ${user.nickname}`,
+                        command: `g r ${user.nickname} ${Util.getModeArg(mode)}`
+                    }]
+                ]);
+                ctx.reply(`[Server: ${self.module.name}]\n${self.module.bot.templates.User(user, mode, status, self.module.link)}`, { keyboard });
             } catch (e) {
                 let err = await self.module.bot.database.errors.addError("g", ctx, String(e));
                 ctx.reply(`[Server: ${self.module.name}]\n${Util.error(String(e))} (${err})`);
