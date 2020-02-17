@@ -119,13 +119,13 @@ export default {
                 iArg.apx = Math.max(Number(arg.slice(1)), 1);
             } else if(arg.startsWith(">")) {
                 iArg.more = Math.max(Number(arg.slice(1)), 1);
-            } else if(arg == "-std" || arg == "-osu") {
+            } else if(arg == "-std" || arg == "-osu" || arg == "-s" || arg == "-o") {
                 iArg.mode = 0;
-            } else if(arg == "-taiko" || arg == "-drums") {
+            } else if(arg == "-taiko" || arg == "-drums" || arg == "-t") {
                 iArg.mode = 1;
-            } else if(arg == "-fruits" || arg == "-ctb") {
+            } else if(arg == "-fruits" || arg == "-ctb" || arg == "-c" || arg == "-catch") {
                 iArg.mode = 2;
-            } else if(arg == "-mania") {
+            } else if(arg == "-mania" || arg == "-m") {
                 iArg.mode = 3;
             } else {
                 iArg.string.push(arg);
@@ -149,32 +149,32 @@ export default {
             let n300 = hits[300];
             if(n300 < 0)
                 n300 = Math.max(0, obj - hits[100] - hits[50] - hits.miss);
-        
+
             let hitcount = n300 + hits[100] + hits[50] + hits.miss;
-        
+
             if(hitcount > obj)
                 n300 -= Math.min(n300, hitcount - obj);
-        
+
             hitcount = n300 + hits[100] + hits[50] + hits.miss;
-        
+
             if (hitcount > obj)
                 hits[100] -= Math.min(hits[100], hitcount - obj);
-        
+
             hitcount = n300 + hits[100] + hits[50] + hits.miss;
-        
+
             if (hitcount > obj)
                 hits[50] -= Math.min(hits[50], hitcount - obj);
-        
+
             hitcount = n300 + hits[100] + hits[50] + hits.miss;
-        
+
             hits[300] = obj - hits[100] - hits[50] - hits.miss;
-        
+
             let max300 = obj - hits.miss;
-        
+
             hits[100] = Math.round(
                 -3 * ((acc * 0.01 - 1) * obj + hits.miss) * 0.5
             );
-        
+
             if(hits[100] > max300) {
                 hits[100] = 0;
                 hits[50] = Math.round(
@@ -182,9 +182,9 @@ export default {
                 );
                 hits[50] = Math.min(max300, hits[50]);
             }
-        
+
             hits[300] = obj - hits[100] - hits[50] - hits.miss;
-        
+
             return hits;
         }
     },
@@ -258,7 +258,7 @@ export default {
     },
     createKeyboard(rows: IKBButton[][]): KeyboardBuilder {
         let keyboard = Keyboard.builder().inline(true);
-        
+
         for(let i = 0; i < rows.length; i++) {
             let row = rows[i];
             for(let j = 0; j < row.length; j++) {
