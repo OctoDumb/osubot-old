@@ -40,14 +40,15 @@ export default class News {
     }
     
     async notify(options: INotifyOptions) {
-        for(let i = 0; i < Math.ceil(this.limit / 25); i++) {
+        let ids = [];
+        for(let i = 1; i <= this.limit; i++)
+            ids.push(2000000000 + i);
+        ids = ids.filter(id => this.allowed(id, options.type));
+        if(!ids.length) return;
+        for(let i = 0; i < Math.ceil(ids.length / 25); i++) {
             try {
-                let ids = [];
-                for(let j = 1; j <= 25; j++)
-                    ids.push(2000000000 + (i*25) + j);
-                ids = ids.filter(id => this.allowed(id, options.type));
                 if(ids[0]) {
-                    let code = ids.map(id => `API.messages.send(${JSON.stringify({peer_id: id, message: options.message, random_id: 2281337, attachment: options.attachment || "", dont_parse_links: 1})});`).join("\n");
+                    let code = ids.splice(0, 25).map(id => `API.messages.send(${JSON.stringify({peer_id: id, message: options.message, random_id: 2281337, attachment: options.attachment || "", dont_parse_links: 1})});`).join("\n");
                     await this.bot.vk.api.execute({ code });
                 }
             } catch(e) {
