@@ -103,7 +103,15 @@ export default {
 
         for(let i = args.length - 1; i > -1; i--) {
             let arg = args[i].toLowerCase();
-            if(arg.startsWith("+")) {
+            if(arg == "-std" || arg == "-osu" || arg == "-s" || arg == "-o") {
+                iArg.mode = 0;
+            } else if(arg == "-taiko" || arg == "-drums" || arg == "-t") {
+                iArg.mode = 1;
+            } else if(arg == "-fruits" || arg == "-ctb" || arg == "-c" || arg == "-catch") {
+                iArg.mode = 2;
+            } else if(arg == "-mania" || arg == "-m") {
+                iArg.mode = 3;
+            } else if(arg.startsWith("+")) {
                 iArg.mods = arg.slice(1);
             } else if(arg.endsWith("x")) {
                 iArg.combo = Number(arg.slice(0, -1));
@@ -119,14 +127,6 @@ export default {
                 iArg.apx = Math.max(Number(arg.slice(1)), 1);
             } else if(arg.startsWith(">")) {
                 iArg.more = Math.max(Number(arg.slice(1)), 1);
-            } else if(arg == "-std" || arg == "-osu" || arg == "-s" || arg == "-o") {
-                iArg.mode = 0;
-            } else if(arg == "-taiko" || arg == "-drums" || arg == "-t") {
-                iArg.mode = 1;
-            } else if(arg == "-fruits" || arg == "-ctb" || arg == "-c" || arg == "-catch") {
-                iArg.mode = 2;
-            } else if(arg == "-mania" || arg == "-m") {
-                iArg.mode = 3;
             } else {
                 iArg.string.push(arg);
                 iArg.nickname.push(arg);
