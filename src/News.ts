@@ -28,12 +28,6 @@ export default class News {
         this.rules = JSON.parse(fs.readFileSync("./news_rules.json").toString());
         this.limit = 200;
 
-        this.defaults = {
-            group: true,
-            osuupdate: false
-        };
-        Object.freeze(this.defaults);
-
         setInterval(() => {
             this.save();
         }, 10000);
@@ -59,7 +53,7 @@ export default class News {
     }
 
     getChatRules(id: number): INewsRule {
-        return Object.assign(this.defaults, this.rules[id]);
+        return Object.assign({ group: true, osuupdate: false }, this.rules[id]);
     }
 
     save() {
