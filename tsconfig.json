@@ -5,6 +5,7 @@
         "outDir": "build",
         "resolveJsonModule": true,
         "esModuleInterop": true,
-        "allowJs": true
+        "allowJs": true,
+        "skipLibCheck": true
     }
 }
