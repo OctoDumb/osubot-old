@@ -28,6 +28,11 @@ export default class News {
         this.rules = JSON.parse(fs.readFileSync("./news_rules.json").toString());
         this.limit = 200;
 
+        this.defaults = {
+            group: true,
+            osuupdate: false
+        }
+
         setInterval(() => {
             this.save();
         }, 10000);
@@ -43,7 +48,9 @@ export default class News {
             try {
                 if(ids[0]) {
                     let code = ids.splice(0, 25).map(id => `API.messages.send(${JSON.stringify({peer_id: id, message: options.message, random_id: 2281337, attachment: options.attachment || "", dont_parse_links: 1})});`).join("\n");
-                    await this.bot.vk.api.execute({ code });
+                    console.log(code);
+                    let k = await this.bot.vk.api.execute({ code });
+                    console.log(k);
                 }
             } catch(e) {
                 console.log(e);
@@ -53,7 +60,7 @@ export default class News {
     }
 
     getChatRules(id: number): INewsRule {
-        return Object.assign({ group: true, osuupdate: false }, this.rules[id]);
+        return Object.assign({}, this.defaults, this.rules[id]);
     }
 
     save() {
@@ -68,6 +75,6 @@ export default class News {
         let r = this.getChatRules(id);
         this.rules[id] = r;
         this.rules[id][type] = !r[type];
-        return !r[type];
+        return this.rules[id][type];
     }
 }

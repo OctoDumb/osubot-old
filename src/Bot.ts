@@ -247,8 +247,8 @@ export default class Bot {
             hasMap = IsMap(url);
             if(hasMap)
                 return hasMap;
-            return null;
         }
+        return null;
     }
 
     async updateStreamers() {
