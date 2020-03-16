@@ -78,7 +78,8 @@ class BanchoAPIV2 extends EventEmitter<APIV2Events> {
     start() {
         setInterval(() => {
             this.getChangelog();
-        }, 5000);
+            this.getBeatmapsets();
+        }, 15e3);
     }
 
     async getChangelog() {
@@ -107,19 +108,25 @@ class BanchoAPIV2 extends EventEmitter<APIV2Events> {
         }
     }
 
-    // async getBeatmapsets() {
-    //     let data = await this.request('/beatmapsets/search', { s: 'ranked', limit: 1 });
-    //     return data;
-    // }
+    async getBeatmapsets() {
+        let data = (await this.request('/beatmapsets/search', { s: 'ranked', limit: 1 })).beatmapsets;
+        if(this.data.lastRanked == Infinity)
+            this.data.lastRanked = new Date(data[0].ranked_date).getTime();
+        else {
+            data = data.filter(s => new Date(s.ranked_date).getTime() > this.data.lastRanked).reverse();
+            if(!data.length) return;
+            for(let i = 0; i < data.length; i++) {
+                let set = data[i];
+                this.emit('newranked', {
+                    id: set.id,
+                    title: set.title,
+                    artist: set.artist,
+                    creator: set.creator,
+                    preview: set.preview_url
+                });
+            }
+        }
+    }
 }
-
-/**
- * An osu! update event
- * @event BanchoAPIV2#osuupdate
- * @type {object}
- * @property {string} version 
- * @property {[key: string]: number} changes 
- * @property {number} majors 
- */
 
 export default BanchoAPIV2;

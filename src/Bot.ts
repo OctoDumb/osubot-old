@@ -198,6 +198,23 @@ export default class Bot {
                 type: 'osuupdate'
             });
         });
+
+        this.v2.on('newranked', async mapset => {
+            // let audio = await this.vk.upload.audioMessage({
+            //     peer_id: this.config.vk.owner,
+            //     source: `https:${mapset.preview}`
+            // });
+
+            this.news.notify({
+                message: `Новая ранкнутая карта!\n\n${mapset.artist} - ${mapset.title} by ${mapset.creator}\n\nhttps://osu.ppy.sh/s/${mapset.id}`,
+                attachment: await this.database.covers.getCover(mapset.id),
+                type: 'newranked'
+            });
+            // this.news.notify({
+            //     attachment: audio.toString(),
+            //     type: 'newranked'
+            // });
+        });
     }
 
     registerModule(module: Module | Module[]) {

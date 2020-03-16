@@ -1,7 +1,7 @@
 import { Command } from "../../Command";
 import { Module } from "../../Module";
 
-const types = ['group', 'osuupdate'];
+const types = ['group', 'osuupdate', 'newranked'];
 
 export default class NewsCommand extends Command {
     constructor(module: Module) {

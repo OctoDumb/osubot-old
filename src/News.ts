@@ -8,10 +8,11 @@ interface INewsRules {
 interface INewsRule {
     group: boolean;
     osuupdate: boolean;
+    newranked: boolean;
 }
 
 interface INotifyOptions {
-    message: string;
+    message?: string;
     attachment?: string;
     type: string;
 }
@@ -30,7 +31,8 @@ export default class News {
 
         this.defaults = {
             group: true,
-            osuupdate: false
+            osuupdate: false,
+            newranked: false
         }
 
         setInterval(() => {

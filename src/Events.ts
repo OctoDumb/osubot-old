@@ -7,7 +7,11 @@ interface IOsuUpdate {
 }
 
 interface INewRanked {
-
+    id: number,
+    title: string,
+    artist: string,
+    creator: string,
+    preview: string
 }
 
 export type APIV2Events = {
