@@ -48,9 +48,7 @@ export default class News {
             try {
                 if(ids[0]) {
                     let code = ids.splice(0, 25).map(id => `API.messages.send(${JSON.stringify({peer_id: id, message: options.message, random_id: 2281337, attachment: options.attachment || "", dont_parse_links: 1})});`).join("\n");
-                    console.log(code);
-                    let k = await this.bot.vk.api.execute({ code });
-                    console.log(k);
+                    await this.bot.vk.api.execute({ code });
                 }
             } catch(e) {
                 console.log(e);
@@ -60,7 +58,7 @@ export default class News {
     }
 
     getChatRules(id: number): INewsRule {
-        return Object.assign({}, this.defaults, this.rules[id]);
+        return Object.assign({}, this.defaults, this.rules[id] || {});
     }
 
     save() {
