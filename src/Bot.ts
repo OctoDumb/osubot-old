@@ -205,8 +205,38 @@ export default class Bot {
             //     source: `https:${mapset.preview}`
             // });
 
+            let modes = [];
+
+            if(mapset.maps.filter(map => map.mode_int == 0).length)
+                modes.push({
+                    mode: 'osu!',
+                    min: Math.min(...mapset.maps.filter(map => map.mode_int == 0).map(map => map.difficulty_rating)),
+                    max: Math.max(...mapset.maps.filter(map => map.mode_int == 0).map(map => map.difficulty_rating))
+                });
+
+            if(mapset.maps.filter(map => map.mode_int == 1).length)
+                modes.push({
+                    mode: 'osu!taiko',
+                    min: Math.min(...mapset.maps.filter(map => map.mode_int == 1).map(map => map.difficulty_rating)),
+                    max: Math.max(...mapset.maps.filter(map => map.mode_int == 1).map(map => map.difficulty_rating))
+                });
+
+            if(mapset.maps.filter(map => map.mode_int == 2).length)
+                modes.push({
+                    mode: 'osu!catch',
+                    min: Math.min(...mapset.maps.filter(map => map.mode_int == 2).map(map => map.difficulty_rating)),
+                    max: Math.max(...mapset.maps.filter(map => map.mode_int == 2).map(map => map.difficulty_rating))
+                });
+
+            if(mapset.maps.filter(map => map.mode_int == 3).length)
+                modes.push({
+                    mode: 'osu!mania',
+                    min: Math.min(...mapset.maps.filter(map => map.mode_int == 3).map(map => map.difficulty_rating)),
+                    max: Math.max(...mapset.maps.filter(map => map.mode_int == 3).map(map => map.difficulty_rating))
+                });
+
             this.news.notify({
-                message: `Новая ранкнутая карта!\n\n${mapset.artist} - ${mapset.title} by ${mapset.creator}\n\nhttps://osu.ppy.sh/s/${mapset.id}`,
+                message: `Новая ранкнутая карта!\n\n${mapset.artist} - ${mapset.title} by ${mapset.creator}\n${modes.map(mode => `${mode.mode} [${mode.min == mode.max ? `${mode.min}` : `${mode.min} - ${mode.max}`}]`).join(", ")}\n\nhttps://osu.ppy.sh/s/${mapset.id}`,
                 attachment: await this.database.covers.getCover(mapset.id),
                 type: 'newranked'
             });

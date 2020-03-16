@@ -11,7 +11,8 @@ interface INewRanked {
     title: string,
     artist: string,
     creator: string,
-    preview: string
+    preview: string,
+    maps: any[]
 }
 
 export type APIV2Events = {

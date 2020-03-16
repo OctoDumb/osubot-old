@@ -109,7 +109,7 @@ class BanchoAPIV2 extends EventEmitter<APIV2Events> {
     }
 
     async getBeatmapsets() {
-        let data = (await this.request('/beatmapsets/search', { s: 'ranked', limit: 1 })).beatmapsets;
+        let data = (await this.request('/beatmapsets/search', { s: 'ranked', limit: 2 })).beatmapsets;
         if(this.data.lastRanked == Infinity)
             this.data.lastRanked = new Date(data[0].ranked_date).getTime();
         else {
@@ -122,7 +122,8 @@ class BanchoAPIV2 extends EventEmitter<APIV2Events> {
                     title: set.title,
                     artist: set.artist,
                     creator: set.creator,
-                    preview: set.preview_url
+                    preview: set.preview_url,
+                    maps: set.beatmaps
                 });
             }
             this.data.lastRanked = new Date(data[data.length - 1].ranked_date).getTime();
