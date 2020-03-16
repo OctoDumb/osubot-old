@@ -125,6 +125,7 @@ class BanchoAPIV2 extends EventEmitter<APIV2Events> {
                     preview: set.preview_url
                 });
             }
+            this.data.lastRanked = new Date(data[data.length - 1].ranked_date).getTime();
         }
     }
 }
