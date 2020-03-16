@@ -28,6 +28,10 @@ npm install
         "bancho": "Bancho token",
         "ripple": "Ripple token (useless atm)"
     },
+    "osu": {
+        "username": "Your osu! username",
+        "password": "Your osu! password"
+    },
     "twitchId": "Twitch application Client ID (?)"
 }
 ```
