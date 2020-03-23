@@ -2,6 +2,7 @@ import { Command } from '../../Command';
 import { Module } from '../../Module';
 import Util from '../../Util';
 import BanchoPP from '../../pp/bancho';
+import Mods from '../../pp/Mods';
 
 export default class BanchoTop extends Command {
     constructor(module: Module) {
@@ -22,6 +23,11 @@ export default class BanchoTop extends Command {
                 let status = self.module.bot.donaters.status("bancho", user.id);
                 if(args.apx) {
                     let top = await self.module.bot.api.bancho.getUserTop(dbUser.nickname, mode, 100);
+                    if(args.mods) {
+                        let mods = new Mods(args.mods);
+                        top = top.filter(score => score.mods.sum() == mods.sum());
+                        if(!top[0]) return ctx.reply(`[Server: ${self.module.name}] Не найдено топ скоров с указанной комбинацией модов!`);
+                    }
                     let nearest = top[0];
                     let place = 1;
                     for(let i = 0; i < top.length; i++) {
@@ -39,6 +45,11 @@ export default class BanchoTop extends Command {
                     });
                 } else if(args.more) {
                     let top = await self.module.bot.api.bancho.getUserTop(dbUser.nickname, mode, 100);
+                    if(args.mods) {
+                        let mods = new Mods(args.mods);
+                        top = top.filter(score => score.mods.sum() == mods.sum());
+                        if(!top[0]) return ctx.reply(`[Server: ${self.module.name}] Не найдено топ скоров с указанной комбинацией модов!`);
+                    }
                     let amount = top.filter(t => t.pp > args.more).length;
                     ctx.reply(`[Server: ${self.module.name}]\nУ игрока ${user.nickname} ${amount ? amount : 'нет'}${amount == 100 ? '+' : ''} ${Util.scoreNum(amount)} выше ${args.more}pp`);
                 } else if(args.place) {
@@ -62,7 +73,13 @@ export default class BanchoTop extends Command {
                     });
                     self.module.bot.maps.setMap(ctx.peerId, map);
                 } else {
-                    let top = await self.module.bot.api.bancho.getUserTop(dbUser.nickname, mode, 3);
+                    let top = await self.module.bot.api.bancho.getUserTop(dbUser.nickname, mode, 100);
+                    if(args.mods) {
+                        let mods = new Mods(args.mods);
+                        top = top.filter(score => score.mods.sum() == mods.sum());
+                        if(!top[0]) return ctx.reply(`[Server: ${self.module.name}] Не найдено топ скоров с указанной комбинацией модов!`);
+                    }
+                    top = top.splice(0, 3);
                     let maps = await Promise.all(top.map(s => self.module.bot.api.bancho.getBeatmap(s.beatmapId, mode, s.mods.diff())));
                     let str = maps.map((map, i) => {
                         let calc = new BanchoPP(map, top[i].mods);
