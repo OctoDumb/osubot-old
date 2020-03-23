@@ -29,9 +29,10 @@ enum ModsBitwise {
 	Key1 = 1 << 26,
 	Key3 = 1 << 27,
 	Key2 = 1 << 28,
-	LastMod = 1 << 29,
+	ScoreV2 = 1 << 29,
     Mirror = 1 << 30,
-	DifficultyChanging = Easy | HardRock | DoubleTime | HalfTime
+	DifficultyChanging = Easy | HardRock | DoubleTime | HalfTime,
+	Unranked = Relax | Autoplay | Relax2 | Cinema | Target | ScoreV2
 };
 
 enum ModsAcronyms {
@@ -64,6 +65,7 @@ enum ModsAcronyms {
 	"K1" = "Key1",
 	"K3" = "Key3",
 	"K2" = "Key2",
+	"V2" = "ScoreV2",
 	"MR" = "Mirror"
 };
 
@@ -97,6 +99,7 @@ enum ModsAcronyms2 {
 	Key1 = "K1",
 	Key3 = "K3",
 	Key2 = "K2",
+	ScoreV2 = "V2",
 	Mirror = "MR"
 };
 
@@ -130,11 +133,11 @@ enum AcrToNum {
 	K1 = 1 << 26,
 	K3 = 1 << 27,
 	K2 = 1 << 28,
-	LM = 1 << 29,
+	V2 = 1 << 29,
     MR = 1 << 30
 }
 
-type Mod = "Nomod" | "NoFail" | "Easy" | "TouchDevice" | "Hidden" | "HardRock" | "SuddenDeath" | "DoubleTime" | "Relax" | "HalfTime" | "Nightcore" | "Flashlight" | "Autoplay" | "SpunOut" | "Relax2" | "Perfect" | "Key4" | "Key5" | "Key6" | "Key7" | "Key8" | "FadeIn" | "Random" | "Cinema" | "Target" | "Key9" | "Key10" | "Key1" | "Key3" | "Key2" | "LastMod" | "Mirror";
+type Mod = "Nomod" | "NoFail" | "Easy" | "TouchDevice" | "Hidden" | "HardRock" | "SuddenDeath" | "DoubleTime" | "Relax" | "HalfTime" | "Nightcore" | "Flashlight" | "Autoplay" | "SpunOut" | "Relax2" | "Perfect" | "Key4" | "Key5" | "Key6" | "Key7" | "Key8" | "FadeIn" | "Random" | "Cinema" | "Target" | "Key9" | "Key10" | "Key1" | "Key3" | "Key2" | "ScoreV2" | "Mirror";
 
 export default class Mods {
     mods: number[];
