@@ -25,7 +25,7 @@ export default class EnjuuTop extends Command {
                     let nearest = top[0];
                     let place = 1;
                     for(let i = 0; i < top.length; i++) {
-                        if(Math.abs(top[i].pp - args.apx) < nearest.pp - args.apx) {
+                        if(Math.abs(top[i].pp - args.apx) < Math.abs(nearest.pp - args.apx)) {
                             nearest = top[i];
                             place = i+1;
                         }
