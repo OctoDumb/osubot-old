@@ -17,7 +17,7 @@ export default class BanchoRecent extends Command {
                 return ctx.reply("Не указан ник!");
             let mode = args.mode === null ? dbUser.mode || 0 : args.mode;
             try {
-                let recent = await self.module.bot.api.bancho.getUserRecent(dbUser.nickname, mode);
+                let recent = await self.module.bot.api.bancho.getUserRecent(dbUser.nickname, mode, args.place || 1);
                 let map = await self.module.bot.api.bancho.getBeatmap(recent.beatmapId, recent.mode, recent.mods.diff());
                 let cover = await self.module.bot.database.covers.getCover(map.id.set);
                 let calc = new Calculator(map, recent.mods);

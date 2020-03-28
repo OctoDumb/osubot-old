@@ -175,11 +175,11 @@ export default class BanchoAPI implements IAPI {
         }
     }
 
-    async getUserRecent(nickname: string, mode: number = 0): Promise<APIRecentScore> {
+    async getUserRecent(nickname: string, mode: number = 0, place: number = 1): Promise<APIRecentScore> {
         try {
-            let { data } = await this.api.get(`/get_user_recent?${qs.stringify({u: nickname, m: mode, k: this.token, limit: 1})}`);
-            if(data[0])
-                return new BanchoRecentScore(data[0], mode, this);
+            let { data } = await this.api.get(`/get_user_recent?${qs.stringify({u: nickname, m: mode, k: this.token, limit: place})}`);
+            if(data[place - 1])
+                return new BanchoRecentScore(data[place - 1], mode, this);
             else
                 throw "No recent scores";
         } catch(e) {
