@@ -4,7 +4,9 @@ osu.db
 osu.db-journal
 config.json
 package-lock.json
+ignore_list.json
 news_forbidden.json
+news_rules.json
 donaters.json
 
 src/test.ts
