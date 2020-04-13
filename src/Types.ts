@@ -361,6 +361,46 @@ interface OsuTrackResponse {
     highscores: TrackTopScore[];
 }
 
+interface V2ChangelogArguments {
+    stream?: string;
+    limit?: number;
+}
+
+interface V2BeatmapsetsArguments {
+    query?: string;
+    status?: string;
+    limit?: number;
+}
+
+interface V2ChangelogResponse {
+    id: number;
+    version: string;
+    entries: V2ChangelogEntry[];
+}
+
+interface V2ChangelogEntry {
+    category: string;
+    title: string;
+    isMajor: boolean;
+}
+
+interface V2Beatmapset {
+    id: number;
+    title: string;
+    artist: string;
+    rankedDate: Date;
+    creator: string;
+    status: string;
+    beatmaps: V2Beatmap[]
+}
+
+interface V2Beatmap {
+    id: number;
+    mode: number;
+    stars: number;
+    version: string;
+}
+
 export {
     APIUser,
     APITopScore,
@@ -387,5 +427,11 @@ export {
     IDatabaseUserStats,
     LeaderboardScore,
     LeaderboardResponse,
-    OsuTrackResponse
+    OsuTrackResponse,
+
+    V2ChangelogArguments,
+    V2BeatmapsetsArguments,
+    
+    V2ChangelogResponse,
+    V2Beatmapset
 }

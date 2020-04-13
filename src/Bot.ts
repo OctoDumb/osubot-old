@@ -186,7 +186,7 @@ export default class Bot {
 
         this.v2 = new BanchoV2();
 
-        this.v2.on('osuupdate', update => {
+        this.v2.data.on('osuupdate', update => {
             let changesString = [];
             for(let ch in update.changes) {
                 changesString.push(`${ch} [${update.changes[ch]}]`);
@@ -199,12 +199,7 @@ export default class Bot {
             });
         });
 
-        this.v2.on('newranked', async mapset => {
-            // let audio = await this.vk.upload.audioMessage({
-            //     peer_id: this.config.vk.owner,
-            //     source: `https:${mapset.preview}`
-            // });
-
+        this.v2.data.on('newranked', async mapset => {
             let modes = [];
 
             if(mapset.maps.filter(map => map.mode_int == 0).length)
@@ -240,10 +235,6 @@ export default class Bot {
                 attachment: await this.database.covers.getCover(mapset.id),
                 type: 'newranked'
             });
-            // this.news.notify({
-            //     attachment: audio.toString(),
-            //     type: 'newranked'
-            // });
         });
     }
 
@@ -268,7 +259,7 @@ export default class Bot {
             this.config.osu.username,
             this.config.osu.password
         )
-        this.v2.start();
+        this.v2.startUpdates();
         this.startTime = Date.now();
         console.log('Started');
     }

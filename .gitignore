@@ -9,4 +9,4 @@ news_forbidden.json
 news_rules.json
 donaters.json
 
-src/test.ts
+**/*test.ts

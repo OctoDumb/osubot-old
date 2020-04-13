@@ -11,7 +11,6 @@ interface INewRanked {
     title: string,
     artist: string,
     creator: string,
-    preview: string,
     maps: any[]
 }
 
