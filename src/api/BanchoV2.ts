@@ -47,7 +47,6 @@ class BanchoAPIV2 {
     }
 
     async request(method: string, query?: {[key: string]: any}) {
-        console.log(query);
         try {
             let { data } = await this.api.get(`${method}${query ? `?${qs.stringify(query)}` : ''}`, {
                 headers: {
