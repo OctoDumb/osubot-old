@@ -59,13 +59,7 @@ export default class BanchoV2Data extends EventEmitter<APIV2Events> {
             if(!data.length) return;
             for(let i = 0; i < data.length; i++) {
                 let set = data[i];
-                this.emit('newranked', {
-                    id: set.id,
-                    title: set.title,
-                    artist: set.artist,
-                    creator: set.creator,
-                    maps: set.beatmaps
-                });
+                this.emit('newranked', set);
             }
             this.data.lastRanked = data[0].rankedDate.getTime();
         }
