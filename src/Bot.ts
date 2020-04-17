@@ -202,32 +202,32 @@ export default class Bot {
         this.v2.data.on('newranked', async mapset => {
             let modes = [];
 
-            if(mapset.maps.filter(map => map.mode_int == 0).length)
+            if(mapset.beatmaps.filter(map => map.mode == 0).length)
                 modes.push({
                     mode: 'osu!',
-                    min: Math.min(...mapset.maps.filter(map => map.mode_int == 0).map(map => map.difficulty_rating)),
-                    max: Math.max(...mapset.maps.filter(map => map.mode_int == 0).map(map => map.difficulty_rating))
+                    min: Math.min(...mapset.beatmaps.filter(map => map.mode == 0).map(map => map.stars)),
+                    max: Math.max(...mapset.beatmaps.filter(map => map.mode == 0).map(map => map.stars))
                 });
 
-            if(mapset.maps.filter(map => map.mode_int == 1).length)
+            if(mapset.beatmaps.filter(map => map.mode == 1).length)
                 modes.push({
                     mode: 'osu!taiko',
-                    min: Math.min(...mapset.maps.filter(map => map.mode_int == 1).map(map => map.difficulty_rating)),
-                    max: Math.max(...mapset.maps.filter(map => map.mode_int == 1).map(map => map.difficulty_rating))
+                    min: Math.min(...mapset.beatmaps.filter(map => map.mode == 1).map(map => map.stars)),
+                    max: Math.max(...mapset.beatmaps.filter(map => map.mode == 1).map(map => map.stars))
                 });
 
-            if(mapset.maps.filter(map => map.mode_int == 2).length)
+            if(mapset.beatmaps.filter(map => map.mode == 2).length)
                 modes.push({
                     mode: 'osu!catch',
-                    min: Math.min(...mapset.maps.filter(map => map.mode_int == 2).map(map => map.difficulty_rating)),
-                    max: Math.max(...mapset.maps.filter(map => map.mode_int == 2).map(map => map.difficulty_rating))
+                    min: Math.min(...mapset.beatmaps.filter(map => map.mode == 2).map(map => map.stars)),
+                    max: Math.max(...mapset.beatmaps.filter(map => map.mode == 2).map(map => map.stars))
                 });
 
-            if(mapset.maps.filter(map => map.mode_int == 3).length)
+            if(mapset.beatmaps.filter(map => map.mode == 3).length)
                 modes.push({
                     mode: 'osu!mania',
-                    min: Math.min(...mapset.maps.filter(map => map.mode_int == 3).map(map => map.difficulty_rating)),
-                    max: Math.max(...mapset.maps.filter(map => map.mode_int == 3).map(map => map.difficulty_rating))
+                    min: Math.min(...mapset.beatmaps.filter(map => map.mode == 3).map(map => map.stars)),
+                    max: Math.max(...mapset.beatmaps.filter(map => map.mode == 3).map(map => map.stars))
                 });
 
             this.news.notify({

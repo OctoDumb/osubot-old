@@ -1,3 +1,5 @@
+import { V2Beatmapset } from "./Types";
+
 interface IOsuUpdate {
     /** New osu! version */ version: string,
     /** Changes sorted by type */ changes: {
@@ -6,15 +8,15 @@ interface IOsuUpdate {
     /** Amount of major changes */ majors: number
 }
 
-interface INewRanked {
-    id: number,
-    title: string,
-    artist: string,
-    creator: string,
-    maps: any[]
-}
+// interface INewRanked {
+//     id: number,
+//     title: string,
+//     artist: string,
+//     creator: string,
+//     maps: any[]
+// }
 
 export type APIV2Events = {
     ['osuupdate']: [IOsuUpdate],
-    ['newranked']: [INewRanked]
+    ['newranked']: [V2Beatmapset]
 }
