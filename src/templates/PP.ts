@@ -24,8 +24,8 @@ export default function(map: APIBeatmap, args: ICommandArgs): string {
             let pp = calc.calculate(ppArgs);
             return `${map.artist} - ${map.title} [${map.version}] by ${map.creator.nickname}
 ${Util.formatBeatmapLength(map.length / calc.speedMultiplier)} | ${map.stats} ${Math.round(map.bpm * calc.speedMultiplier)}BPM | ${Util.round(map.diff.stars, 2)}✩ ${calc.mods.toString()}
-Точность: ${Util.round(ppArgs.acc * 100, 2)}%
-Комбо: ${Util.formatCombo(ppArgs.combo, map.combo)} | ${ppArgs.counts.miss} промахов
+Accuracy: ${Util.round(ppArgs.acc * 100, 2)}%
+Combo: ${Util.formatCombo(ppArgs.combo, map.combo)} | ${ppArgs.counts.miss} misses
 - PP: ${Util.round(pp.pp, 2)}`;
         }
 
@@ -39,7 +39,7 @@ ${Util.formatBeatmapLength(map.length / calc.speedMultiplier)} | ${map.stats} ${
             let pp = calc.calculate(ppArgs);
             return `${map.artist} - ${map.title} [${map.version}] by ${map.creator.nickname}
 ${Util.formatBeatmapLength(map.length / calc.speedMultiplier)} | ${map.stats} ${Math.round(map.bpm * calc.speedMultiplier)}BPM | ${Util.round(map.diff.stars, 2)}✩ ${calc.mods.toString()}
-Очки: ${ppArgs.score}
+Score: ${ppArgs.score}
 - PP: ${Util.round(pp.pp, 2)}`;
         }
 

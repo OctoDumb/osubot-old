@@ -10,10 +10,10 @@ ${beatmap.artist} - ${beatmap.title} [${beatmap.version}] by ${beatmap.creator.n
 ${Util.formatBeatmapLength(beatmap.length / calc.speedMultiplier)} | ${beatmap.stats} ${Math.round(beatmap.bpm * calc.speedMultiplier)}BPM | ${Util.round(beatmap.diff.stars, 2)}✩ ${score.mods}
 
 ${Util.formatDate(score.date)}
-Очки: ${score.score} | Комбо: ${Util.formatCombo(score.combo, beatmap.combo)}
-Точность: ${Util.round(score.accuracy() * 100, 2)}%
-Хиткаунты: ${score.counts}
-PP: ${score.pp} | Ранк: ${score.rank}
+Score: ${score.score} | Combo: ${Util.formatCombo(score.combo, beatmap.combo)}
+Accuracy: ${Util.round(score.accuracy() * 100, 2)}%
+Hitcounts: ${score.counts}
+PP: ${score.pp} | Grade: ${score.rank}
 
-Карта: ${link}/b/${beatmap.id.map}`;
+${link}/b/${beatmap.id.map}`;
 }
