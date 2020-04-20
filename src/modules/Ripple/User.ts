@@ -21,11 +21,11 @@ export default class RippleUser extends Command {
                 self.module.bot.database.servers.ripple.updateInfo(user, mode);
                 let keyboard = Util.createKeyboard([
                     [{
-                        text: `[R] Топ скоры ${user.nickname}`,
+                        text: `Топ скоры ${user.nickname}`,
                         command: `r t ${user.nickname} ${Util.getModeArg(mode)}`
                     }],
                     [{
-                        text: `[R] Последний скор ${user.nickname}`,
+                        text: `Последний скор ${user.nickname}`,
                         command: `r r ${user.nickname} ${Util.getModeArg(mode)}`
                     }]
                 ]);

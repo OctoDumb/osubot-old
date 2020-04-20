@@ -21,11 +21,11 @@ export default class GatariUser extends Command {
                 self.module.bot.database.servers.gatari.updateInfo(user, mode);
                 let keyboard = Util.createKeyboard([
                     [{
-                        text: `[G] Топ скоры ${user.nickname}`,
+                        text: `Топ скоры ${user.nickname}`,
                         command: `g t ${user.nickname} ${Util.getModeArg(mode)}`
                     }],
                     [{
-                        text: `[G] Последний скор ${user.nickname}`,
+                        text: `Последний скор ${user.nickname}`,
                         command: `g r ${user.nickname} ${Util.getModeArg(mode)}`
                     }]
                 ]);

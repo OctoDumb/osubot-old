@@ -21,11 +21,11 @@ export default class BanchoUser extends Command {
                 self.module.bot.database.servers.bancho.updateInfo(user, mode);
                 let keyboard = Util.createKeyboard([
                     [{
-                        text: `[B] Топ скоры ${user.nickname}`,
+                        text: `Топ скоры ${user.nickname}`,
                         command: `s t ${user.nickname} ${Util.getModeArg(mode)}`
                     }],
                     [{
-                        text: `[B] Последний скор ${user.nickname}`,
+                        text: `Последний скор ${user.nickname}`,
                         command: `s r ${user.nickname} ${Util.getModeArg(mode)}`
                     }]
                 ]);
