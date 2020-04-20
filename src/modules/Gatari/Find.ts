@@ -14,7 +14,7 @@ export default class GatariFind extends Command {
                     return ctx.reply("Не найдено пользователей с таким ником!");
                 let keyboard = Util.createKeyboard([
                     [{
-                        text: '[G] Посмотреть профиль',
+                        text: 'Посмотреть профиль',
                         command: `g u ${u.nickname}`
                     }]
                 ]);

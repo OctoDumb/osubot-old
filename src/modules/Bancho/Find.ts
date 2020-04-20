@@ -14,7 +14,7 @@ export default class BanchoFind extends Command {
                     return ctx.reply("Не найдено пользователей с таким ником!");
                 let keyboard = Util.createKeyboard([
                     [{
-                        text: '[B] Посмотреть профиль',
+                        text: 'Посмотреть профиль',
                         command: `s u ${u.nickname}`
                     }]
                 ]);

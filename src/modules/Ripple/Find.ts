@@ -14,7 +14,7 @@ export default class RippleFind extends Command {
                     return ctx.reply("Не найдено пользователей с таким ником!");
                 let keyboard = Util.createKeyboard([
                     [{
-                        text: '[R] Посмотреть профиль',
+                        text: 'Посмотреть профиль',
                         command: `r u ${u.nickname}`
                     }]
                 ]);
