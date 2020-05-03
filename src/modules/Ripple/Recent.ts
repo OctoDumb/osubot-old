@@ -23,11 +23,11 @@ export default class RippleRecent extends Command {
                 let calc = new Calculator(map, recent.mods);
                 let keyboard = Util.createKeyboard([
                     [{
-                        text: '[R] Мой скор на карте',
+                        text: 'Мой скор на карте',
                         command: `{map${map.id.map}}r c`
                     }],
                     ctx.isChat ? [{
-                        text: '[R] Топ чата на карте',
+                        text: 'Топ чата на карте',
                         command: `{map${map.id.map}}r lb`
                     }] : []
                 ]);

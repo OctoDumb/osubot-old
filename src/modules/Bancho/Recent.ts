@@ -23,11 +23,11 @@ export default class BanchoRecent extends Command {
                 let calc = new Calculator(map, recent.mods);
                 let keyboard = Util.createKeyboard([
                     [{
-                        text: '[B] Мой скор на карте',
+                        text: 'Мой скор на карте',
                         command: `{map${map.id.map}}s c`
                     }],
                     ctx.isChat ? [{
-                        text: '[B] Топ чата на карте',
+                        text: 'Топ чата на карте',
                         command: `{map${map.id.map}}s lb`
                     }] : []
                 ]);
