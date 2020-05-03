@@ -14,5 +14,7 @@ jobs:
           node-version: 11
       - name: Install modules
         run: npm install
+      - name: Install TypeScript
+        run: npm i typescript -g
       - name: Compile
-        uses: iCrawl/action-tsc@v1
+        run: tsc
