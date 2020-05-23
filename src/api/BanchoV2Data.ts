@@ -5,6 +5,7 @@ import { APIV2Events } from "../Events";
 interface IV2Data {
     lastBuild: number;
     lastRanked: number;
+    lastNews: number;
 }
 
 export default class BanchoV2Data extends EventEmitter<APIV2Events> {
@@ -15,13 +16,15 @@ export default class BanchoV2Data extends EventEmitter<APIV2Events> {
         this.api = api;
         this.data = {
             lastBuild: Infinity,
-            lastRanked: Infinity
+            lastRanked: Infinity,
+            lastNews: 0
         }
     }
 
     async fetch() {
         await this.updateChangelog();
         await this.updateRanked();
+        await this.updateNews();
     }
 
     async updateChangelog() {
@@ -62,6 +65,16 @@ export default class BanchoV2Data extends EventEmitter<APIV2Events> {
                 this.emit('newranked', set);
             }
             this.data.lastRanked = data[0].rankedDate.getTime();
+        }
+    }
+
+    async updateNews() {
+        let news = await this.api.getNews();
+        if(this.data.lastNews == 0)
+            this.data.lastNews = news.date.getTime();
+        else if(this.data.lastNews < news.date.getTime()) {
+            this.data.lastNews = news.date.getTime();
+            this.emit('osunews', news);
         }
     }
 }

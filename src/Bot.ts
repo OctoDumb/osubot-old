@@ -236,6 +236,18 @@ export default class Bot {
                 type: 'newranked'
             });
         });
+
+        this.v2.data.on('osunews', async news => {
+            let attachment = (await this.vk.upload.messagePhoto({
+                source: news.image
+            })).toString();
+
+            this.news.notify({
+                message: `Новость на сайте osu!\n${news.title}\nот ${news.author}\n\n${news.link}`,
+                attachment,
+                type: 'osunews'
+            });
+        });
     }
 
     registerModule(module: Module | Module[]) {

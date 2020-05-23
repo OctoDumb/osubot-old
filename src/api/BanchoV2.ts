@@ -3,7 +3,7 @@ import qs from "querystring";
 import { EventEmitter } from "eventemitter3";
 import { APIV2Events } from "../Events";
 import BanchoV2Data from "./BanchoV2Data";
-import { V2ChangelogArguments, V2BeatmapsetsArguments, V2ChangelogResponse, V2Beatmapset } from "../Types";
+import { V2ChangelogArguments, V2BeatmapsetsArguments, V2ChangelogResponse, V2Beatmapset, V2News } from "../Types";
 
 interface IAPIData {
     lastBuild: number;
@@ -21,10 +21,6 @@ class BanchoAPIV2 {
             baseURL: "https://osu.ppy.sh/api/v2",
             timeout: 1e4
         });
-        // this.data = {
-        //     lastBuild: Infinity,
-        //     lastRanked: Infinity
-        // };
         this.logged = 0;
 
         this.data = new BanchoV2Data(this);
@@ -97,34 +93,8 @@ class BanchoAPIV2 {
         }));
     }
 
-    // async getChangelog() {
-    //     let data = await this.request('/changelog', { stream: "stable40" });
-    //     let v = data.builds[0];
-    //     if(this.data.lastBuild == Infinity)
-    //         this.data.lastBuild = v.id;
-    //     else if(v.id > this.data.lastBuild) {
-    //         this.data.lastBuild = v.id;
-    //         let changes = {};
-    //         let majors = 0;
-    //         for(let change of v.changelog_entries) {
-    //             if(changes[change.category])
-    //                 changes[change.category]++;
-    //             else
-    //                 changes[change.category] = 1;
-    //             if(change.major)
-    //                 majors++;
-    //         }
-
-    //         this.emit('osuupdate', {
-    //             version: v.version,
-    //             changes,
-    //             majors
-    //         });
-    //     }
-    // }
-
     async getBeatmapsets(args: V2BeatmapsetsArguments): Promise<V2Beatmapset[]> {
-        let data = (await this.request('/beatmapsets/search/', { q: args.query || null, s: args.status || 'ranked', limit: args.limit || 5 }));
+        let data = await this.request('/beatmapsets/search/', { q: args.query || null, s: args.status || 'ranked', limit: args.limit || 5 });
         return data.beatmapsets.map(set => ({
             id: set.id,
             title: set.title,
@@ -139,24 +109,18 @@ class BanchoAPIV2 {
                 version: map.version
             }))
         }));
-        // if(this.data.lastRanked == Infinity)
-        //     this.data.lastRanked = new Date(data[0].ranked_date).getTime();
-        // else {
-        //     data = data.filter(s => new Date(s.ranked_date).getTime() > this.data.lastRanked).reverse();
-        //     if(!data.length) return;
-        //     for(let i = 0; i < data.length; i++) {
-        //         let set = data[i];
-        //         // this.emit('newranked', {
-        //         //     id: set.id,
-        //         //     title: set.title,
-        //         //     artist: set.artist,
-        //         //     creator: set.creator,
-        //         //     preview: set.preview_url,
-        //         //     maps: set.beatmaps
-        //         // });
-        //     }
-        //     this.data.lastRanked = new Date(data[0].ranked_date).getTime();
-        // }
+    }
+
+    async getNews(): Promise<V2News> {
+        let data = (await this.request('/news')).news_posts[0];
+        return {
+            id: data.id,
+            author: data.author,
+            image: data.first_image.startsWith("/") ? "https://osu.ppy.sh" + data.first_image : data.first_image,
+            title: data.title,
+            link: "https://osu.ppy.sh/news/" + data.slug,
+            date: new Date(data.published_at)
+        };
     }
 }
 

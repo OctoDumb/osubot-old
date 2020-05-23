@@ -401,6 +401,15 @@ interface V2Beatmap {
     version: string;
 }
 
+interface V2News {
+    id: number;
+    author: string;
+    image: string;
+    title: string;
+    link: string;
+    date: Date;
+}
+
 export {
     APIUser,
     APITopScore,
@@ -433,5 +442,6 @@ export {
     V2BeatmapsetsArguments,
     
     V2ChangelogResponse,
-    V2Beatmapset
+    V2Beatmapset,
+    V2News
 }

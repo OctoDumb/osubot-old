@@ -9,6 +9,7 @@ interface INewsRule {
     group: boolean;
     osuupdate: boolean;
     newranked: boolean;
+    news: boolean;
 }
 
 interface INotifyOptions {
@@ -33,18 +34,20 @@ export default class News {
         this.chatsDefaults = {
             group: true,
             osuupdate: false,
-            newranked: false
+            newranked: false,
+            news: true
         }
 
         this.usersDefaults = {
             group: false,
             osuupdate: false,
-            newranked: false
+            newranked: false,
+            news: false
         }
 
         setInterval(() => {
             this.save();
-        }, 10000);
+        }, 3e3);
     }
     
     async notify(options: INotifyOptions) {
