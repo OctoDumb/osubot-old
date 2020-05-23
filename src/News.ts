@@ -62,9 +62,7 @@ export default class News {
                         let code = ids.splice(0, 25).map(id => `API.messages.send(${JSON.stringify({peer_id: id, message: options.message, random_id: Math.ceil(Math.random() * 1e7), attachment: options.attachment || "", dont_parse_links: 1})});`).join("\n");
                         this.bot.vk.api.execute({ code });
                     }
-                } catch(e) {
-                    console.log(e);
-                }
+                } catch(e) {}
             }
         }
         let rawUsers = (await this.bot.vk.api.execute({ code: 'var i = 0;\nvar users = [];\nwhile(i < 25) {\nvar u = API.messages.getConversations({"count": 200, "offset": 200 * i}).items@.conversation@.peer@.id;\nusers.push(u);\ni = i + 1;\nif(u.length < 200) {\ni = 25;\n}\n}\nreturn users;' })).response;
@@ -80,9 +78,7 @@ export default class News {
                         let code = users.splice(0, 25).map(id => `API.messages.send(${JSON.stringify({peer_id: id, message: options.message, random_id: Math.ceil(Math.random() * 1e7), attachment: options.attachment || "", dont_parse_links: 1})});`).join("\n");
                         this.bot.vk.api.execute({ code });
                     }
-                } catch(e) {
-                    console.log(e);
-                }
+                } catch(e) {}
             }
         }
         return true;

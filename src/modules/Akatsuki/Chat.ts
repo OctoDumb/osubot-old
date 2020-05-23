@@ -27,7 +27,6 @@ export default class AkatsukiChat extends Command {
                     });
                     ctx.reply(`[Server: ${self.module.name}]\nТоп${users.length > 15 ? '-15' : ''} беседы (ID ${ctx.chatId}):\n${users.splice(0, 15).map((user, i) => `#${i+1} ${user.nickname} ${self.module.bot.donaters.status("akatsuki", user.id)} | ${Util.round(user.pp, 1)}pp | Ранк ${user.rank} | ${Util.round(user.acc, 2)}%`).join("\n")}`);
                 } catch(e) {
-                    console.log(e.toString());
                     ctx.reply("Ошибка");
                 }
             } else if(ctx.isFromUser) {

@@ -18,7 +18,6 @@ export default class AkatsukiRelaxRecent extends Command {
             let mode = args.mode === null ? dbUser.mode || 0 : args.mode;
             try {
                 let recent = await self.module.bot.api.relax.getUserRecent(dbUser.nickname, mode);
-                console.log(recent);
                 let map = await self.module.bot.api.bancho.getBeatmap(recent.beatmapId, recent.mode, recent.mods.diff());
                 let cover = await self.module.bot.database.covers.getCover(map.id.set);
                 let calc = new Calculator(map, recent.mods);
@@ -27,7 +26,6 @@ export default class AkatsukiRelaxRecent extends Command {
                 });
                 self.module.bot.maps.setMap(ctx.peerId, map);
             } catch (e) {
-                console.log(e);
                 let err = await self.module.bot.database.errors.addError("g", ctx, String(e));
                 ctx.reply(`[Server: ${self.module.name}]\n${Util.error(String(e))} (${err})`);
             }
