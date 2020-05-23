@@ -9,7 +9,7 @@ interface INewsRule {
     group: boolean;
     osuupdate: boolean;
     newranked: boolean;
-    news: boolean;
+    osunews: boolean;
 }
 
 interface INotifyOptions {
@@ -35,14 +35,14 @@ export default class News {
             group: true,
             osuupdate: false,
             newranked: false,
-            news: true
+            osunews: true
         }
 
         this.usersDefaults = {
             group: false,
             osuupdate: false,
             newranked: false,
-            news: false
+            osunews: false
         }
 
         setInterval(() => {
