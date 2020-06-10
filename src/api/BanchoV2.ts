@@ -118,7 +118,7 @@ class BanchoAPIV2 {
             author: data.author,
             image: data.first_image.startsWith("/") ? "https://osu.ppy.sh" + data.first_image : data.first_image,
             title: data.title,
-            link: "https://osu.ppy.sh/news/" + data.slug,
+            link: "https://osu.ppy.sh/home/news/" + data.slug,
             date: new Date(data.published_at)
         };
     }
