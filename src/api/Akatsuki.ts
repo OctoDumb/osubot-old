@@ -24,16 +24,16 @@ class AkatsukiUser implements APIUser {
         this.api = api;
         this.id = data.id;
         this.nickname = data.username;
-        this.playcount = data[mode].playcount;
-        this.playtime = data[mode].playtime;
-        this.pp = data[mode].pp;
+        this.playcount = data.stats[0][mode].playcount;
+        this.playtime = data.stats[0][mode].playtime;
+        this.pp = data.stats[0][mode].pp;
         this.rank = {
-            total: data[mode].global_leaderboard_rank,
-            country: data[mode].country_leaderboard_rank
+            total: data.stats[0][mode].global_leaderboard_rank,
+            country: data.stats[0][mode].country_leaderboard_rank
         };
         this.country = data.country;
-        this.accuracy = data[mode].accuracy;
-        this.level = data[mode].level;
+        this.accuracy = data.stats[0][mode].accuracy;
+        this.level = data.stats[0][mode].level;
     }
 }
 

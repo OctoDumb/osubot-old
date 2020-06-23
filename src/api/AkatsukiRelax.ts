@@ -24,16 +24,16 @@ class AkatsukiRelaxUser implements APIUser {
         this.api = api;
         this.id = data.id;
         this.nickname = data.username;
-        this.playcount = data[mode].playcount;
-        this.playtime = data[mode].playtime;
-        this.pp = data[mode].pp;
+        this.playcount = data.stats[1][mode].playcount;
+        this.playtime = data.stats[1][mode].playtime;
+        this.pp = data.stats[1][mode].pp;
         this.rank = {
-            total: data[mode].global_leaderboard_rank,
-            country: data[mode].country_leaderboard_rank
+            total: data.stats[1][mode].global_leaderboard_rank,
+            country: data.stats[1][mode].country_leaderboard_rank
         };
         this.country = data.country;
-        this.accuracy = data[mode].accuracy;
-        this.level = data[mode].level;
+        this.accuracy = data.stats[1][mode].accuracy;
+        this.level = data.stats[1][mode].level;
     }
 }
 
@@ -118,7 +118,7 @@ export default class AkatsukiRelaxAPI implements IAPI {
 
     async getUser(nickname: string, mode: number = 0): Promise<APIUser> {
         try {
-            let { data } = await this.api.get(`/users/rxfull?${qs.stringify({name: nickname})}`);
+            let { data } = await this.api.get(`/users/full?${qs.stringify({name: nickname})}`);
             let m = ["std","taiko","ctb","mania"][mode];
             return new AkatsukiRelaxUser(data, m, this);
         } catch(e) {
