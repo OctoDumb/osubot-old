@@ -298,21 +298,32 @@ class BanchoCatch {
 
     totalValue(stars: number, acc: number, combo: number, miss: number) {
         let pp = Math.pow(((5 * stars / 0.0049) - 4), 2) / 1e5;
-        let lengthBonus = 0.95 + 0.4 * Math.min(1, combo / 3e3);
-        if(combo > 3e3)
-            lengthBonus += Math.log10(combo / 3e3) * 0.5;
+        let lengthBonus = 0.95 + 0.3 * Math.min(1, combo / 2500);
+        if(combo > 2500)
+            lengthBonus += Math.log10(combo / 2500) * 0.475;
 
         pp *= lengthBonus;
         pp *= Math.pow(0.97, miss);
         pp *= Math.min(Math.pow(combo, 0.8) / Math.pow(this.map.combo, 0.8), 1);
 
+        let arFactor = 1;
         if(this.map.stats.ar > 9)
-            pp *= 1 + 0.1 * (this.map.stats.ar - 9)
+            arFactor += 0.1 * (this.map.stats.ar - 9);
+        if(this.map.stats.ar > 10)
+            arFactor += 0.1 * (this.map.stats.ar - 10);
         else if(this.map.stats.ar < 8)
-            pp *= 1 + 0.025 * (8 - this.map.stats.ar);
+            arFactor += 0.025 * (8 - this.map.stats.ar);
 
-        if(this.mods.has("Hidden"))
+        pp *= arFactor;
+
+        if(this.mods.has("Hidden")) {
             pp *= 1.05 + 0.075 * (10 - Math.min(10, this.map.stats.ar));
+            if(this.map.stats.ar <= 10)
+                pp *= 1.05 + 0.075 * (10 - this.map.stats.ar);
+            else if(this.map.stats.ar > 10)
+                pp *= 1.01 + 0.04 * (11 - Math.min(this.map.stats.ar, 11));
+        }
+
         if(this.mods.has("Flashlight"))
             pp *= 1.35 * lengthBonus;
 
@@ -320,8 +331,6 @@ class BanchoCatch {
 
         if(this.mods.has("NoFail"))
             pp *= 0.9;
-        if(this.mods.has("SpunOut"))
-            pp *= 0.95;
 
         return pp;
     }
