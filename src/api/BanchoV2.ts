@@ -51,7 +51,7 @@ class BanchoAPIV2 {
             });
             return data;
         } catch(e) {
-            if(e.response.status == 401) {
+            if(e.response?.status == 401) {
                 await this.refresh();
                 return this.request(method, query);
             }
@@ -94,7 +94,7 @@ class BanchoAPIV2 {
     }
 
     async getBeatmapsets(args: V2BeatmapsetsArguments): Promise<V2Beatmapset[]> {
-        let data = await this.request('/beatmapsets/search/', { q: args.query || null, s: args.status || 'ranked', limit: args.limit || 5 });
+        let data = await this.request('/beatmapsets/search/', { q: args.query || null, s: args.status || 'ranked' });
         return data.beatmapsets.map(set => ({
             id: set.id,
             title: set.title,
