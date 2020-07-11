@@ -12,7 +12,7 @@ export default class SearchCommand extends Command {
             if(!data.length)
                 return ctx.reply("Не найдено карт");
 
-            ctx.reply("Результат поиска:\n\n" + self.module.bot.templates.Search(data.splice(0, 10)));
+            ctx.reply("Результат поиска:\n\n" + self.module.bot.templates.Search(data.splice(0, 10)), { dont_parse_links: 1 });
         });
     }
 }
