@@ -19,31 +19,27 @@ interface INotifyOptions {
 }
 
 export default class News {
-    bot: Bot;
     rules: INewsRules;
-    limit: number;
-    chatsDefaults: INewsRule;
-    usersDefaults: INewsRule;
-    constructor(bot: Bot) {
-        this.bot = bot;
+    limit: number = 200;
+    step: number = 10;
+    chatsDefaults: INewsRule = {
+        group: true,
+        osuupdate: false,
+        newranked: false,
+        osunews: true
+    };
+    usersDefaults: INewsRule = {
+        group: false,
+        osuupdate: false,
+        newranked: false,
+        osunews: false
+    };
+    constructor(
+        public bot: Bot
+    ) {
         if(!fs.existsSync("./news_rules.json"))
             fs.writeFileSync("./news_rules.json", "{}");
         this.rules = JSON.parse(fs.readFileSync("./news_rules.json").toString());
-        this.limit = 200;
-
-        this.chatsDefaults = {
-            group: true,
-            osuupdate: false,
-            newranked: false,
-            osunews: true
-        }
-
-        this.usersDefaults = {
-            group: false,
-            osuupdate: false,
-            newranked: false,
-            osunews: false
-        }
 
         setInterval(() => {
             this.save();
@@ -55,15 +51,11 @@ export default class News {
         for(let i = 1; i <= this.limit; i++)
             ids.push(2000000000 + i);
         ids = ids.filter(id => this.chatAllowed(id, options.type));
-        if(ids.length) {
-            for(let i = 0; i < Math.ceil(ids.length / 25); i++) {
-                try {
-                    if(ids[0]) {
-                        let code = ids.splice(0, 25).map(id => `API.messages.send(${JSON.stringify({peer_id: id, message: options.message, random_id: Math.ceil(Math.random() * 1e7), attachment: options.attachment || "", dont_parse_links: 1})});`).join("\n");
-                        this.bot.vk.api.execute({ code });
-                    }
-                } catch(e) {}
-            }
+        while(ids.length) {
+            try {
+                let code = ids.splice(0, this.step).map(id => `API.messages.send(${JSON.stringify({peer_id: id, message: options.message, random_id: Math.ceil(Math.random() * 1e9), attachment: options.attachment || "", dont_parse_links: 1})});`).join("\n");
+                await this.bot.vk.api.execute({ code });
+            } catch(e) {}
         }
         let rawUsers = (await this.bot.vk.api.execute({ code: 'var i = 0;\nvar users = [];\nwhile(i < 25) {\nvar u = API.messages.getConversations({"count": 200, "offset": 200 * i}).items@.conversation@.peer@.id;\nusers.push(u);\ni = i + 1;\nif(u.length < 200) {\ni = 25;\n}\n}\nreturn users;' })).response;
         let users = [];
@@ -71,15 +63,11 @@ export default class News {
             users.push(...rawUsers[i]);
         }
         users = users.filter(u => this.userAllowed(u, options.type));
-        if(users.length) {
-            for(let i = 0; i < Math.ceil(users.length / 25); i++) {
-                try {
-                    if(users[0]) {
-                        let code = users.splice(0, 25).map(id => `API.messages.send(${JSON.stringify({peer_id: id, message: options.message, random_id: Math.ceil(Math.random() * 1e7), attachment: options.attachment || "", dont_parse_links: 1})});`).join("\n");
-                        this.bot.vk.api.execute({ code });
-                    }
-                } catch(e) {}
-            }
+        while(users.length) {
+            try {
+                let code = users.splice(0, this.step).map(id => `API.messages.send(${JSON.stringify({peer_id: id, message: options.message, random_id: Math.ceil(Math.random() * 1e9), attachment: options.attachment || "", dont_parse_links: 1})});`).join("\n");
+                await this.bot.vk.api.execute({ code });
+            } catch(e) {}
         }
         return true;
     }
