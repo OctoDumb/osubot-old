@@ -81,17 +81,21 @@ class DatabaseCovers {
     }
 
     async addCover(id: Number): Promise<string> {
-        let { data: cover } = await axios.get(`https://assets.ppy.sh/beatmaps/${id}/covers/cover.jpg?1`, {
-            responseType: "arraybuffer"
-        });
+        try {
+            let { data: cover } = await axios.get(`https://assets.ppy.sh/beatmaps/${id}/covers/cover.jpg?1`, {
+                responseType: "arraybuffer"
+            });
 
-        let photo = await this.db.vk.upload.messagePhoto({
-            source: Buffer.from(cover)
-        });
+            let photo = await this.db.vk.upload.messagePhoto({
+                source: Buffer.from(cover)
+            });
 
-        await this.db.run("INSERT INTO covers (id, attachment) VALUES (?, ?)", [id, photo.toString()]);
+            await this.db.run("INSERT INTO covers (id, attachment) VALUES (?, ?)", [id, photo.toString()]);
 
-        return photo.toString();
+            return photo.toString();
+        } catch(e) {
+            return "";
+        }
     }
 
     async getCover(id: Number): Promise<string> {
