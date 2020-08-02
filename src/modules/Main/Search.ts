@@ -3,7 +3,7 @@ import { Module } from "../../Module";
 
 export default class SearchCommand extends Command {
     constructor(module: Module) {
-        super("search", module, async (ctx, self, args) => {
+        super(["search", "ыуфкср"], module, async (ctx, self, args) => {
             if(!args.string[0])
                 return ctx.reply("Укажите запрос для поиска");
             

@@ -3,7 +3,7 @@ import { Module } from "../../Module";
 
 export default class KurikkuNick extends Command {
     constructor(module: Module) {
-        super(["n", "nick", "nickname"], module, async (ctx, self, args) => {
+        super(["n", "nick", "т", "тшсл"], module, async (ctx, self, args) => {
             if(!args.nickname[0])
                 return ctx.reply("Не указан ник!")
             try {

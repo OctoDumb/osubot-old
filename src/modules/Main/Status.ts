@@ -3,7 +3,7 @@ import { Module } from "../../Module";
 
 export default class StatusCommand extends Command {
     constructor(module: Module) {
-        super("status", module, (ctx, self) => {
+        super(["status", "ыефегы"], module, (ctx, self) => {
             let uptime = Math.floor((Date.now() - self.module.bot.startTime) / 1e3);
             let up = `${Math.floor(uptime / 3600 / 24)}д ${Math.floor(uptime / 3600) % 24}ч ${Math.floor(uptime / 60) % 60}м ${uptime % 60}с`;
 

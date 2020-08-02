@@ -14,7 +14,7 @@ import GatariLeaderboard from "./Leaderboard";
 export default class Gatari extends Module {
     link: string;
     constructor(bot: Bot) {
-        super("g", bot);
+        super(["g", "п"], bot);
 
         this.name = "Gatari";
 

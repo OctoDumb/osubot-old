@@ -3,7 +3,7 @@ import { Module } from "../../Module";
 
 export default class EvalCommand extends Command {
     constructor(module: Module) {
-        super(["eval"], module, async (ctx, self, args) => {
+        super(["eval", "умфд"], module, async (ctx, self, args) => {
             try {
                 let res = eval(args.full.join(" "));
                 ctx.send(`Успех!\nТип данных: ${typeof res}\n\n${String(res)}`);

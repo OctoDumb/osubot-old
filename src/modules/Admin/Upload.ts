@@ -5,7 +5,7 @@ import fs from "fs";
 
 export default class UploadCommand extends Command {
     constructor(module: Module) {
-        super("upload", module, async (ctx, self, args) => {
+        super(["upload", "гздщфв"], module, async (ctx, self, args) => {
             if(!ctx.getAttachments("doc")[0])
                 return ctx.reply("Нет вложений!");
             

@@ -6,7 +6,7 @@ import Util from "../../Util";
 
 export default class EnjuuCompare extends Command {
     constructor(module: Module) {
-        super(["c", "compare"], module, async (ctx, self, args) => {
+        super(["c", "compare", "с", "сщьзфку"], module, async (ctx, self, args) => {
             let dbUser = await self.module.bot.database.servers.enjuu.getUser(ctx.senderId);
             if(ctx.hasReplyMessage)
                 dbUser.nickname = (await self.module.bot.database.servers.enjuu.getUser(ctx.replyMessage.senderId)).nickname;

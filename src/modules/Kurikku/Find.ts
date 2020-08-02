@@ -3,7 +3,7 @@ import { Module } from "../../Module";
 
 export default class KurikkuFind extends Command {
     constructor(module: Module) {
-        super(["f", "find"], module, async (ctx, self, args) => {
+        super(["f", "find", "а", "аштв"], module, async (ctx, self, args) => {
             if(!args.nickname[0])
                 return ctx.reply("Укажите ник!");
             try {

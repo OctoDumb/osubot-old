@@ -12,7 +12,7 @@ import EnjuuLeaderboard from "./Leaderboard";
 
 export default class Enjuu extends Module {
     constructor(bot: Bot) {
-        super(["e", "ej"], bot);
+        super(["e", "ej", "у", "уо"], bot);
         
         this.name = "Enjuu";
 

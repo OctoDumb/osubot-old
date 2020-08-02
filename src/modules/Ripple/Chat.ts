@@ -4,7 +4,7 @@ import Util from "../../Util";
 
 export default class RippleChat extends Command {
     constructor(module: Module) {
-        super(["chat"], module, async (ctx, self, args) => {
+        super(["chat", "срфе"], module, async (ctx, self, args) => {
             if(ctx.isChat) {
                 try {
                     let members = (await self.module.bot.vk.api.messages.getConversationMembers({

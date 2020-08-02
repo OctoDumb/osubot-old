@@ -6,7 +6,7 @@ import AkatsukiRelaxRecent from "./Recent";
 
 export default class AkatsukiRelax extends Module {
     constructor(bot: Bot) {
-        super("ax", bot);
+        super(["ax", "фч"], bot);
         
         this.name = "Akatsuki!Relax";
 

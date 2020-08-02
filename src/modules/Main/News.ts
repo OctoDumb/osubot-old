@@ -5,7 +5,7 @@ const types = ['group', 'osuupdate', 'newranked', 'osunews'];
 
 export default class NewsCommand extends Command {
     constructor(module: Module) {
-        super("news", module, async (ctx, self, args) => {
+        super(["news", "туцы"], module, async (ctx, self, args) => {
 
             if(ctx.isChat) {
                 try {

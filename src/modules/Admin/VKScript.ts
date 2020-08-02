@@ -3,7 +3,7 @@ import { Module } from "../../Module";
 
 export default class AdminVKScript extends Command {
     constructor(module: Module) {
-        super(["vks", "vkscript"], module, async (ctx, self, args) => {
+        super(["vks", "vkscript", "млы", "млыскшзе"], module, async (ctx, self, args) => {
             let code = args.full.join(" ");
             try {
                 let res = await self.module.bot.vk.api.execute({ code });

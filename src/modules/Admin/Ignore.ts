@@ -3,7 +3,7 @@ import { Module } from "../../Module";
 
 export default class IgnoreCommand extends Command {
     constructor(module: Module) {
-        super(["ignore"], module, async (ctx, self) => {
+        super(["ignore", "шптщку"], module, async (ctx, self) => {
             let context = ctx.replyMessage || ctx.forwards[0];
 
             if(!context)

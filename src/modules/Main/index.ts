@@ -10,7 +10,7 @@ import SearchCommand from './Search';
 
 export default class Main extends Module {
     constructor(bot: Bot) {
-        super("osu", bot);
+        super(["osu", "осу", "щыг"], bot);
 
         this.name = "Main";
 

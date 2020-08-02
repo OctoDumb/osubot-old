@@ -11,7 +11,7 @@ import IgnoreCommand from './Ignore';
 
 export default class Admin extends Module {
     constructor(bot: Bot) {
-        super("admin", bot);
+        super(["admin", "фвьшт", "админ"], bot);
 
         this.name = "Admin";
 

@@ -10,7 +10,7 @@ import AkatsukiRecent from "./Recent";
 
 export default class Akatsuki extends Module {
     constructor(bot: Bot) {
-        super("a", bot);
+        super(["a", "ф"], bot);
         
         this.name = "Akatsuki";
 

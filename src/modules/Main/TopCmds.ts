@@ -3,7 +3,7 @@ import { Module } from "../../Module";
 
 export default class TopCmdsCommand extends Command {
     constructor(module: Module) {
-        super("topcmds", module, (ctx, self) => {
+        super(["topcmds", "ещзсьвы"], module, (ctx, self) => {
             let commands: Command[] = [];
             self.module.bot.modules.forEach(m => {
                 m.commands.forEach(c => {

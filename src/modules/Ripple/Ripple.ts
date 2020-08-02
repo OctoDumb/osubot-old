@@ -14,7 +14,7 @@ import RippleLeaderboard from "./Leaderboard";
 export default class Ripple extends Module {
     link: string;
     constructor(bot: Bot) {
-        super("r", bot);
+        super(["r", "к"], bot);
 
         this.name = "Ripple";
 

@@ -14,7 +14,7 @@ import KurikkuLeaderboard from "./Leaderboard";
 export default class Kurikku extends Module {
     link: string;
     constructor(bot: Bot) {
-        super("k", bot);
+        super(["k", "л"], bot);
 
         this.name = "Kurikku";
 

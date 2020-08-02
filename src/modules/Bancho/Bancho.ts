@@ -15,7 +15,7 @@ import BanchoTrack from "./Track";
 export default class Bancho extends Module {
     link: string;
     constructor(bot: Bot) {
-        super("s", bot);
+        super(["s", "ы"], bot);
 
         this.name = "Bancho";
 

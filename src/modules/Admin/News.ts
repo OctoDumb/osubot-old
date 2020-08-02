@@ -3,7 +3,7 @@ import { Module } from "../../Module";
 
 export default class NewsCommand extends Command {
     constructor(module: Module) {
-        super(["n", "news"], module, async (ctx, self, args) => {            
+        super(["n", "news", "т", "туцы"], module, async (ctx, self, args) => {            
             if(!ctx.replyMessage && !ctx.hasForwards)
                 return ctx.reply("Перешлите сообщение для рассылки!");
 

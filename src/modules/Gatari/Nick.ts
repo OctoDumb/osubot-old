@@ -1,9 +1,9 @@
 import { Command } from "../../Command";
 import { Module } from "../../Module";
 
-export default class GatariNich extends Command {
+export default class GatariNick extends Command {
     constructor(module: Module) {
-        super(["n", "nick", "nickname"], module, async (ctx, self, args) => {
+        super(["n", "nick", "ь", "ьшсл"], module, async (ctx, self, args) => {
             if(!args.nickname[0])
                 return ctx.reply("Не указан ник!")
             try {

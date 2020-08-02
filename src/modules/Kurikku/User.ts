@@ -4,7 +4,7 @@ import Util from "../../Util";
 
 export default class KurikkuUser extends Command {
     constructor(module: Module) {
-        super(["u", "user"], module, async (ctx, self, args) => {
+        super(["u", "user", "г", "гыук"], module, async (ctx, self, args) => {
             let dbUser = await self.module.bot.database.servers.kurikku.getUser(ctx.senderId);
             if(ctx.hasReplyMessage)
                 dbUser.nickname = (await self.module.bot.database.servers.kurikku.getUser(ctx.replyMessage.senderId)).nickname;

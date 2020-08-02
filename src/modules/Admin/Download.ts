@@ -4,7 +4,7 @@ import fs from "fs";
 
 export default class DownloadCommand extends Command {
     constructor(module: Module) {
-        super(["download", "dl"], module, async (ctx, self, args) => {
+        super(["download", "dl", "вщцтдщфв", "вд"], module, async (ctx, self, args) => {
             let path = args.full.join(" ");
             if(!fs.existsSync(path))
                 return ctx.reply("Такого файла не существует!");
