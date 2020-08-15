@@ -99,7 +99,7 @@ export default class Bot {
         this.maps = new Maps(this);
 
         this.vk.updates.on("message", async (ctx) => {
-            if(ctx.isOutbox || ctx.isFromGroup || ctx.isEvent || this.ignored.isIgnored(ctx.senderId))
+            if(ctx.isGroup || ctx.isFromGroup || ctx.isEvent || this.ignored.isIgnored(ctx.senderId))
                 return;
             this.totalMessages++;
             let replayDoc = this.checkReplay(ctx);
