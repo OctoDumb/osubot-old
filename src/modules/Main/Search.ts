@@ -4,10 +4,10 @@ import { Module } from "../../Module";
 export default class SearchCommand extends Command {
     constructor(module: Module) {
         super(["search", "ыуфкср"], module, async (ctx, self, args) => {
-            if(!args.string[0])
+            if(!args.full[0])
                 return ctx.reply("Укажите запрос для поиска");
             
-            let data = await self.module.bot.v2.getBeatmapsets({ query: args.string.join(" "), status: 'ranked' });
+            let data = await self.module.bot.v2.getBeatmapsets({ query: args.full.join(" "), status: 'ranked' });
             
             if(!data.length)
                 return ctx.reply("Не найдено карт");
