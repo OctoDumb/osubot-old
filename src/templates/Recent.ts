@@ -19,5 +19,5 @@ PP: ${pp.pp.toFixed(2)}${pp.ss == pp.pp ? '' : pp.fc == pp.pp ? ` ⯈ SS: ${pp.s
 Hitcounts: ${score.counts.toString()}
 Grade: ${score.rank} ${score.rank == "F" ? `(${Util.round(progress * 100, 2)}%)` : ''}
 
-Карта: ${link}/b/${beatmap.id.map}`;
+Beatmap: ${link}/b/${beatmap.id.map}`;
 }
