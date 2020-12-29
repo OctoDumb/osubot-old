@@ -237,9 +237,7 @@ export default class Bot {
 
         this.v2.data.on('osunews', async news => {
             let attachment = (await this.vk.upload.messagePhoto({
-                source: {
-                    value: news.image
-                }
+                source: news.image
             })).toString();
 
             this.news.notify({

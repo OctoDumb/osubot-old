@@ -87,9 +87,7 @@ class DatabaseCovers {
             });
 
             let photo = await this.db.vk.upload.messagePhoto({
-                source: {
-                    value: Buffer.from(cover)
-                }
+                source: Buffer.from(cover)
             });
 
             await this.db.run("INSERT INTO covers (id, attachment) VALUES (?, ?)", [id, photo.toString()]);
