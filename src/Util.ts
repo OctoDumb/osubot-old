@@ -98,6 +98,7 @@ export default {
             place: 0,
             apx: 0,
             more: 0,
+            c50: 0,
             mode: null
         };
 
@@ -116,6 +117,8 @@ export default {
             } else if(arg.endsWith("x")) {
                 iArg.combo = Number(arg.slice(0, -1));
                 iArg.nickname.push(arg);
+            } else if(arg.endsWith("x50")) {
+                iArg.c50 = Math.max(Number(arg.slice(0, -3)), 0);
             } else if(arg.endsWith("m")) {
                 iArg.miss = Number(arg.slice(0, -1));
                 iArg.nickname.push(arg);
@@ -139,11 +142,11 @@ export default {
         return iArg;
     },
     getHitsFromAcc: {
-        osu: function(acc: number, miss: number, obj: number): IHits {
+        osu: function(acc: number, miss: number, obj: number, c50 = 0): IHits {
             let hits = {
                 300: -1,
                 100: 0,
-                50: 0,
+                50: c50,
                 miss: miss
             };
             let n300 = hits[300];

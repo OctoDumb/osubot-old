@@ -14,6 +14,7 @@ interface ICommandArgs {
     place: number;
     apx: number;
     more: number;
+    c50: number;
     mode?: number;
 }
 
@@ -23,6 +24,9 @@ interface PPArgs {
     combo?: number;
     miss?: number;
     hits?: number;
+    counts?: {
+        50: number;
+    };
     mods: Mods;
 }
 
@@ -45,7 +49,7 @@ class CalcArgs {
                 this.counts = new HitCounts({
                     300: args.hits - args.miss,
                     100: 0,
-                    50: 0,
+                    50: args.counts[50] ?? 0,
                     miss: args.miss
                 }, mode);
                 this.mods = args.mods;
