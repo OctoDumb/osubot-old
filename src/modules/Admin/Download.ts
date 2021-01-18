@@ -12,7 +12,9 @@ export default class DownloadCommand extends Command {
             let att = await self.module.bot.vk.upload.messageDocument({
                 peer_id: ctx.peerId,
                 title: path.split("/").pop(),
-                source: path
+                source: {
+                    value: path
+                }
             });
 
             ctx.send(`Файл ${path}`, {
