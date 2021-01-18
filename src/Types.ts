@@ -49,7 +49,7 @@ class CalcArgs {
                 this.counts = new HitCounts({
                     300: args.hits - args.miss,
                     100: 0,
-                    50: args.counts[50] ?? 0,
+                    50: args.counts?.[50] ?? 0,
                     miss: args.miss
                 }, mode);
                 this.mods = args.mods;
