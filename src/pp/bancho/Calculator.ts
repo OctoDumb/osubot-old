@@ -47,7 +47,7 @@ class BanchoPP implements ICalc {
     }
 }
 
-class BanchoStd {
+export class BanchoStd {
     map: APIBeatmap;
     mods: Mods;
     value: IPP;
@@ -59,12 +59,12 @@ class BanchoStd {
 
         let multiplier = 1.12;
         if(this.mods.has("NoFail"))
-            multiplier *= 0.9;
+            multiplier *= Math.max(0,9, 1.0 - 0.02 * score.counts.miss);
         if(this.mods.has("SpunOut"))
-            multiplier *= 0.95;
+            multiplier *= 1 - Math.pow(map.objects.spinners / score.counts.totalHits(), 0.85);
 
         let aimV1 = this.aimValue(score.combo, score.accuracy(), score.counts.miss, score.counts.totalHits());
-        let speedV1 = this.speedValue(score.combo, score.accuracy(), score.counts.miss, score.counts.totalHits());
+        let speedV1 = this.speedValue(score.combo, score.accuracy(), score.counts.miss, score.counts.totalHits(), score.counts[50]);
         let accV1 = this.accValue(score.accuracy(), score.counts.miss, totalObj);
 
         let pp = Math.pow(
@@ -75,7 +75,7 @@ class BanchoStd {
         ) * multiplier;
 
         let aimV2 = this.aimValue(map.combo, score.accuracy(), 0, totalObj);
-        let speedV2 = this.speedValue(map.combo, score.accuracy(), 0, totalObj);
+        let speedV2 = this.speedValue(map.combo, score.accuracy(), 0, totalObj, score.counts[50]);
         let accV2 = this.accValue(score.accuracy(), 0, totalObj);
 
         let fc = Math.pow(
@@ -86,7 +86,7 @@ class BanchoStd {
         ) * multiplier;
 
         let aimV3 = this.aimValue(map.combo, 1, 0, totalObj);
-        let speedV3 = this.speedValue(map.combo, 1, 0, totalObj);
+        let speedV3 = this.speedValue(map.combo, 1, 0, totalObj, score.counts[50]);
         let accV3 = this.accValue(1, 0, totalObj);
 
         let ss = Math.pow(
@@ -118,18 +118,19 @@ class BanchoStd {
 
         // aimValue *= lengthBonus;
         
-        aimValue *= Math.pow(0.97, miss);
+        if (miss > 0)
+            aimValue *= 0.97 * Math.pow(1 - Math.pow(miss / hits, 0.775), miss);
 
         aimValue *= Math.min(Math.pow(combo, 0.8) / Math.pow(this.map.combo, 0.8), 1);
 
-        let arFactor = 1;
+        let arFactor = 0;
 
         if(this.map.stats.ar > 10.33)
-            arFactor += 0.3 * (this.map.stats.ar - 10.33);
+            arFactor += 0.4 * (this.map.stats.ar - 10.33);
         else if(this.map.stats.ar < 8)
-            arFactor += 0.01 * (8 - this.map.stats.ar);
+            arFactor += 0.1 * (8 - this.map.stats.ar);
 
-        aimValue *= arFactor;
+        aimValue *= 1 + Math.min(this.map.stats.ar, arFactor * (hits / 1000));
 
         if(this.mods.has("Hidden"))
             aimValue *= 1.0 + 0.04 * (12 - this.map.stats.ar);
@@ -148,34 +149,32 @@ class BanchoStd {
         return aimValue;
     }
     
-    speedValue(combo: number, acc: number, miss: number, hits: number): number {
+    speedValue(combo: number, acc: number, miss: number, hits: number, count50: number): number {
         let speedValue = Math.pow(5 * Math.max(1, this.map.diff.speed / 0.0675) - 4, 3) / 1e5;
-        
-        let arFactor = 1;
 
-        if(this.map.stats.ar > 10.33)
-            arFactor += 0.3 * (this.map.stats.ar - 10.33);
-        else if(this.map.stats.ar < 8)
-            arFactor += 0.01 * (8 - this.map.stats.ar);
+        let lengthBonus = 0.95 + 0.4 * Math.min(1, hits / 2000) +
+        (hits > 2000 ? Math.log10(hits / 2000) * 0.5 : 0);
 
-        if(this.map.stats.ar > 10.33)
-            speedValue *= arFactor;
+        speedValue *= lengthBonus;
 
-        speedValue *= 0.95 + 0.4 * Math.min(1, hits / 2e3) +
-            (hits > 2e3 ? Math.log10(hits / 2e3) * 0.5 : 0);
+        if (miss > 0)
+            speedValue *= 0.97 * Math.pow(1 - Math.pow(miss / hits, 0.775), Math.pow(miss, 0.875));
 
-        // speedValue *= lengthBonus;
+        if (this.map.combo > 0)
+            speedValue *= Math.min(Math.pow(combo, 0.8) / Math.pow(this.map.combo, 0.8), 1);
 
-        speedValue *= Math.pow(0.97, miss);
+        let arFactor = 0;
+        if (this.map.stats.ar > 10.33)
+            arFactor += 0.4 * (this.map.stats.ar - 10.33);
+            
+        speedValue *= 1 + Math.min(arFactor, arFactor * (hits / 1000));
 
-        speedValue *= Math.min(Math.pow(combo, 0.8) / Math.pow(this.map.combo, 0.8), 1);
+        /* if (this.mods.has("Hidden"))
+            speedValue *= 1 + 0.04 * (12 - this.map.stats.ar); */
 
-        if(this.mods.has("Hidden"))
-            speedValue *= 1 + 0.04 * (12 - this.map.stats.ar);
+        speedValue *= (0.95 + Math.pow(this.map.stats.od, 2) / 750) * Math.pow(acc, (14.5 - Math.max(this.map.stats.od, 8)) / 2)
 
-        speedValue *= 0.02 + acc;
-
-        speedValue *= 0.96 + (Math.pow(this.map.stats.od, 2) / 1600);
+        speedValue *= Math.pow(0.98, count50 < hits / 500 ? 0 : count50 - hits / 500);
 
         return speedValue;
     }

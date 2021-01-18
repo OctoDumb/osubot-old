@@ -4,6 +4,7 @@ import { IPPCalculator as ICalc } from '../pp/Calculator';
 
 export default function(score: APIRecentScore, beatmap: APIBeatmap, calc: ICalc, link: string) {
     let pp = calc.calculate(score);
+
     let hits = beatmap.objects.circles + beatmap.objects.sliders + beatmap.objects.spinners;
     if(score.mode == 1)
         hits -= beatmap.objects.sliders;

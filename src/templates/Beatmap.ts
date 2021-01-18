@@ -1,4 +1,4 @@
-import { APIBeatmap } from "../Types";
+import { APIBeatmap, BeatmapStatus } from "../Types";
 // import { IPPCalculator as ICalc } from "../pp/Calculator";
 import BanchoPP from "../pp/bancho";
 import Util from "../Util";
@@ -6,6 +6,7 @@ import Mods from "../pp/Mods";
 
 export default function(map: APIBeatmap): string {
     let calc = new BanchoPP(map, new Mods(0));
+
     switch(map.mode) {
         case 0: { // osu!
             let pp98 = calc.calculate(Util.createPPArgs({
@@ -22,12 +23,14 @@ export default function(map: APIBeatmap): string {
                 miss: 0,
                 mods: new Mods(0)
             }, map.mode));
+
             return `${map.artist} - ${map.title} [${map.version}] by ${map.creator.nickname} (${map.status})
 ${Util.formatBeatmapLength(map.length)} | ${map.stats} ${Math.round(map.bpm)}BPM | ${Util.round(map.diff.stars, 2)}✩
 PP:
 - 98% = ${Util.round(pp98.pp, 2)}
 - 99% = ${Util.round(pp99.pp, 2)}
-- 100% = ${Util.round(pp98.ss, 2)}`;
+- 100% = ${Util.round(pp98.ss, 2)}
+`;
         }
 
         case 1: { // osu!taiko
