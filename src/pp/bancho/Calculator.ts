@@ -59,7 +59,7 @@ export class BanchoStd {
 
         let multiplier = 1.12;
         if(this.mods.has("NoFail"))
-            multiplier *= Math.max(0,9, 1.0 - 0.02 * score.counts.miss);
+            multiplier *= Math.max(0.9, 1.0 - 0.02 * score.counts.miss);
         if(this.mods.has("SpunOut"))
             multiplier *= 1 - Math.pow(map.objects.spinners / score.counts.totalHits(), 0.85);
 
