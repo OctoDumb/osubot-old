@@ -86,7 +86,7 @@ export class BanchoStd {
         ) * multiplier;
 
         let aimV3 = this.aimValue(map.combo, 1, 0, totalObj);
-        let speedV3 = this.speedValue(map.combo, 1, 0, totalObj, score.counts[50]);
+        let speedV3 = this.speedValue(map.combo, 1, 0, totalObj, 0);
         let accV3 = this.accValue(1, 0, totalObj);
 
         let ss = Math.pow(
