@@ -62,7 +62,7 @@ class GatariTopScore implements APITopScore {
             katu: score.count_katu
         }, score.play_mode);
         this.mods = new Mods(score.mods);
-        this.rank = score.ranking;
+        this.rank = score.ranking.replace('X', 'SS');
         this.pp = score.pp;
         this.mode = score.play_mode;
         this.date = new Date(score.time);
@@ -96,7 +96,7 @@ class GatariRecentScore implements APIRecentScore {
             katu: data.count_katu
         }, data.play_mode);
         this.mods = new Mods(data.mods);
-        this.rank = data.ranking;
+        this.rank = data.ranking.replace('X', 'SS');
         this.mode = data.play_mode;
     }
 
@@ -128,7 +128,7 @@ class GatariScore implements APIScore {
         }, data.play_mode);
         this.mods = new Mods(data.mods);
         this.mode = data.play_mode;
-        this.rank = data.rank;
+        this.rank = data.rank.replace('X', 'SS');
         this.mode = data.play_mode;
         this.date = new Date(data.time * 1e3);
     }

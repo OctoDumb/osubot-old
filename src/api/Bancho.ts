@@ -63,7 +63,7 @@ class BanchoTopScore implements APITopScore {
             geki: Number(data.countgeki)
         }, mode);
         this.mods = new Mods(Number(data.enabled_mods));
-        this.rank = data.rank;
+        this.rank = data.rank.replace('X', 'SS');
         this.pp = Number(data.pp);
         this.mode = mode;
         this.date = new Date(data.date);
@@ -97,7 +97,7 @@ class BanchoRecentScore implements APIRecentScore {
             miss: Number(data.countmiss)
         }, mode);
         this.mods = new Mods(Number(data.enabled_mods));
-        this.rank = data.rank;
+        this.rank = data.rank.replace('X', 'SS');
         this.mode = mode;
     }
 
@@ -130,7 +130,7 @@ class BanchoScore implements APIScore {
             miss: Number(data.countmiss)
         }, mode);
         this.mods = new Mods(Number(data.enabled_mods));
-        this.rank = data.rank;
+        this.rank = data.rank.replace('X', 'SS');
         this.mode = mode;
         this.date = new Date(data.date);
     }
