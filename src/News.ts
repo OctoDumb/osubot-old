@@ -20,8 +20,8 @@ interface INotifyOptions {
 
 export default class News {
     rules: INewsRules;
-    limit: number = 200;
-    step: number = 10;
+    limit: number = 500;
+    step: number = 25;
     chatsDefaults: INewsRule = {
         group: true,
         osuupdate: false,
