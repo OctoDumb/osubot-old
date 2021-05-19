@@ -2,6 +2,8 @@ import { Command } from "../../Command";
 import { Module } from "../../Module";
 
 export default class DisableCommand extends Command {
+    disables = false;
+    
     constructor(module: Module) {
         super(["disable"], module, async (ctx, self) => {
             if(!ctx.isChat)
