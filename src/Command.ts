@@ -6,6 +6,7 @@ import { ICommandArgs } from './Types';
 export class Command {
     readonly name: String | String[];
     module: Module;
+    disables: boolean = true;
     uses: number;
     function: (ctx: MessageContext, self: Command, args: ICommandArgs) => void;
 

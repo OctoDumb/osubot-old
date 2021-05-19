@@ -58,6 +58,7 @@ export default class Bot {
     templates: ITemplates;
     maps: Maps;
     news: News;
+    disabled: number[] = [];
     ignored: IgnoreList;
     donaters: Donaters;
     streamers: TwitchStream[];
@@ -105,6 +106,7 @@ export default class Bot {
             let replayDoc = this.checkReplay(ctx);
             let hasMap = this.checkMap(ctx);
             if(replayDoc) {
+                if(this.disabled.includes(ctx.peerId)) return;
                 try {
                     let { data: file } = await axios.default.get(replayDoc.url, {
                         responseType: "arraybuffer"
@@ -134,10 +136,12 @@ export default class Bot {
                     ctx.reply("Произошла ошибка при обработке реплея!");
                 }
             } else if(hasMap) {
+                if(this.disabled.includes(ctx.peerId)) return;
                 this.maps.sendMap(hasMap, ctx);
             } else {
                 if(!ctx.hasText) return;
                 if(ctx.text.toLowerCase().startsWith("map ")) {
+                    if(this.disabled.includes(ctx.peerId)) return;
                     this.maps.stats(ctx);
                 } else {
                     for(let module of this.modules) {
@@ -150,6 +154,7 @@ export default class Bot {
                                     this.maps.setMap(ctx.peerId, map);
                                 }
                             }
+                            if(this.disabled.includes(ctx.peerId) && check.command.disables) return;
                             check.command.process(ctx);
                         }
                     }

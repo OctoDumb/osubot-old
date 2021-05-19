@@ -7,6 +7,7 @@ import UptimeCommand from './Uptime';
 import TopCmdsCommand from './TopCmds';
 import StatusCommand from './Status';
 import SearchCommand from './Search';
+import DisableCommand from './Disable';
 
 export default class Main extends Module {
     constructor(bot: Bot) {
@@ -21,7 +22,8 @@ export default class Main extends Module {
             new UptimeCommand(this),
             new TopCmdsCommand(this),
             new StatusCommand(this),
-            new SearchCommand(this)
+            new SearchCommand(this),
+            new DisableCommand(this)
         ]);
     }
 }
