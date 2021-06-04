@@ -49,11 +49,11 @@ export default class SakuruTop extends Command {
                     let keyboard = Util.createKeyboard([
                         [{
                             text: '[R] Мой скор на карте',
-                            command: `{map${map.id.map}}r c`
+                            command: `{map${map.id.map}}c c`
                         }],
                         ctx.isChat ? [{
                             text: '[R] Топ чата на карте',
-                            command: `{map${map.id.map}}r lb`
+                            command: `{map${map.id.map}}c lb`
                         }] : []
                     ]);
                     self.module.bot.maps.setMap(ctx.peerId, map);

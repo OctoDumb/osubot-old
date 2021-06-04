@@ -13,7 +13,7 @@ import SakuruUser from "./User";
 export default class Sakuru extends Module {
     link: string;
     constructor(bot: Bot) {
-        super(["u"], bot);
+        super(["c"], bot);
 
         this.name = "Sakuru";
         

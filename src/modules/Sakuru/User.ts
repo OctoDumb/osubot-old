@@ -22,11 +22,11 @@ export default class SakuruUser extends Command {
                 let keyboard = Util.createKeyboard([
                     [{
                         text: `Топ скоры ${user.nickname}`,
-                        command: `r t ${user.nickname} ${Util.getModeArg(mode)}`
+                        command: `c t ${user.nickname} ${Util.getModeArg(mode)}`
                     }],
                     [{
                         text: `Последний скор ${user.nickname}`,
-                        command: `r r ${user.nickname} ${Util.getModeArg(mode)}`
+                        command: `c r ${user.nickname} ${Util.getModeArg(mode)}`
                     }]
                 ]);
                 ctx.reply(`[Server:${self.module.name}]\n${self.module.bot.templates.User(user, mode, status, self.module.link)}`, { keyboard });

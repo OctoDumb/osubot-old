@@ -15,7 +15,7 @@ export default class SakuruFind extends Command {
                 let keyboard = Util.createKeyboard([
                     [{
                         text: 'Посмотреть профиль',
-                        command: `u u ${u.nickname}`
+                        command: `c u ${u.nickname}`
                     }]
                 ]);
                 ctx.reply(`[Server: ${self.module.name}]\nПользователи с ником ${u.nickname}:\n${users.map(us => `https://vk.com/id${us.id}`).join("\n")}`, { keyboard });

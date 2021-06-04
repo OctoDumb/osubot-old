@@ -24,11 +24,11 @@ export default class SakuruRecent extends Command {
                 let keyboard = Util.createKeyboard([
                     [{
                         text: 'Мой скор на карте',
-                        command: `{map${map.id.map}}r c`
+                        command: `{map${map.id.map}}c c`
                     }],
                     ctx.isChat ? [{
                         text: 'Топ чата на карте',
-                        command: `{map${map.id.map}}r lb`
+                        command: `{map${map.id.map}}c lb`
                     }] : []
                 ]);
                 ctx.reply(`[Server: ${self.module.name}]\n${self.module.bot.templates.RecentScore(recent, map, calc, self.module.link)}`, {
