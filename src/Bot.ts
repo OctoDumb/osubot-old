@@ -25,6 +25,7 @@ import Kurikku from './modules/Kurikku';
 import BanchoV2 from "./api/BanchoV2";
 import Util from './Util';
 import IgnoreList from './Ignore';
+import Sakuru from './modules/Sakuru';
 
 interface IBotConfig {
     vk?: {
@@ -85,6 +86,7 @@ export default class Bot {
             new AkatsukiRelax(this),
             new Enjuu(this),
             new Kurikku(this),
+            new Sakuru(this),
             new Admin(this),
             new Main(this)
         ]);
