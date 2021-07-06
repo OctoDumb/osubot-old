@@ -22,10 +22,6 @@ export default class EnjuuUser extends Command {
                 if(!dbUser.mode)
                     self.module.bot.database.servers.enjuu.updateInfo(user, mode);
 
-                let { data: cover } = await axios.get(`https://i.imgur.com/ePyB83o.png`, {
-                    responseType: "arraybuffer"
-                });
-                
                 ctx.reply(`[Server: ${self.module.name}]\n${self.module.bot.templates.User(user, mode, status, self.module.link)}`);
             } catch (e) {
                 let err = await self.module.bot.database.errors.addError("a", ctx, String(e));

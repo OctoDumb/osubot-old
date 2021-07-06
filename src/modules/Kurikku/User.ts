@@ -21,10 +21,6 @@ export default class KurikkuUser extends Command {
                 let status = self.module.bot.donaters.status("kurikku", user.id);
                 if(!dbUser.mode)
                     self.module.bot.database.servers.kurikku.updateInfo(user, mode);
-
-                let { data: cover } = await axios.get(`https://i.imgur.com/ePyB83o.png`, {
-                    responseType: "arraybuffer"
-                });
                 
                 ctx.reply(`[Server:${self.module.name}]\n${self.module.bot.templates.User(user, mode, status, self.module.link)}`);
             } catch(e) {

@@ -31,10 +31,6 @@ export default class SakuruUser extends Command {
                     }]
                 ]);
 
-                let { data: cover } = await axios.get(`https://i.imgur.com/ePyB83o.png`, {
-                    responseType: "arraybuffer"
-                });
-
                 ctx.reply(`[Server:${self.module.name}]\n${self.module.bot.templates.User(user, mode, status, self.module.link)}`, { 
                     keyboard 
                 });
