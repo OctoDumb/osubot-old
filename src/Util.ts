@@ -284,6 +284,7 @@ export default {
         return ['-std', '-taiko', '-ctb', '-mania'][mode];
     },
     minutesToPlaytimeString(time: number) {
+    	time = Math.round(time / 60);
         const minutes = time % 60;
         const hours = Math.floor(time / 60) % 24
         const days = Math.floor(time / (60 * 24));
