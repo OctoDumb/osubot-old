@@ -31,16 +31,7 @@ export default class BanchoUser extends Command {
                     }]
                 ]);
 
-                let { data: cover } = await axios.get(`https://i.imgur.com/ePyB83o.png`, {
-                    responseType: "arraybuffer"
-                });
-
-                let attachment = await module.bot.vk.upload.messagePhoto({
-                    source: { value: Buffer.from(cover) }
-                });
-
                 ctx.reply(`[Server: ${self.module.name}]\n${self.module.bot.templates.User(user, mode, status, self.module.link)}`, {
-                    attachment,
                     keyboard 
                 });
             } catch(e) {

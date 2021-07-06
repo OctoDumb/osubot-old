@@ -25,14 +25,8 @@ export default class KurikkuUser extends Command {
                 let { data: cover } = await axios.get(`https://i.imgur.com/ePyB83o.png`, {
                     responseType: "arraybuffer"
                 });
-
-                let attachment = await module.bot.vk.upload.messagePhoto({
-                    source: { value: Buffer.from(cover) }
-                });
                 
-                ctx.reply(`[Server:${self.module.name}]\n${self.module.bot.templates.User(user, mode, status, self.module.link)}`, {
-                    attachment
-                });
+                ctx.reply(`[Server:${self.module.name}]\n${self.module.bot.templates.User(user, mode, status, self.module.link)}`);
             } catch(e) {
                 let err = await self.module.bot.database.errors.addError("r", ctx, String(e));
                 ctx.reply(`[Server: ${self.module.name}]\n${Util.error(String(e))} (${err})`);

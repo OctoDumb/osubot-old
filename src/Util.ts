@@ -282,5 +282,12 @@ export default {
     },
     getModeArg(mode: number) {
         return ['-std', '-taiko', '-ctb', '-mania'][mode];
+    },
+    minutesToPlaytimeString(time: number) {
+        const minutes = time % 60;
+        const hours = Math.floor(time / 60) % 24
+        const days = Math.floor(time / (60 * 24));
+    
+        return `${days}d ${hours}h ${minutes}m`;
     }
 };

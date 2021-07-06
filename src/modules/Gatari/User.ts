@@ -35,12 +35,7 @@ export default class GatariUser extends Command {
                     responseType: "arraybuffer"
                 });
 
-                let attachment = await module.bot.vk.upload.messagePhoto({
-                    source: { value: Buffer.from(cover) }
-                });
-
                 ctx.reply(`[Server: ${self.module.name}]\n${self.module.bot.templates.User(user, mode, status, self.module.link)}`, { 
-                    attachment,
                     keyboard
                 });
             } catch (e) {
