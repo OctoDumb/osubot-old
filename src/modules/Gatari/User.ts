@@ -1,3 +1,4 @@
+import axios from "axios";
 import { Command } from "../../Command";
 import { Module } from "../../Module";
 import Util from "../../Util";
@@ -29,7 +30,19 @@ export default class GatariUser extends Command {
                         command: `g r ${user.nickname} ${Util.getModeArg(mode)}`
                     }]
                 ]);
-                ctx.reply(`[Server: ${self.module.name}]\n${self.module.bot.templates.User(user, mode, status, self.module.link)}`, { keyboard });
+
+                let { data: cover } = await axios.get(`https://i.imgur.com/ePyB83o.png`, {
+                    responseType: "arraybuffer"
+                });
+
+                let attachment = await module.bot.vk.upload.messagePhoto({
+                    source: { value: Buffer.from(cover) }
+                });
+
+                ctx.reply(`[Server: ${self.module.name}]\n${self.module.bot.templates.User(user, mode, status, self.module.link)}`, { 
+                    attachment,
+                    keyboard
+                });
             } catch (e) {
                 let err = await self.module.bot.database.errors.addError("g", ctx, String(e));
                 ctx.reply(`[Server: ${self.module.name}]\n${Util.error(String(e))} (${err})`);

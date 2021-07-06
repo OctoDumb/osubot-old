@@ -18,6 +18,7 @@ export default class AkatsukiUser extends Command {
             try {
                 let user = await self.module.bot.api.relax.getUser(dbUser.nickname, mode);
                 let status = self.module.bot.donaters.status("akatsuki", user.id);
+                
                 ctx.reply(`[Server: ${self.module.name}]\n${self.module.bot.templates.User(user, mode, status, self.module.link)}`);
             } catch (e) {
                 let err = await self.module.bot.database.errors.addError("a", ctx, String(e));

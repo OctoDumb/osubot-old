@@ -1,3 +1,4 @@
+import axios from "axios";
 import { Command } from "../../Command";
 import { Module } from "../../Module";
 import Util from "../../Util";
@@ -20,7 +21,18 @@ export default class AkatsukiUser extends Command {
                 let status = self.module.bot.donaters.status("akatsuki", user.id);
                 if(!dbUser.mode)
                     self.module.bot.database.servers.akatsuki.updateInfo(user, mode);
-                ctx.reply(`[Server: ${self.module.name}]\n${self.module.bot.templates.User(user, mode, status, self.module.link)}`);
+
+                let { data: cover } = await axios.get(`https://i.imgur.com/ePyB83o.png`, {
+                    responseType: "arraybuffer"
+                });
+
+                let attachment = await module.bot.vk.upload.messagePhoto({
+                    source: { value: Buffer.from(cover) }
+                });
+                
+                ctx.reply(`[Server: ${self.module.name}]\n${self.module.bot.templates.User(user, mode, status, self.module.link)}`, {
+                    attachment
+                });
             } catch (e) {
                 let err = await self.module.bot.database.errors.addError("a", ctx, String(e));
                 ctx.reply(`[Server: ${self.module.name}]\n${Util.error(String(e))} (${err})`);
