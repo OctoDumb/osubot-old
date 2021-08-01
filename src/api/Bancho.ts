@@ -26,7 +26,7 @@ class BanchoUser implements APIUser {
         this.id = Number(data.user_id);
         this.nickname = data.username;
         this.playcount = Number(data.playcount);
-        this.playtime = Number(data.playtime);
+        this.playtime = Number(data.total_seconds_played);
         this.pp = Number(data.pp_raw);
         this.rank = {
             total: Number(data.pp_rank),
