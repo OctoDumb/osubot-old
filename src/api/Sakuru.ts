@@ -22,19 +22,19 @@ class SakuruUser implements APIUser {
     accuracy: number;
     level: number = -1;
     constructor(user: any, mode: number, api: IAPI) {
-        let m = ['_vn_std', '_vn_taiko', '_vn_catch', '_vn_mania'][mode];
+        let stats = user.stats[['vn_std', 'vn_taiko', 'vn_catch', 'vn_mania'][mode]];
         this.api = api;
-        this.id = user.id;
-        this.nickname = user.name;
-        this.playcount = user['plays'+m];
-        this.playtime = user['playtime'+m];
-        this.pp = user['pp'+m];
+        this.id = user.player.id;
+        this.nickname = user.player.name;
+        this.playcount = stats.plays;
+        this.playtime = stats.playtime;
+        this.pp = stats.pp;
         this.rank = {
-            total: user['rank'+m],
-            country: user['crank'+m]
+            total: stats.rank,
+            country: stats.crank
         };
-        this.country = user.country;
-        this.accuracy = user['acc'+m];
+        this.country = user.player.country;
+        this.accuracy = stats.acc;
     }
 }
 
