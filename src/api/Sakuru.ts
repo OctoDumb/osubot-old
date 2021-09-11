@@ -24,8 +24,8 @@ class SakuruUser implements APIUser {
     constructor(user: any, mode: number, api: IAPI) {
         let stats = user.stats[['vn_std', 'vn_taiko', 'vn_catch', 'vn_mania'][mode]];
         this.api = api;
-        this.id = user.player.id;
-        this.nickname = user.player.name;
+        this.id = user.info.id;
+        this.nickname = user.info.name;
         this.playcount = stats.plays;
         this.playtime = stats.playtime;
         this.pp = stats.pp;
@@ -33,7 +33,7 @@ class SakuruUser implements APIUser {
             total: stats.rank,
             country: stats.crank
         };
-        this.country = user.player.country;
+        this.country = user.info.country;
         this.accuracy = stats.acc;
     }
 }
