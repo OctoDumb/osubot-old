@@ -113,11 +113,11 @@ export class BanchoStd {
 
         let totalObj = this.map.objects.circles + this.map.objects.sliders + this.map.objects.spinners;
 
-        aimValue *= 0.95 + 0.4 * Math.min(1, totalObj / 2e3) +
+        let lengthBonus = 0.95 + 0.4 * Math.min(1, totalObj / 2e3) +
             (totalObj > 2e3 ? Math.log10(totalObj / 2e3) * 0.5 : 0);
 
-        // aimValue *= lengthBonus;
-        
+        aimValue *= lengthBonus;
+
         if (miss > 0)
             aimValue *= 0.97 * Math.pow(1 - Math.pow(miss / hits, 0.775), miss);
 
@@ -126,21 +126,27 @@ export class BanchoStd {
         let arFactor = 0;
 
         if(this.map.stats.ar > 10.33)
-            arFactor += 0.4 * (this.map.stats.ar - 10.33);
+            arFactor = this.map.stats.ar - 10.33;
         else if(this.map.stats.ar < 8)
-            arFactor += 0.1 * (8 - this.map.stats.ar);
+            arFactor = 0.025 * (8 - this.map.stats.ar);
 
-        aimValue *= 1 + Math.min(this.map.stats.ar, arFactor * (hits / 1000));
+        let arTotalHitsFactor = 1 / (1 + Math.exp(-(0.007 * (totalObj - 400))));
+
+        let arBonus = 1 + (0.03 + 0.37 * arTotalHitsFactor) * arFactor;
 
         if(this.mods.has("Hidden"))
             aimValue *= 1.0 + 0.04 * (12 - this.map.stats.ar);
 
+        let flBonus = 1;
+
         if(this.mods.has("Flashlight"))
-            aimValue *= 1.0 + 0.35 * Math.min(1, hits / 200) +
-                (hits > 200
-                    ? 0.3 * Math.min(1, (hits - 200) / 300) + 
-                        (hits > 500 ? (hits - 500) / 1200 : 0)
+            flBonus += 0.35 * Math.min(1, totalObj / 200) +
+                (totalObj > 200
+                    ? 0.3 + Math.min(1, (totalObj - 200) / 300) +
+                        (totalObj > 500 ? (totalObj - 500) / 1200 : 0)
                     : 0);
+
+        aimValue *= Math.max(flBonus, arBonus);
 
         aimValue *= 0.5 + acc / 2;
 
@@ -152,8 +158,10 @@ export class BanchoStd {
     speedValue(combo: number, acc: number, miss: number, hits: number, count50: number): number {
         let speedValue = Math.pow(5 * Math.max(1, this.map.diff.speed / 0.0675) - 4, 3) / 1e5;
 
+        let totalObj = this.map.objects.circles + this.map.objects.sliders + this.map.objects.spinners;
+
         let lengthBonus = 0.95 + 0.4 * Math.min(1, hits / 2000) +
-        (hits > 2000 ? Math.log10(hits / 2000) * 0.5 : 0);
+            (hits > 2000 ? Math.log10(hits / 2000) * 0.5 : 0);
 
         speedValue *= lengthBonus;
 
@@ -165,12 +173,14 @@ export class BanchoStd {
 
         let arFactor = 0;
         if (this.map.stats.ar > 10.33)
-            arFactor += 0.4 * (this.map.stats.ar - 10.33);
-            
-        speedValue *= 1 + Math.min(arFactor, arFactor * (hits / 1000));
+            arFactor = this.map.stats.ar - 10.33;
 
-        /* if (this.mods.has("Hidden"))
-            speedValue *= 1 + 0.04 * (12 - this.map.stats.ar); */
+        let arTotalHitsFactor = 1 / (1 + Math.exp(-(0.007 * (totalObj - 400))));
+        
+        speedValue *= 1 + (0.03 + 0.37 * arTotalHitsFactor) * arFactor;
+
+        if (this.mods.has("Hidden"))
+            speedValue *= 1 + 0.04 * (12 - this.map.stats.ar);
 
         speedValue *= (0.95 + Math.pow(this.map.stats.od, 2) / 750) * Math.pow(acc, (14.5 - Math.max(this.map.stats.od, 8)) / 2)
 
