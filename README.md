@@ -31,8 +31,7 @@ npm install
     "osu": {
         "username": "Your osu! username",
         "password": "Your osu! password"
-    },
-    "twitchId": "Twitch application Client ID (?)"
+    }
 }
 ```
 

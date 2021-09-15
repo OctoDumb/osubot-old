@@ -18,7 +18,6 @@ import Ripple from './modules/Ripple';
 import Donaters from './Donaters';
 import Akatsuki from './modules/Akatsuki';
 import AkatsukiRelax from './modules/AkatsukiRelax';
-import * as TwitchJs from 'twitch-js';
 import Enjuu from './modules/Enjuu';
 import OsuTrackAPI from './Track';
 import Kurikku from './modules/Kurikku';
@@ -40,14 +39,7 @@ interface IBotConfig {
     osu?: {
         username: string,
         password: string
-    },
-    twitchId?: string
-}
-
-interface TwitchStream {
-    url: string;
-    title: string;
-    viewers: number;
+    }
 }
 
 export default class Bot {
@@ -62,8 +54,6 @@ export default class Bot {
     disabled: number[] = [];
     ignored: IgnoreList;
     donaters: Donaters;
-    streamers: TwitchStream[];
-    twitch: any;
     track: OsuTrackAPI;
     v2: BanchoV2;
     startTime: number;
@@ -169,17 +159,6 @@ export default class Bot {
         this.ignored = new IgnoreList();
 
         this.donaters = new Donaters();
-
-        this.streamers = [];
-
-        this.twitch = new TwitchJs.default({
-            clientId: config.twitchId,
-            log: {
-                level: 'error'
-            }
-        }).api;
-
-        this.updateStreamers();
 
         this.track = new OsuTrackAPI();
 
@@ -306,23 +285,5 @@ export default class Bot {
                 return hasMap;
         }
         return null;
-    }
-
-    async updateStreamers() {
-        try {
-            let { streams } = await this.twitch.get('streams', { version: 'kraken', search: { game: 'osu!' } });
-            this.streamers = streams.map(s => {
-                return {
-                    url: s.channel.url,
-                    title: s.channel.status,
-                    viewers: s.viewers
-                };
-            });
-        } catch (e) {
-            console.log(e);
-        }
-        setTimeout(() => {
-            this.updateStreamers();
-        }, 30000);
     }
 }
