@@ -247,7 +247,7 @@ export default class Bot {
         for(let k in this.database.servers) {
             this.database.servers[k].createTables();
         }
-        this.database.run("CREATE TABLE IF NOT EXISTS covers (id INTEGER attachment TEXT)");
+        this.database.run("CREATE TABLE IF NOT EXISTS covers (id INTEGER, attachment TEXT)");
         this.database.run("CREATE TABLE IF NOT EXISTS errors (code TEXT, info TEXT, error TEXT)");
     }
 
