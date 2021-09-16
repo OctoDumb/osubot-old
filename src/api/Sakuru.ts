@@ -187,13 +187,13 @@ export default class SakuruAPI implements IAPI {
 
     async getScore(nickname: string, beatmapId: number, mode: number = 0, mods: number = null): Promise<APIScore> {
         try {
-            let { data } = await this.api.get(`/get_map_scores?${qs.stringify({ user: nickname, id: beatmapId, scope: 'best' })}`);
+            let { data } = await this.api.get(`/get_player_scores?${qs.stringify({ name: nickname, mode, bm: beatmapId, scope: 'best' })}`);
             let scores = data.scores;
             if(!isNullOrUndefined(mods))
                 scores = scores.filter(p => p.mods == mods);
             if(!scores[0])
                 throw "No scores found";
-            return new SakuruScore(data[0], beatmapId, this);
+            return new SakuruScore(scores[0], beatmapId, this);
         } catch(e) {
             throw e;
         }

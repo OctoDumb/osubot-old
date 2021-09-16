@@ -20,6 +20,7 @@
   "homepage": "https://github.com/OctoDumb/osubot#readme",
   "dependencies": {
     "axios": "^0.19.1",
+    "eventemitter3": "^4.0.7",
     "int64-buffer": "^0.99.1007",
     "leb": "^0.3.0",
     "middleware-io": "^2.1.0",
