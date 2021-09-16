@@ -6,14 +6,14 @@ An osu!-related bot for VK
 1. Clone repository
 
 ```
-git clone https://github.com/OctoDumb/osubot
+git clone https://github.com/OctoDumb/osubot-old
 cd osubot
 ```
 
 2. Install dependencdies
 
 ```
-npm install
+npm i
 ```
 
 3. Create a config `config.json`
@@ -38,6 +38,6 @@ npm install
 4. Build & run
 
 ```
-tsc
+npx tsc
 npm start
 ```
