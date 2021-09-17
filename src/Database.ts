@@ -82,7 +82,7 @@ class DatabaseCovers {
 
     async addCover(id: Number): Promise<string> {
         try {
-            let { data: cover } = await axios.get(`https://assets.ppy.sh/beatmaps/${id}/covers/cover.jpg?1`, {
+            let { data: cover } = await axios.get(`https://assets.ppy.sh/beatmaps/${id}/covers/raw.jpg`, {
                 responseType: "arraybuffer"
             });
 
