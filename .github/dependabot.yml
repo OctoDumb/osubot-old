@@ -1,0 +1,22 @@
+version: 2
+updates:
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: daily
+  open-pull-requests-limit: 10
+  reviewers:
+  - uzervlad
+  labels:
+  - dependabot
+  ignore:
+  - dependency-name: axios
+    versions:
+    - "> 0.19.2"
+  - dependency-name: sqlite3
+    versions:
+    - 5.0.1
+    - 5.0.2
+  - dependency-name: int64-buffer
+    versions:
+    - 1.0.0
