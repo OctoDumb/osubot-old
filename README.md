@@ -7,7 +7,7 @@ An osu!-related bot for VK
 
 ```
 git clone https://github.com/OctoDumb/osubot-old
-cd osubot
+cd osubot-old
 ```
 
 2. Install dependencdies
